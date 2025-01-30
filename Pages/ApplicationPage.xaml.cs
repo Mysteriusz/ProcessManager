@@ -38,7 +38,16 @@ namespace ProcessManager.Pages
             ProcessInfo[] processes = new ProcessInfo[size];
             for (int i = 0; i < size; i++)
             {
-                processes[i] = Marshal.PtrToStructure<ProcessInfoStruct>(ptr + (i * Marshal.SizeOf<ProcessInfoStruct>()));
+                IntPtr currentProcessPtr = ptr + (i * Marshal.SizeOf<ProcessInfoStruct>());
+                ProcessInfoStruct processStruct = Marshal.PtrToStructure<ProcessInfoStruct>(currentProcessPtr);
+
+                processes[i] = new ProcessInfo();
+                processes[i].Name = Profiler.ToString(processStruct.name)!;
+                processes[i].User = Profiler.ToString(processStruct.user)!;
+                processes[i].Priority = Profiler.ToString(processStruct.priority)!;
+                processes[i].ImageName = Profiler.ToString(processStruct.imageName)!;
+                processes[i].PID = processStruct.pid;
+
                 StartProcessDataCollector(processes[i]);
             }
 

@@ -26,7 +26,7 @@
                         <Setter.Value>
                             <DataTemplate>
                                 <Grid Height="22">
-                                    <TextBlock Text="{Binding StringFormat=F2}" Foreground="#b0b0b0" Margin="{StaticResource ApplicationGridMargin}" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+                                    <TextBlock Text="{Binding}" Foreground="#b0b0b0" Margin="{StaticResource ApplicationGridMargin}" VerticalAlignment="Center" HorizontalAlignment="Left"/>
                                     <Image Source="{StaticResource ArrowDownIcon}" Margin="{StaticResource ApplicationGridMargin}" Width="8" VerticalAlignment="Center" HorizontalAlignment="Right"/>
                                     <Border BorderBrush="{StaticResource DarkTextColor}" BorderThickness="0, 0, 1, 0"/>
                                 </Grid>
@@ -87,7 +87,7 @@
                             <ControlTemplate>
                                 <Grid>
                                     <Rectangle Fill="Transparent"/>
-                                    <Rectangle Fill="{StaticResource DarkTextColor}" Margin="7" RadiusX="5" RadiusY="1.5" />
+                                    <Rectangle Fill="{StaticResource DarkTextColor}" Margin="7, 0, 7, 0" RadiusX="5" RadiusY="1.5" />
                                 </Grid>
                             </ControlTemplate>
                         </Setter.Value>

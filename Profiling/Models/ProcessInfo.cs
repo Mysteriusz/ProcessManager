@@ -64,21 +64,6 @@ namespace ProcessManager.Profiling.Models
         }
 
         //
-        // ---------------------------------- IMPLICIT ----------------------------------
-        //
-
-        public static implicit operator ProcessInfo(ProcessInfoStruct pInfoStruct)
-        {
-            return new ProcessInfo() { 
-                Name = pInfoStruct.name,
-                ImageName = pInfoStruct.imageName,
-                PID = pInfoStruct.pid,
-                Priority = pInfoStruct.priority,
-                User = pInfoStruct.user,
-            };
-        }
-
-        //
         // ---------------------------------- METHODS ----------------------------------
         //
 
