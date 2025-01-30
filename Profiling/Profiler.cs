@@ -5,7 +5,7 @@ namespace ProcessManager.Profiling
 {
     internal class Profiler 
     {
-        public const string DllPath = "C:\\Users\\wixxx\\source\\repos\\ProcessManager\\x64\\Debug\\ProcessManager.ProfilingLib.dll";
+        public const string DllPath = "C:\\Users\\wixxx\\source\\repos\\ProcessManager\\ProcessManagerLib\\x64\\Debug\\ProcessManagerLib.dll";
         public static string? ToString(IntPtr ptr)
         {
             try
