@@ -1,0 +1,58 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UseWPF>true</UseWPF>
+    <UseWindowsForms>False</UseWindowsForms>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="WPFHelpers\**" />
+    <EmbeddedResource Remove="WPFHelpers\**" />
+    <None Remove="WPFHelpers\**" />
+    <Page Remove="WPFHelpers\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="Pages\Dictionaries\ButtonIcons\ArrowDownIcon.png" />
+    <None Remove="Pages\Dictionaries\ButtonIcons\ArrowUpIcon.png" />
+    <None Remove="Pages\Dictionaries\ButtonIcons\RefreshIcon.png" />
+    <None Remove="Pages\Dictionaries\ButtonIcons\RunIcon.png" />
+    <None Remove="Pages\Dictionaries\ButtonIcons\SaveFileIcon.png" />
+    <None Remove="Pages\Dictionaries\ButtonIcons\SearchIcon.png" />
+    <None Remove="Pages\Dictionaries\ButtonIcons\SettingsIcon.png" />
+    <None Remove="Pages\Dictionaries\ButtonIcons\StopIcon.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Pages\Dictionaries\ButtonIcons\ArrowDownIcon.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Pages\Dictionaries\ButtonIcons\ArrowUpIcon.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Pages\Dictionaries\ButtonIcons\RefreshIcon.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Pages\Dictionaries\ButtonIcons\RunIcon.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Pages\Dictionaries\ButtonIcons\SaveFileIcon.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Pages\Dictionaries\ButtonIcons\SearchIcon.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Pages\Dictionaries\ButtonIcons\SettingsIcon.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Pages\Dictionaries\ButtonIcons\StopIcon.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
+
+</Project>
