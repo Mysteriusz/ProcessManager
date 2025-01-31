@@ -3,11 +3,12 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Diagnostics;
 using ProcessManager.Profiling;
-using System.Runtime.InteropServices;
-using System;
 using System.Collections.ObjectModel;
-using ProcessManager.Profiling.Models;
-using System.Xml.Linq;
+using ProcessManager.Profiling.Models.Process;
+using System.ComponentModel;
+using System.Data.Common;
+using System.Windows.Data;
+using System.Globalization;
 
 namespace ProcessManager.Pages
 {
@@ -16,6 +17,13 @@ namespace ProcessManager.Pages
     /// </summary>
     public partial class ApplicationPage : Page
     {
+        //
+        // ---------------------------------- PROPERTIES ----------------------------------
+        //
+
+        private bool canSort = true;
+        private int sortCooldownMs = 1000;
+
         //
         // ---------------------------------- CONSTRUCTORS ----------------------------------
         //
@@ -34,46 +42,31 @@ namespace ProcessManager.Pages
 
         public void InitializeApplicationList()
         {
-            IntPtr ptr = ProcessProfiler.GetAllProcesses(out uint size);
-            ProcessInfo[] processes = new ProcessInfo[size];
-            for (int i = 0; i < size; i++)
+            ProcessProfiler.TryGetAllProcesses(out ProcessInfoStruct[]? structs);
+            foreach (ProcessInfoStruct str in structs!)
             {
-                IntPtr currentProcessPtr = ptr + (i * Marshal.SizeOf<ProcessInfoStruct>());
-                ProcessInfoStruct processStruct = Marshal.PtrToStructure<ProcessInfoStruct>(currentProcessPtr);
+                ProcessInfo info = new ProcessInfo()
+                {
+                    Name = Profiler.ToString(str.name) ?? "",
+                    ImageName = Profiler.ToString(str.imageName) ?? "",
+                    User = Profiler.ToString(str.user) ?? "",
+                    Priority = Profiler.ToString(str.priority) ?? "",
+                    PID = str.pid,
+                };
 
-                processes[i] = new ProcessInfo();
-                processes[i].Name = Profiler.ToString(processStruct.name)!;
-                processes[i].User = Profiler.ToString(processStruct.user)!;
-                processes[i].Priority = Profiler.ToString(processStruct.priority)!;
-                processes[i].ImageName = Profiler.ToString(processStruct.imageName)!;
-                processes[i].PID = processStruct.pid;
+                ProcessProfiler.StartProcessDataCollector(info, ApplicationList.Dispatcher);
 
-                StartProcessDataCollector(processes[i]);
+                Processes.Add(info);
             }
 
-            Processes = new ObservableCollection<ProcessInfo>(processes);
             ApplicationList.ItemsSource = Processes;
-        }
-
-        private void StartProcessDataCollector(ProcessInfo process)
-        {
-            Task.Run(async () =>
-            {
-                CpuProfiler.InitializeProcessCpuProfiler(process.PID);
-
-                while (true)
-                {
-                    await Task.Delay(1500);
-                    double usage = Profiler.ToStruct<double>(CpuProfiler.GetProcessCpuUsage(process.PID));
-                    Dispatcher.Invoke(() => process.CpuUsage = Math.Round(usage, 2));
-                }
-            });
         }
 
         public void OpenProperties()
         {
             Debug.WriteLine("PROPERTIES");
         }
+
         //
         // ---------------------------------- EVENTS ----------------------------------
         //
@@ -103,9 +96,41 @@ namespace ProcessManager.Pages
         // ---------------------------------- LIST ----------------------------------
         private void ApplicationList_PreviewKeyUp(object sender, KeyEventArgs e)
         {
-            // Suppress Enter key
             if (e.Key == Key.Enter)
                 e.Handled = true;
+        }
+        private void ApplicationList_Sorting(object sender, DataGridSortingEventArgs e)
+        {
+            e.Handled = true;
+
+            if (!canSort)
+                return;
+
+            if (e.Column.SortDirection == ListSortDirection.Ascending)
+                e.Column.SortDirection = ListSortDirection.Descending;
+            else
+                e.Column.SortDirection = ListSortDirection.Ascending;
+
+            ListSortDirection sortDir = e.Column.SortDirection == ListSortDirection.Ascending ? ListSortDirection.Descending : ListSortDirection.Ascending;
+
+            ICollectionView collectionView = CollectionViewSource.GetDefaultView(ApplicationList.ItemsSource);
+
+            collectionView.SortDescriptions.Clear();
+            collectionView.SortDescriptions.Add(new SortDescription(e.Column.SortMemberPath, sortDir));
+
+            canSort = false;
+            _ = SortCooldown();
+        }
+
+        private async Task SortCooldown()
+        {
+            await Task.Run(async () =>
+            {
+                await Task.Delay(sortCooldownMs);
+                canSort = true;
+
+                return;
+            });
         }
     }
 }

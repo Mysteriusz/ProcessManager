@@ -1,9 +1,10 @@
-﻿using System.Diagnostics;
+﻿using ProcessManager.Profiling.Models.Process;
 using System.Runtime.InteropServices;
+using System.Windows.Threading;
 
 namespace ProcessManager.Profiling
 {
-    internal class Profiler 
+    internal static class Profiler 
     {
         public const string DllPath = "C:\\Users\\wixxx\\source\\repos\\ProcessManager\\ProcessManagerLib\\x64\\Debug\\ProcessManagerLib.dll";
         public static string? ToString(IntPtr ptr)

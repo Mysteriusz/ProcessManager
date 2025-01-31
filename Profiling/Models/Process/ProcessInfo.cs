@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace ProcessManager.Profiling.Models
+namespace ProcessManager.Profiling.Models.Process
 {
     internal class ProcessInfo : INotifyPropertyChanged
     {

@@ -110,6 +110,7 @@
             Name="ApplicationList"
             BorderBrush="#1a1a1a"
             Background="#1a1a1a"
+            Sorting="ApplicationList_Sorting"
             CellStyle="{StaticResource ApplicationDataGridCell}"
             RowStyle="{StaticResource ApplicationDataGridRow}"
             ColumnHeaderStyle="{StaticResource ApplicationDataGridColumnHeader}"
@@ -121,7 +122,9 @@
             HeadersVisibility="Column"
             SelectionUnit="FullRow"
             SelectionMode="Single"
-            IsReadOnly="True"
+            IsReadOnly="True"            
+            EnableRowVirtualization="True"
+            EnableColumnVirtualization="True"
             PreviewKeyDown="ApplicationList_PreviewKeyUp">
 
             <DataGrid.Resources>
