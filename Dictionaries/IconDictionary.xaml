@@ -1,0 +1,14 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <BitmapImage x:Key="SaveFileIcon" UriSource="Icons/SaveFileIcon.png" />
+    <BitmapImage x:Key="RefreshIcon" UriSource="Icons/RefreshIcon.png" />
+    <BitmapImage x:Key="RunIcon" UriSource="Icons/RunIcon.png" />
+    <BitmapImage x:Key="SettingsIcon" UriSource="Icons/SettingsIcon.png" />
+    <BitmapImage x:Key="SearchIcon" UriSource="Icons/SearchIcon.png" />
+    <BitmapImage x:Key="StopIcon" UriSource="Icons/StopIcon.png" />
+    <BitmapImage x:Key="ArrowDownIcon" UriSource="Icons/ArrowDownIcon.png" />
+    <BitmapImage x:Key="ArrowUpIcon" UriSource="Icons/ArrowUpIcon.png" />
+    <BitmapImage x:Key="CopyIcon" UriSource="Icons/CopyIcon.png" />
+</ResourceDictionary>
+    

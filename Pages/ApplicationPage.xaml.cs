@@ -1,14 +1,13 @@
-﻿using System.Windows.Controls.Primitives;
-using System.Windows.Controls;
-using System.Windows.Input;
-using System.Diagnostics;
-using ProcessManager.Profiling;
+﻿using ProcessManager.Profiling.Models.Process;
+using System.Windows.Controls.Primitives;
 using System.Collections.ObjectModel;
-using ProcessManager.Profiling.Models.Process;
+using ProcessManager.Profiling;
+using System.Windows.Controls;
 using System.ComponentModel;
-using System.Data.Common;
+using System.Windows.Input;
 using System.Windows.Data;
-using System.Globalization;
+using System.Diagnostics;
+using ProcessManager.Windows;
 
 namespace ProcessManager.Pages
 {
@@ -42,29 +41,33 @@ namespace ProcessManager.Pages
 
         public void InitializeApplicationList()
         {
-            ProcessProfiler.TryGetAllProcesses(out ProcessInfoStruct[]? structs);
-            foreach (ProcessInfoStruct str in structs!)
+            ulong flags = (ulong)(ProcessInfoFlags.ProcessName | ProcessInfoFlags.ProcessImageName | ProcessInfoFlags.ProcessUser | ProcessInfoFlags.ProcessDescription | ProcessInfoFlags.ProcessPriority);
+
+            IntPtr ptr = ProcessProfiler.GetAllProcessInfo(flags, out uint size);
+            ProcessInfoStruct[] infos = Profiler.ToArray<ProcessInfoStruct>(ptr, size);
+
+            for (int i = 0; i < size; i++)
             {
-                ProcessInfo info = new ProcessInfo()
-                {
-                    Name = Profiler.ToString(str.name) ?? "",
-                    ImageName = Profiler.ToString(str.imageName) ?? "",
-                    User = Profiler.ToString(str.user) ?? "",
-                    Priority = Profiler.ToString(str.priority) ?? "",
-                    PID = str.pid,
-                };
-
-                ProcessProfiler.StartProcessDataCollector(info, ApplicationList.Dispatcher);
-
+                ProcessInfo info = new ProcessInfo(infos[i]);
                 Processes.Add(info);
             }
 
             ApplicationList.ItemsSource = Processes;
         }
 
-        public void OpenProperties()
+        internal void OpenProperties(ProcessInfo info)
         {
-            Debug.WriteLine("PROPERTIES");
+            Debug.WriteLine(info.PID);
+
+            ulong flags = (ulong)(ProcessInfoFlags.ProcessFileVersion | ProcessInfoFlags.ProcessPEB | ProcessInfoFlags.ProcessParentName | ProcessInfoFlags.ProcessCommandLine | ProcessInfoFlags.ProcessTimes);
+            IntPtr ptr = ProcessProfiler.GetProcessInfo(flags, info.PID);
+            info.Read(flags, Profiler.ToStruct<ProcessInfoStruct>(ptr));
+
+            ProcessPropertiesWindow processPropertiesWindow = new ProcessPropertiesWindow();
+            processPropertiesWindow.DataContext = info;
+
+
+            processPropertiesWindow.Show();
         }
 
         //
@@ -85,12 +88,21 @@ namespace ProcessManager.Pages
         // ---------------------------------- ROW ----------------------------------
         private void ApplicationListRow_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            OpenProperties();
+            DataGridRow row = (DataGridRow)sender;
+            ProcessInfo processInfo = (ProcessInfo)row.DataContext;
+
+            OpenProperties(processInfo);
         }
         private void ApplicationListRow_PreviewKeyUp(object sender, KeyEventArgs e)
         {
+
             if (e.Key == Key.Enter)
-                OpenProperties();
+            {
+                DataGridRow row = (DataGridRow)sender;
+                int rowIndex = ApplicationList.ItemContainerGenerator.IndexFromContainer(row);
+
+                OpenProperties(Processes[rowIndex]);
+            }
         }
 
         // ---------------------------------- LIST ----------------------------------
@@ -112,8 +124,10 @@ namespace ProcessManager.Pages
                 e.Column.SortDirection = ListSortDirection.Ascending;
 
             ListSortDirection sortDir = e.Column.SortDirection == ListSortDirection.Ascending ? ListSortDirection.Descending : ListSortDirection.Ascending;
-
             ICollectionView collectionView = CollectionViewSource.GetDefaultView(ApplicationList.ItemsSource);
+
+            if (collectionView == null)
+                return;
 
             collectionView.SortDescriptions.Clear();
             collectionView.SortDescriptions.Add(new SortDescription(e.Column.SortMemberPath, sortDir));
@@ -121,7 +135,6 @@ namespace ProcessManager.Pages
             canSort = false;
             _ = SortCooldown();
         }
-
         private async Task SortCooldown()
         {
             await Task.Run(async () =>

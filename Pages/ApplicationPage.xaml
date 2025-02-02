@@ -10,8 +10,8 @@
     <Page.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="Dictionaries/ButtonIconDictionary.xaml"/>
-                <ResourceDictionary Source="Dictionaries/ColorDictionary.xaml"/>
+                <ResourceDictionary Source="/Dictionaries/ColorDictionary.xaml"/>
+                <ResourceDictionary Source="/Dictionaries/IconDictionary.xaml"/>
             </ResourceDictionary.MergedDictionaries>
 
             <Thickness x:Key="ApplicationGridMargin" Left="5" Top="0" Right="5" Bottom="0" />
@@ -137,9 +137,6 @@
                 <DataGridTextColumn Header="Image Name" Binding="{Binding ImageName}" Width="*" />
                 <DataGridTextColumn Header="User" Binding="{Binding User}" Width="*" />
                 <DataGridTextColumn Header="Priority" Binding="{Binding Priority}" Width="*" />
-                <DataGridTextColumn Header="CPU Usage" Binding="{Binding CpuUsage}" Width="*" />
-                <!-- <DataGridTextColumn Header="Memory Usage" Binding="{Binding MemoryUsage}" Width="*" />
-                <DataGridTextColumn Header="IO Usage" Binding="{Binding IOUsage}" Width="*" /> -->
                 <DataGridTextColumn Header="PID" Binding="{Binding PID}" Width="*" />
             </DataGrid.Columns>
             <DataGrid.Items>

@@ -11,8 +11,7 @@
     <Page.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="Dictionaries/ButtonIconDictionary.xaml"/>
-                <ResourceDictionary Source="Dictionaries/ColorDictionary.xaml"/>
+                <ResourceDictionary Source="/Dictionaries/ColorDictionary.xaml"/>
             </ResourceDictionary.MergedDictionaries>
             
             <Style x:Key="UtilButton" TargetType="Button">

@@ -11,9 +11,9 @@
     <Page.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="Dictionaries/ButtonIconDictionary.xaml"/>
-                <ResourceDictionary Source="Dictionaries/ColorDictionary.xaml"/>
-                <ResourceDictionary Source="Dictionaries/DoubleDictionary.xaml"/>
+                <ResourceDictionary Source="/Dictionaries/IconDictionary.xaml"/>
+                <ResourceDictionary Source="/Dictionaries/ColorDictionary.xaml"/>
+                <ResourceDictionary Source="/Dictionaries/DoubleDictionary.xaml"/>
             </ResourceDictionary.MergedDictionaries>
 
             <SolidColorBrush x:Key="IconButtonBackground" Color="#1a1a1a" />
@@ -31,7 +31,7 @@
                             <ControlTemplate TargetType="Button">
                                 <Grid Background="{TemplateBinding Background}">
                                     <Border>
-                                        <Image Source="{Binding Tag, RelativeSource={RelativeSource TemplatedParent}}" Height="{StaticResource DefaultIconHeight}"  Width="{StaticResource DefaultIconWidth}" RenderOptions.EdgeMode="Aliased" RenderOptions.BitmapScalingMode="HighQuality"/>
+                                        <Image Source="{Binding Tag, RelativeSource={RelativeSource TemplatedParent}}" Height="{StaticResource DefaultIconHeight}"  Width="{StaticResource DefaultIconWidth}"  RenderOptions.BitmapScalingMode="HighQuality"/>
                                     </Border>
                                 </Grid>
                             </ControlTemplate>

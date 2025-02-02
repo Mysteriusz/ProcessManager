@@ -18,39 +18,39 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Remove="Pages\Dictionaries\ButtonIcons\ArrowDownIcon.png" />
-    <None Remove="Pages\Dictionaries\ButtonIcons\ArrowUpIcon.png" />
-    <None Remove="Pages\Dictionaries\ButtonIcons\RefreshIcon.png" />
-    <None Remove="Pages\Dictionaries\ButtonIcons\RunIcon.png" />
-    <None Remove="Pages\Dictionaries\ButtonIcons\SaveFileIcon.png" />
-    <None Remove="Pages\Dictionaries\ButtonIcons\SearchIcon.png" />
-    <None Remove="Pages\Dictionaries\ButtonIcons\SettingsIcon.png" />
-    <None Remove="Pages\Dictionaries\ButtonIcons\StopIcon.png" />
+    <None Remove="Dictionaries\Icons\ArrowDownIcon.png" />
+    <None Remove="Dictionaries\Icons\ArrowUpIcon.png" />
+    <None Remove="Dictionaries\Icons\RefreshIcon.png" />
+    <None Remove="Dictionaries\Icons\RunIcon.png" />
+    <None Remove="Dictionaries\Icons\SaveFileIcon.png" />
+    <None Remove="Dictionaries\Icons\SearchIcon.png" />
+    <None Remove="Dictionaries\Icons\SettingsIcon.png" />
+    <None Remove="Dictionaries\Icons\StopIcon.png" />
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="Pages\Dictionaries\ButtonIcons\ArrowDownIcon.png">
+    <Resource Include="Dictionaries\Icons\ArrowDownIcon.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
-    <Resource Include="Pages\Dictionaries\ButtonIcons\ArrowUpIcon.png">
+    <Resource Include="Dictionaries\Icons\ArrowUpIcon.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
-    <Resource Include="Pages\Dictionaries\ButtonIcons\RefreshIcon.png">
+    <Resource Include="Dictionaries\Icons\RefreshIcon.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
-    <Resource Include="Pages\Dictionaries\ButtonIcons\RunIcon.png">
+    <Resource Include="Dictionaries\Icons\RunIcon.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
-    <Resource Include="Pages\Dictionaries\ButtonIcons\SaveFileIcon.png">
+    <Resource Include="Dictionaries\Icons\SaveFileIcon.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
-    <Resource Include="Pages\Dictionaries\ButtonIcons\SearchIcon.png">
+    <Resource Include="Dictionaries\Icons\SearchIcon.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
-    <Resource Include="Pages\Dictionaries\ButtonIcons\SettingsIcon.png">
+    <Resource Include="Dictionaries\Icons\SettingsIcon.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
-    <Resource Include="Pages\Dictionaries\ButtonIcons\StopIcon.png">
+    <Resource Include="Dictionaries\Icons\StopIcon.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
   </ItemGroup>

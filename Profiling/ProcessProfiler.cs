@@ -1,141 +1,71 @@
 ﻿using System.Runtime.InteropServices;
-using System.Windows.Threading;
-using ProcessManager.Profiling.Models.Process;
 
 namespace ProcessManager.Profiling
 {
     internal static class ProcessProfiler
     {
         //
-        // ---------------------------------- PROPERTIES ----------------------------------
-        //
-        
-        public static int DataCollectorInterval { get; set; } = 1000;
-
-        //
-        // ---------------------------------- EXTERNAL ----------------------------------
+        // ---------------------------------- STRING ----------------------------------
         //
 
-        /// <returns><see cref="char[]"/> Pointer.</returns>
         [DllImport(Profiler.DllPath, CallingConvention = CallingConvention.Cdecl)]
-        private static extern IntPtr GetProcessName(uint pid);
-        
-        /// <returns><see cref="char[]"/> Pointer.</returns>
+        public static extern IntPtr GetProcessName(uint pid);
+        [DllImport(Profiler.DllPath, CallingConvention = CallingConvention.Cdecl)]
+        public static extern IntPtr GetProcessParentName(uint pid);
         [DllImport(Profiler.DllPath, CallingConvention = CallingConvention.Cdecl)]
         public static extern IntPtr GetProcessImageName(uint pid);
-        
-        /// <returns><see cref="char[]"/> Pointer.</returns>
-        [DllImport(Profiler.DllPath, CallingConvention = CallingConvention.Cdecl)]
-        public static extern IntPtr GetProcessUser(uint pid);
-        
-        /// <returns><see cref="char[]"/> Pointer.</returns>
         [DllImport(Profiler.DllPath, CallingConvention = CallingConvention.Cdecl)]
         public static extern IntPtr GetProcessPriority(uint pid);
-
-        /// <returns><see cref="ProcessInfoStruct[]"/> Pointer.</returns>
         [DllImport(Profiler.DllPath, CallingConvention = CallingConvention.Cdecl)]
-        public static extern IntPtr GetAllProcesses(out uint size);
+        public static extern IntPtr GetProcessUser(uint pid);
+        [DllImport(Profiler.DllPath, CallingConvention = CallingConvention.Cdecl)]
+        public static extern IntPtr GetProcessFileVersion(uint pid);
+        [DllImport(Profiler.DllPath, CallingConvention = CallingConvention.Cdecl)]
+        public static extern IntPtr GetProcessArchitectureType(uint pid);
+        [DllImport(Profiler.DllPath, CallingConvention = CallingConvention.Cdecl)]
+        public static extern IntPtr GetProcessIntegrityLevel(uint pid);
+        [DllImport(Profiler.DllPath, CallingConvention = CallingConvention.Cdecl)]
+        public static extern IntPtr GetProcessCommandLine(uint pid);
+        [DllImport(Profiler.DllPath, CallingConvention = CallingConvention.Cdecl)]
+        public static extern IntPtr GetProcessDescription(uint pid);
 
         //
-        // ---------------------------------- METHODS ----------------------------------
+        // ---------------------------------- UINT32 ----------------------------------
         //
 
-        public static bool TryGetProcessName(uint pid, out string processName)
-        {
-            try
-            {
-                IntPtr ptr = GetProcessName(pid);
-                processName = Marshal.PtrToStringAnsi(ptr)!;
-                return true;
-            }
-            catch
-            {
-                processName = "";
-                return false;
-            }
-        }
-        public static bool TryGetProcessImageName(uint pid, out string imageName)
-        {
-            try
-            {
-                IntPtr ptr = GetProcessImageName(pid);
-                imageName = Marshal.PtrToStringAnsi(ptr)!;
-                return true;
-            }
-            catch
-            {
-                imageName = "";
-                return false;
-            }
-        }
-        public static bool TryGetProcessUser(uint pid, out string user)
-        {
-            try
-            {
-                IntPtr ptr = GetProcessUser(pid);
-                user = Marshal.PtrToStringAnsi(ptr)!;
-                return true;
-            }
-            catch
-            {
-                user = "";
-                return false;
-            }
-        }
-        public static bool TryGetProcessPriority(uint pid, out string priority)
-        {
-            try
-            {
-                IntPtr ptr = GetProcessPriority(pid);
-                priority = Marshal.PtrToStringAnsi(ptr)!;
-                return true;
-            }
-            catch
-            {
-                priority = "";
-                return false;
-            }
-        }
-        public static bool TryGetAllProcesses(out ProcessInfoStruct[]? processes)
-        {
-            try
-            {
-                IntPtr ptr = GetAllProcesses(out uint size);
-                processes = new ProcessInfoStruct[size];
+        [DllImport(Profiler.DllPath, CallingConvention = CallingConvention.Cdecl)]
+        public static extern IntPtr GetProcessPPID(uint pid);
+        [DllImport(Profiler.DllPath, CallingConvention = CallingConvention.Cdecl)]
+        public static extern IntPtr GetProcessCurrentHandleCount(uint pid);
 
-                for (int i = 0; i < size; i++)
-                {
-                    IntPtr currentProcessPtr = ptr + (i * Marshal.SizeOf<ProcessInfoStruct>());
-                    ProcessInfoStruct processStruct = Marshal.PtrToStructure<ProcessInfoStruct>(currentProcessPtr);
+        //
+        // ---------------------------------- UINT64 ----------------------------------
+        //
 
-                    processes[i] = processStruct;
-                }
+        [DllImport(Profiler.DllPath, CallingConvention = CallingConvention.Cdecl)]
+        public static extern IntPtr GetProcessPEB(uint pid);
 
-                return true;
-            }
-            catch
-            {
-                processes = null;
-                return false;
-            }
-        }
+        //
+        // ---------------------------------- FILETIME ----------------------------------
+        //
 
-        public static void StartProcessDataCollector(ProcessInfo process, Dispatcher dispatcher)
-        {
-            Task.Run(async () =>
-            {
-                if (!CpuProfiler.TryInitializeProcessCpuProfiler(process.PID, out _))
-                {
-                    return;
-                }
+        [DllImport(Profiler.DllPath, CallingConvention = CallingConvention.Cdecl)]
+        public static extern IntPtr GetProcessCurrentTimes(uint pid, out uint size);
 
-                while (true)
-                {
-                    await Task.Delay(DataCollectorInterval);
-                    CpuProfiler.TryGetProcessCpuUsage(process.PID, out double usage);
-                    dispatcher.Invoke(() => process.CpuUsage = Math.Round(usage, 2));
-                }
-            });
-        }
+        //
+        // ---------------------------------- PROCESS_HANDLES_INFO_STRUCT ----------------------------------
+        //
+
+        [DllImport(Profiler.DllPath, CallingConvention = CallingConvention.Cdecl)]
+        public static extern IntPtr GetProcessHandlesInfo(uint pid);
+
+        //
+        // ---------------------------------- PROCESS_INFO_STRUCT ----------------------------------
+        //
+
+        [DllImport(Profiler.DllPath, CallingConvention = CallingConvention.Cdecl)]
+        public static extern IntPtr GetProcessInfo(ulong infoFlags, uint pid);
+        [DllImport(Profiler.DllPath, CallingConvention = CallingConvention.Cdecl)]
+        public static extern IntPtr GetAllProcessInfo(ulong infoFlags, out uint size);
     }
 }
