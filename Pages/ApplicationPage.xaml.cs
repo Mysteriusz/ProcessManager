@@ -59,7 +59,7 @@ namespace ProcessManager.Pages
         {
             Debug.WriteLine(info.PID);
 
-            ulong flags = (ulong)(ProcessInfoFlags.ProcessFileVersion | ProcessInfoFlags.ProcessPEB | ProcessInfoFlags.ProcessParentName | ProcessInfoFlags.ProcessCommandLine | ProcessInfoFlags.ProcessTimes);
+            ulong flags = (ulong)(ProcessInfoFlags.ProcessFileVersion | ProcessInfoFlags.ProcessPEB | ProcessInfoFlags.ProcessParentName | ProcessInfoFlags.ProcessCommandLine | ProcessInfoFlags.ProcessTimes | ProcessInfoFlags.ProcessArchitectureType);
             IntPtr ptr = ProcessProfiler.GetProcessInfo(flags, info.PID);
             info.Read(flags, Profiler.ToStruct<ProcessInfoStruct>(ptr));
 

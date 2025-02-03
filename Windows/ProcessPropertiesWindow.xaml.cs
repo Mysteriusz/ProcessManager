@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -22,6 +23,13 @@ namespace ProcessManager.Windows
         public ProcessPropertiesWindow()
         {
             InitializeComponent();
+        }
+
+        private void TextBox_KeyDown(object sender, KeyEventArgs e)
+        {
+            // Skip not arrow keys
+            if (!(e.Key == Key.Left || e.Key == Key.Right || e.Key == Key.Up || e.Key == Key.Down))
+                e.Handled = true;  
         }
     }
 }

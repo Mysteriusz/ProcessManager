@@ -1,6 +1,8 @@
 ﻿using System.ComponentModel;
-using System.Diagnostics;
-using System.Runtime.InteropServices;
+using System.Drawing;
+using System.IO;
+using System.Windows.Interop;
+using System.Windows.Media;
 
 namespace ProcessManager.Profiling.Models.Process
 {
@@ -10,19 +12,36 @@ namespace ProcessManager.Profiling.Models.Process
         // ---------------------------------- PROPERTIES ----------------------------------
         //
 
-        public string Name { get; set; } = "";
-        public string ParentName { get; set; } = "";
-        public string User { get; set; } = "";
-        public string ImageName { get; set; } = "";
-        public string Priority { get; set; } = "";
-        public string Version { get; set; } = "";
-        public string IntegrityLevel { get; set; } = "";
-        public string ArchitectureType { get; set; } = "";
-        public string CommandLine { get; set; } = "";
-        public string Description { get; set; } = "";
+        public string Name { get; set; } = "N/A";
+        public string ParentName { get; set; } = "N/A";
+        public string User { get; set; } = "N/A";
+        public string ImageName { get; set; } = "N/A";
+        public string Priority { get; set; } = "N/A";
+        public string Version { get; set; } = "N/A";
+        public string IntegrityLevel { get; set; } = "N/A";
+        public string ArchitectureType { get; set; } = "N/A";
+        public string CommandLine { get; set; } = "N/A";
+        public string Description { get; set; } = "N/A";
+        public string PEBHex { get; set; } = "N/A";
+        public ulong PEB { get; set; }
         public uint PID { get; set; }
         public uint PPID { get; set; }
-        public ulong PEB { get; set; }
+
+        public Icon? Icon
+        {
+            get
+            {
+                return File.Exists(ImageName) ? Icon.ExtractAssociatedIcon(ImageName) : SystemIcons.Application;
+            }
+        }
+        public ImageSource IconSource
+        {
+            get
+            { 
+                return Icon != null ? Imaging.CreateBitmapSourceFromHBitmap(Icon.ToBitmap().GetHbitmap(), IntPtr.Zero, System.Windows.Int32Rect.Empty, null) :
+                    Imaging.CreateBitmapSourceFromHBitmap(SystemIcons.WinLogo.ToBitmap().GetHbitmap(), IntPtr.Zero, System.Windows.Int32Rect.Empty, null);
+            }
+        }
 
         // ------------------------ PROCESS_TIMES_INFO ------------------------ 
 
@@ -274,6 +293,7 @@ namespace ProcessManager.Profiling.Models.Process
             if ((flags & (ulong)ProcessInfoFlags.ProcessPEB) != 0)
             {
                 PEB = infoStruct.peb;
+                PEBHex = "0x" + infoStruct.peb.ToString("X2").ToLower();
             }
 
             if ((flags & (ulong)ProcessInfoFlags.ProcessTimes) != 0)

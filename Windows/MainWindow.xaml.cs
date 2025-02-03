@@ -13,6 +13,7 @@ namespace ProcessManager
         public MainWindow()
         {
             InitializeComponent();
+            Profiler.EnableDebugPrivilages();
         }
     }
 }

@@ -20,6 +20,7 @@
   <ItemGroup>
     <None Remove="Dictionaries\Icons\ArrowDownIcon.png" />
     <None Remove="Dictionaries\Icons\ArrowUpIcon.png" />
+    <None Remove="Dictionaries\Icons\CopyIcon.png" />
     <None Remove="Dictionaries\Icons\RefreshIcon.png" />
     <None Remove="Dictionaries\Icons\RunIcon.png" />
     <None Remove="Dictionaries\Icons\SaveFileIcon.png" />
@@ -33,6 +34,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Dictionaries\Icons\ArrowUpIcon.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Dictionaries\Icons\CopyIcon.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Dictionaries\Icons\RefreshIcon.png">
@@ -53,6 +57,10 @@
     <Resource Include="Dictionaries\Icons\StopIcon.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.Drawing.Common" Version="9.0.1" />
   </ItemGroup>
 
 </Project>

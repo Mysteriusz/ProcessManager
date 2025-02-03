@@ -6,7 +6,14 @@ namespace ProcessManager.Profiling
     internal static class Profiler 
     {
         public const string DllPath = "C:\\Users\\wixxx\\source\\repos\\ProcessManager\\x64\\Debug\\ProcessManagerLib.dll";
-   
+
+        //
+        // ---------------------------------- VOID ----------------------------------
+        //
+
+        [DllImport(DllPath, CallingConvention = CallingConvention.Cdecl)]
+        public static extern void EnableDebugPrivilages();
+
         public static string ToString(IntPtr ptr)
         {
             try
