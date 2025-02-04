@@ -1,4 +1,5 @@
-﻿using System.Runtime.InteropServices;
+﻿using System;
+using System.Runtime.InteropServices;
 
 namespace ProcessManager.Profiling.Models.Process
 {
@@ -20,6 +21,8 @@ namespace ProcessManager.Profiling.Models.Process
         ProcessPPID = 0x00001000,
         ProcessHandlesInfo = 0x00002000,
         ProcessCycleCount = 0x00004000,
+        ProcessMemoryInfo = 0x00008000,
+        ProcessIOInfo = 0x00010000,
     }
 
     [StructLayout(LayoutKind.Sequential)]
@@ -28,6 +31,7 @@ namespace ProcessManager.Profiling.Models.Process
         public uint dwLowDateTime;
         public uint dwHighDateTime;
     }
+
     [StructLayout(LayoutKind.Sequential)]
     public struct ProcessHandlesInfoStruct
     {
@@ -45,6 +49,29 @@ namespace ProcessManager.Profiling.Models.Process
         public FILETIME userTime;
         public FILETIME totalTime;
     }
+    [StructLayout(LayoutKind.Sequential)]
+    public struct ProcessMemoryInfo
+    {
+        public uint privateBytes;
+        public uint peakPrivateBytes;
+        public uint virtualBytes;
+        public uint peakVirtualBytes;
+        public uint pageFaults;
+        public uint workingBytes;
+        public uint peakWorkingBytes;
+        public ulong priority;
+    };
+    [StructLayout(LayoutKind.Sequential)]
+    public struct ProcessIOInfo
+    {
+        public ulong reads;
+        public ulong readBytes;
+        public ulong writes;
+        public ulong writeBytes;
+        public ulong other;
+        public ulong otherBytes;
+        public uint ioPriority;
+    };
     [StructLayout(LayoutKind.Sequential)]
     public struct ProcessInfoStruct
     {
@@ -66,5 +93,7 @@ namespace ProcessManager.Profiling.Models.Process
 
         public ProcessTimesInfoStruct timesInfo;
         public ProcessHandlesInfoStruct handlesInfo;
+        public ProcessMemoryInfo memoryInfo;
+        public ProcessIOInfo ioInfo;
     }
 }

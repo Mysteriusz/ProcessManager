@@ -10,7 +10,7 @@ namespace ProcessManager.Pages.ProcessProperties
     /// </summary>
     public partial class ProcessPropertiesStatisticsPage : Page
     {
-        public ulong UpdateFlags { get; set; } = (ulong)(ProcessInfoFlags.ProcessTimes | ProcessInfoFlags.ProcessHandlesInfo | ProcessInfoFlags.ProcessCycleCount);
+        public ulong UpdateFlags { get; set; } = (ulong)(ProcessInfoFlags.ProcessTimes | ProcessInfoFlags.ProcessHandlesInfo | ProcessInfoFlags.ProcessCycleCount | ProcessInfoFlags.ProcessMemoryInfo | ProcessInfoFlags.ProcessIOInfo);
         public int UpdateDelay { get; set; } = 1000;
         public ProcessInfo? Process { get; set; }
         public CancellationTokenSource? Token { get; set; }

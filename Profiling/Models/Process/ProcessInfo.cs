@@ -1,9 +1,8 @@
-﻿using System.ComponentModel;
-using System.Diagnostics;
+﻿using System.Windows.Interop;
+using System.ComponentModel;
+using System.Windows.Media;
 using System.Drawing;
 using System.IO;
-using System.Windows.Interop;
-using System.Windows.Media;
 
 namespace ProcessManager.Profiling.Models.Process
 {
@@ -200,6 +199,210 @@ namespace ProcessManager.Profiling.Models.Process
             }
         }
 
+        // ------------------------ PROCESS_MEMORY_INFO ------------------------ 
+
+        private uint _privateBytes;
+        private uint _peakPrivateBytes;
+        private uint _virtualBytes;
+        private uint _peakVirtualBytes;
+        private uint _pageFaults;
+        private uint _workingBytes;
+        private uint _peakWorkingBytes;
+        private ulong _pagePriority;
+
+        public uint PrivateBytes
+        {
+            get { return _privateBytes; }
+            set
+            {
+                if (_privateBytes != value)
+                {
+                    _privateBytes = value;
+                    OnPropertyChanged(nameof(PrivateBytes));
+                }
+            }
+        }
+        public uint PeakPrivateBytes
+        {
+            get { return _peakPrivateBytes; }
+            set
+            {
+                if (_peakPrivateBytes != value)
+                {
+                    _peakPrivateBytes = value;
+                    OnPropertyChanged(nameof(PeakPrivateBytes));
+                }
+            }
+        }
+        public uint VirtualBytes
+        {
+            get { return _virtualBytes; }
+            set
+            {
+                if (_virtualBytes != value)
+                {
+                    _virtualBytes = value;
+                    OnPropertyChanged(nameof(VirtualBytes));
+                }
+            }
+        }
+        public uint PeakVirtualBytes
+        {
+            get { return _peakVirtualBytes; }
+            set
+            {
+                if (_peakVirtualBytes != value)
+                {
+                    _peakVirtualBytes = value;
+                    OnPropertyChanged(nameof(PeakVirtualBytes));
+                }
+            }
+        }
+        public uint PageFaults
+        {
+            get { return _pageFaults; }
+            set
+            {
+                if (_pageFaults != value)
+                {
+                    _pageFaults = value;
+                    OnPropertyChanged(nameof(PageFaults));
+                }
+            }
+        }
+        public uint WorkingBytes
+        {
+            get { return _workingBytes; }
+            set
+            {
+                if (_workingBytes != value)
+                {
+                    _workingBytes = value;
+                    OnPropertyChanged(nameof(WorkingBytes));
+                }
+            }
+        }
+        public uint PeakWorkingBytes
+        {
+            get { return _peakWorkingBytes; }
+            set
+            {
+                if (_peakWorkingBytes != value)
+                {
+                    _peakWorkingBytes = value;
+                    OnPropertyChanged(nameof(PeakWorkingBytes));
+                }
+            }
+        }
+        public ulong PagePriority
+        {
+            get { return _pagePriority; }
+            set
+            {
+                if (_pagePriority != value)
+                {
+                    _pagePriority = value;
+                    OnPropertyChanged(nameof(PagePriority));
+                }
+            }
+        }
+
+        // ------------------------ PROCESS_IO_INFO ------------------------ 
+
+        private ulong _reads;
+        private ulong _readBytes;
+        private ulong _writes;
+        private ulong _writeBytes;
+        private ulong _other;
+        private ulong _otherBytes;
+        private uint _ioPriority;
+
+        public ulong Reads
+        {
+            get => _reads;
+            set
+            {
+                if (_reads != value)
+                {
+                    _reads = value;
+                    OnPropertyChanged(nameof(Reads));
+                }
+            }
+        }
+        public ulong ReadBytes
+        {
+            get => _readBytes;
+            set
+            {
+                if (_readBytes != value)
+                {
+                    _readBytes = value;
+                    OnPropertyChanged(nameof(ReadBytes));
+                }
+            }
+        }
+        public ulong Writes
+        {
+            get => _writes;
+            set
+            {
+                if (_writes != value)
+                {
+                    _writes = value;
+                    OnPropertyChanged(nameof(Writes));
+                }
+            }
+        }
+        public ulong WriteBytes
+        {
+            get => _writeBytes;
+            set
+            {
+                if (_writeBytes != value)
+                {
+                    _writeBytes = value;
+                    OnPropertyChanged(nameof(WriteBytes));
+                }
+            }
+        }
+        public ulong Other
+        {
+            get => _other;
+            set
+            {
+                if (_other != value)
+                {
+                    _other = value;
+                    OnPropertyChanged(nameof(Other));
+                }
+            }
+        }
+        public ulong OtherBytes
+        {
+            get => _otherBytes;
+            set
+            {
+                if (_otherBytes != value)
+                {
+                    _otherBytes = value;
+                    OnPropertyChanged(nameof(OtherBytes));
+                }
+            }
+        }
+        public uint IOPriority
+        {
+            get => _ioPriority;
+            set
+            {
+                if (_ioPriority != value)
+                {
+                    _ioPriority = value;
+                    OnPropertyChanged(nameof(IOPriority));
+                }
+            }
+        }
+
+
         // ------------------------ MISC ------------------------ 
 
         private double _cpuUsage;
@@ -369,6 +572,29 @@ namespace ProcessManager.Profiling.Models.Process
             if ((flags & (ulong)ProcessInfoFlags.ProcessCycleCount) != 0)
             {
                 CycleCount = infoStruct.cycles;
+            }
+
+            if ((flags & (ulong)ProcessInfoFlags.ProcessMemoryInfo) != 0)
+            {
+                PrivateBytes = infoStruct.memoryInfo.privateBytes;
+                PeakPrivateBytes = infoStruct.memoryInfo.peakPrivateBytes;
+                VirtualBytes = infoStruct.memoryInfo.virtualBytes;
+                PeakVirtualBytes = infoStruct.memoryInfo.peakVirtualBytes;
+                WorkingBytes = infoStruct.memoryInfo.workingBytes;
+                PeakWorkingBytes = infoStruct.memoryInfo.peakWorkingBytes;
+                PagePriority = infoStruct.memoryInfo.priority;
+                PageFaults = infoStruct.memoryInfo.pageFaults;
+            }
+
+            if ((flags & (ulong)ProcessInfoFlags.ProcessIOInfo) != 0)
+            {
+                Reads = infoStruct.ioInfo.reads;
+                ReadBytes = infoStruct.ioInfo.readBytes;
+                Writes = infoStruct.ioInfo.writes;
+                WriteBytes = infoStruct.ioInfo.writeBytes;
+                Other = infoStruct.ioInfo.other;
+                OtherBytes = infoStruct.ioInfo.otherBytes;
+                IOPriority = infoStruct.ioInfo.ioPriority;
             }
         }
 

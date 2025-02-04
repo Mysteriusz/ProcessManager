@@ -18,7 +18,12 @@
             </ResourceDictionary.MergedDictionaries>
             
             <helpers:DateTimeToStringConverter x:Key="DateTimeToStringConverter" />
+            
             <helpers:UlongToStringConverter x:Key="UlongToStringConverter" />
+            <helpers:UintToStringConverter x:Key="UintToStringConverter" />
+
+            <helpers:UlongToBytesConverter x:Key="UlongToBytesConverter" />
+            <helpers:UintToBytesConverter x:Key="UintToBytesConverter" />
         </ResourceDictionary>
     </Page.Resources>
 
@@ -71,14 +76,14 @@
                                 <Label Foreground="{StaticResource LightTextColor}" Content="Page priority:" Padding="0" Margin="0, 5, 0, 0" />
                             </StackPanel>
                             <StackPanel Grid.Column="1" HorizontalAlignment="Right" Margin="0, 10, 10, 0">
-                                <Label Foreground="{StaticResource LightTextColor}" Content="1,51 MB" HorizontalContentAlignment="Right" Padding="0" Margin="0, 0, 0, 0" />
-                                <Label Foreground="{StaticResource LightTextColor}" Content="2,13 MB" HorizontalContentAlignment="Right" Padding="0" Margin="0, 5, 0, 0" />
-                                <Label Foreground="{StaticResource LightTextColor}" Content="2 TB" HorizontalContentAlignment="Right" Padding="0" Margin="0, 5, 0, 0" />
-                                <Label Foreground="{StaticResource LightTextColor}" Content="2 TB" HorizontalContentAlignment="Right" Padding="0" Margin="0, 5, 0, 0" />
-                                <Label Foreground="{StaticResource LightTextColor}" Content="3 371" HorizontalContentAlignment="Right" Padding="0" Margin="0, 5, 0, 0" />
-                                <Label Foreground="{StaticResource LightTextColor}" Content="7,88 MB" HorizontalContentAlignment="Right" Padding="0" Margin="0, 5, 0, 0" />
-                                <Label Foreground="{StaticResource LightTextColor}" Content="8,89 MB" HorizontalContentAlignment="Right" Padding="0" Margin="0, 5, 0, 0" />
-                                <Label Foreground="{StaticResource LightTextColor}" Content="Normal" HorizontalContentAlignment="Right" Padding="0" Margin="0, 5, 0, 0" />
+                                <Label Foreground="{StaticResource LightTextColor}" Content="{Binding PrivateBytes, Converter={StaticResource UintToBytesConverter}}" HorizontalContentAlignment="Right" Padding="0" Margin="0, 0, 0, 0" />
+                                <Label Foreground="{StaticResource LightTextColor}" Content="{Binding PeakPrivateBytes, Converter={StaticResource UintToBytesConverter}}" HorizontalContentAlignment="Right" Padding="0" Margin="0, 5, 0, 0" />
+                                <Label Foreground="{StaticResource LightTextColor}" Content="{Binding VirtualBytes, Converter={StaticResource UintToBytesConverter}}" HorizontalContentAlignment="Right" Padding="0" Margin="0, 5, 0, 0" />
+                                <Label Foreground="{StaticResource LightTextColor}" Content="{Binding PeakVirtualBytes, Converter={StaticResource UintToBytesConverter}}" HorizontalContentAlignment="Right" Padding="0" Margin="0, 5, 0, 0" />
+                                <Label Foreground="{StaticResource LightTextColor}" Content="{Binding PageFaults, Converter={StaticResource UintToStringConverter}}" HorizontalContentAlignment="Right" Padding="0" Margin="0, 5, 0, 0" />
+                                <Label Foreground="{StaticResource LightTextColor}" Content="{Binding WorkingBytes, Converter={StaticResource UintToBytesConverter}}" HorizontalContentAlignment="Right" Padding="0" Margin="0, 5, 0, 0" />
+                                <Label Foreground="{StaticResource LightTextColor}" Content="{Binding PeakWorkingBytes, Converter={StaticResource UintToBytesConverter}}" HorizontalContentAlignment="Right" Padding="0" Margin="0, 5, 0, 0" />
+                                <Label Foreground="{StaticResource LightTextColor}" Content="{Binding PagePriority}" HorizontalContentAlignment="Right" Padding="0" Margin="0, 5, 0, 0" />
                             </StackPanel>
                         </Grid>
                     </Border>
@@ -103,13 +108,13 @@
                                 <Label Foreground="{StaticResource LightTextColor}" Content="I/O priority:" Padding="0" Margin="0, 5, 0, 0" />
                             </StackPanel>
                             <StackPanel Grid.Column="1" HorizontalAlignment="Right" Margin="0, 10, 10, 0">
-                                <Label Foreground="{StaticResource LightTextColor}" Content="2" HorizontalContentAlignment="Right" Padding="0" Margin="0, 0, 0, 0" />
-                                <Label Foreground="{StaticResource LightTextColor}" Content="24 KB" HorizontalContentAlignment="Right" Padding="0" Margin="0, 5, 0, 0" />
-                                <Label Foreground="{StaticResource LightTextColor}" Content="2" HorizontalContentAlignment="Right" Padding="0" Margin="0, 5, 0, 0" />
-                                <Label Foreground="{StaticResource LightTextColor}" Content="350 B" HorizontalContentAlignment="Right" Padding="0" Margin="0, 5, 0, 0" />
-                                <Label Foreground="{StaticResource LightTextColor}" Content="524" HorizontalContentAlignment="Right" Padding="0" Margin="0, 5, 0, 0" />
-                                <Label Foreground="{StaticResource LightTextColor}" Content="3,59 KB" HorizontalContentAlignment="Right" Padding="0" Margin="0, 5, 0, 0" />
-                                <Label Foreground="{StaticResource LightTextColor}" Content="Normal" HorizontalContentAlignment="Right" Padding="0" Margin="0, 5, 0, 0" />
+                                <Label Foreground="{StaticResource LightTextColor}" Content="{Binding Reads, Converter={StaticResource UlongToStringConverter}}" HorizontalContentAlignment="Right" Padding="0" Margin="0, 0, 0, 0" />
+                                <Label Foreground="{StaticResource LightTextColor}" Content="{Binding ReadBytes, Converter={StaticResource UlongToBytesConverter}}" HorizontalContentAlignment="Right" Padding="0" Margin="0, 5, 0, 0" />
+                                <Label Foreground="{StaticResource LightTextColor}" Content="{Binding Writes, Converter={StaticResource UlongToStringConverter}}" HorizontalContentAlignment="Right" Padding="0" Margin="0, 5, 0, 0" />
+                                <Label Foreground="{StaticResource LightTextColor}" Content="{Binding WriteBytes, Converter={StaticResource UlongToBytesConverter}}" HorizontalContentAlignment="Right" Padding="0" Margin="0, 5, 0, 0" />
+                                <Label Foreground="{StaticResource LightTextColor}" Content="{Binding Other, Converter={StaticResource UlongToStringConverter}}" HorizontalContentAlignment="Right" Padding="0" Margin="0, 5, 0, 0" />
+                                <Label Foreground="{StaticResource LightTextColor}" Content="{Binding OtherBytes, Converter={StaticResource UlongToBytesConverter}}" HorizontalContentAlignment="Right" Padding="0" Margin="0, 5, 0, 0" />
+                                <Label Foreground="{StaticResource LightTextColor}" Content="{Binding IOPriority}" HorizontalContentAlignment="Right" Padding="0" Margin="0, 5, 0, 0" />
                             </StackPanel>
                         </Grid>
                     </Border>
