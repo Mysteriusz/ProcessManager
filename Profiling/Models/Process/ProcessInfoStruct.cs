@@ -18,23 +18,26 @@ namespace ProcessManager.Profiling.Models.Process
         ProcessPEB = 0x00000400,
         ProcessTimes = 0x00000800,
         ProcessPPID = 0x00001000,
-        ProcessHandlesInfo = 0x00002000
+        ProcessHandlesInfo = 0x00002000,
+        ProcessCycleCount = 0x00004000,
     }
 
     [StructLayout(LayoutKind.Sequential)]
-    internal struct FILETIME
+    public struct FILETIME
     {
         public uint dwLowDateTime;
         public uint dwHighDateTime;
     }
     [StructLayout(LayoutKind.Sequential)]
-    struct ProcessHandlesInfoStruct
+    public struct ProcessHandlesInfoStruct
     {
         public UInt32 count;
         public UInt32 peakCount;
+        public UInt32 gdiCount;
+        public UInt32 userCount;
     }
     [StructLayout(LayoutKind.Sequential)]
-    struct ProcessTimesInfoStruct
+    public struct ProcessTimesInfoStruct
     {
         public FILETIME creationTime;
         public FILETIME kernelTime;
@@ -43,7 +46,7 @@ namespace ProcessManager.Profiling.Models.Process
         public FILETIME totalTime;
     }
     [StructLayout(LayoutKind.Sequential)]
-    struct ProcessInfoStruct
+    public struct ProcessInfoStruct
     {
         public IntPtr name;
         public IntPtr parentProcessName;
@@ -59,6 +62,7 @@ namespace ProcessManager.Profiling.Models.Process
         public UInt32 pid;
         public UInt32 ppid;
         public UInt64 peb;
+        public UInt64 cycles;
 
         public ProcessTimesInfoStruct timesInfo;
         public ProcessHandlesInfoStruct handlesInfo;

@@ -1,0 +1,143 @@
+﻿<Page x:Class="ProcessManager.Pages.ProcessProperties.ProcessPropertiesStatisticsPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:ProcessManager.Pages.ProcessProperties"
+      xmlns:helpers="clr-namespace:ProcessManager.WPFHelpers"
+      mc:Ignorable="d" 
+      d:DesignHeight="390" d:DesignWidth="800"
+      Title="ProcessPropertiesStatisticsPage" Loaded="Page_Loaded" Unloaded="Page_Unloaded">
+
+    <Page.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Dictionaries/ColorDictionary.xaml"/>
+                <ResourceDictionary Source="/Dictionaries/IconDictionary.xaml"/>
+                <ResourceDictionary Source="/Dictionaries/ControlDictionary.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+            
+            <helpers:DateTimeToStringConverter x:Key="DateTimeToStringConverter" />
+            <helpers:UlongToStringConverter x:Key="UlongToStringConverter" />
+        </ResourceDictionary>
+    </Page.Resources>
+
+    <Grid>
+        <Border Style="{StaticResource CustomBorderStyle}" Grid.ColumnSpan="2" Margin="5,5,5,5">
+            <StackPanel Orientation="Horizontal" Margin="10">
+                <StackPanel Orientation="Vertical" HorizontalAlignment="Left" VerticalAlignment="Top">
+                    <Border Style="{StaticResource CustomBorderStyle}" Height="117.5" Width="200" >
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            
+                            <Label Style="{StaticResource CustomBorderLabelStyle}" Content="CPU"/>
+                            
+                            <StackPanel Grid.Column="0" HorizontalAlignment="Left" Margin="10, 10, 0, 0">
+                                <Label Foreground="{StaticResource LightTextColor}" Content="Priority:" Padding="0" Margin="0, 0, 0, 0" />
+                                <Label Foreground="{StaticResource LightTextColor}" Content="Cycles:" Padding="0" Margin="0, 5, 0, 0" />
+                                <Label Foreground="{StaticResource LightTextColor}" Content="Kernel time:" Padding="0" Margin="0, 5, 0, 0" />
+                                <Label Foreground="{StaticResource LightTextColor}" Content="User time:" Padding="0" Margin="0, 5, 0, 0" />
+                                <Label Foreground="{StaticResource LightTextColor}" Content="Total time:" Padding="0" Margin="0, 5, 0, 0" />
+                            </StackPanel>
+                            <StackPanel Grid.Column="1" HorizontalAlignment="Right" Margin="0, 10, 10, 0">
+                                <Label Foreground="{StaticResource LightTextColor}" Content="{Binding Priority}" HorizontalContentAlignment="Right" Padding="0" Margin="0, 0, 0, 0" />
+                                <Label Foreground="{StaticResource LightTextColor}" Content="{Binding CycleCount, Converter={StaticResource UlongToStringConverter}}" HorizontalContentAlignment="Right" Padding="0" Margin="0, 5, 0, 0" />
+                                <Label Foreground="{StaticResource LightTextColor}" Content="{Binding KernelTime, Converter={StaticResource DateTimeToStringConverter}}" HorizontalContentAlignment="Right" Padding="0" Margin="0, 5, 0, 0" />
+                                <Label Foreground="{StaticResource LightTextColor}" Content="{Binding UserTime, Converter={StaticResource DateTimeToStringConverter}}" HorizontalContentAlignment="Right" Padding="0" Margin="0, 5, 0, 0" />
+                                <Label Foreground="{StaticResource LightTextColor}" Content="{Binding TotalTime, Converter={StaticResource DateTimeToStringConverter}}" HorizontalContentAlignment="Right" Padding="0" Margin="0, 5, 0, 0" />
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+                    <Border Style="{StaticResource CustomBorderStyle}" Height="182.5" Width="200" >
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Label Style="{StaticResource CustomBorderLabelStyle}" Content="Memory"/>
+
+                            <StackPanel Grid.Column="0" HorizontalAlignment="Left" Margin="10, 10, 0, 0">
+                                <Label Foreground="{StaticResource LightTextColor}" Content="Private bytes:" Padding="0" Margin="0, 0, 0, 0" />
+                                <Label Foreground="{StaticResource LightTextColor}" Content="Peak private bytes:" Padding="0" Margin="0, 5, 0, 0" />
+                                <Label Foreground="{StaticResource LightTextColor}" Content="Virtual size:" Padding="0" Margin="0, 5, 0, 0" />
+                                <Label Foreground="{StaticResource LightTextColor}" Content="Peak virtual size:" Padding="0" Margin="0, 5, 0, 0" />
+                                <Label Foreground="{StaticResource LightTextColor}" Content="Page faults:" Padding="0" Margin="0, 5, 0, 0" />
+                                <Label Foreground="{StaticResource LightTextColor}" Content="Working set:" Padding="0" Margin="0, 5, 0, 0" />
+                                <Label Foreground="{StaticResource LightTextColor}" Content="Peak working set:" Padding="0" Margin="0, 5, 0, 0" />
+                                <Label Foreground="{StaticResource LightTextColor}" Content="Page priority:" Padding="0" Margin="0, 5, 0, 0" />
+                            </StackPanel>
+                            <StackPanel Grid.Column="1" HorizontalAlignment="Right" Margin="0, 10, 10, 0">
+                                <Label Foreground="{StaticResource LightTextColor}" Content="1,51 MB" HorizontalContentAlignment="Right" Padding="0" Margin="0, 0, 0, 0" />
+                                <Label Foreground="{StaticResource LightTextColor}" Content="2,13 MB" HorizontalContentAlignment="Right" Padding="0" Margin="0, 5, 0, 0" />
+                                <Label Foreground="{StaticResource LightTextColor}" Content="2 TB" HorizontalContentAlignment="Right" Padding="0" Margin="0, 5, 0, 0" />
+                                <Label Foreground="{StaticResource LightTextColor}" Content="2 TB" HorizontalContentAlignment="Right" Padding="0" Margin="0, 5, 0, 0" />
+                                <Label Foreground="{StaticResource LightTextColor}" Content="3 371" HorizontalContentAlignment="Right" Padding="0" Margin="0, 5, 0, 0" />
+                                <Label Foreground="{StaticResource LightTextColor}" Content="7,88 MB" HorizontalContentAlignment="Right" Padding="0" Margin="0, 5, 0, 0" />
+                                <Label Foreground="{StaticResource LightTextColor}" Content="8,89 MB" HorizontalContentAlignment="Right" Padding="0" Margin="0, 5, 0, 0" />
+                                <Label Foreground="{StaticResource LightTextColor}" Content="Normal" HorizontalContentAlignment="Right" Padding="0" Margin="0, 5, 0, 0" />
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+                </StackPanel>
+                <StackPanel Orientation="Vertical" HorizontalAlignment="Left" VerticalAlignment="Top">
+                    <Border Style="{StaticResource CustomBorderStyle}" Height="160" Width="200" >
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Label Style="{StaticResource CustomBorderLabelStyle}" Content="I/O"/>
+
+                            <StackPanel Grid.Column="0" HorizontalAlignment="Left" Margin="10, 10, 0, 0">
+                                <Label Foreground="{StaticResource LightTextColor}" Content="Reads:" Padding="0" Margin="0, 0, 0, 0" />
+                                <Label Foreground="{StaticResource LightTextColor}" Content="Read bytes:" Padding="0" Margin="0, 5, 0, 0" />
+                                <Label Foreground="{StaticResource LightTextColor}" Content="Writes:" Padding="0" Margin="0, 5, 0, 0" />
+                                <Label Foreground="{StaticResource LightTextColor}" Content="Write bytes:" Padding="0" Margin="0, 5, 0, 0" />
+                                <Label Foreground="{StaticResource LightTextColor}" Content="Other:" Padding="0" Margin="0, 5, 0, 0" />
+                                <Label Foreground="{StaticResource LightTextColor}" Content="Other bytes:" Padding="0" Margin="0, 5, 0, 0" />
+                                <Label Foreground="{StaticResource LightTextColor}" Content="I/O priority:" Padding="0" Margin="0, 5, 0, 0" />
+                            </StackPanel>
+                            <StackPanel Grid.Column="1" HorizontalAlignment="Right" Margin="0, 10, 10, 0">
+                                <Label Foreground="{StaticResource LightTextColor}" Content="2" HorizontalContentAlignment="Right" Padding="0" Margin="0, 0, 0, 0" />
+                                <Label Foreground="{StaticResource LightTextColor}" Content="24 KB" HorizontalContentAlignment="Right" Padding="0" Margin="0, 5, 0, 0" />
+                                <Label Foreground="{StaticResource LightTextColor}" Content="2" HorizontalContentAlignment="Right" Padding="0" Margin="0, 5, 0, 0" />
+                                <Label Foreground="{StaticResource LightTextColor}" Content="350 B" HorizontalContentAlignment="Right" Padding="0" Margin="0, 5, 0, 0" />
+                                <Label Foreground="{StaticResource LightTextColor}" Content="524" HorizontalContentAlignment="Right" Padding="0" Margin="0, 5, 0, 0" />
+                                <Label Foreground="{StaticResource LightTextColor}" Content="3,59 KB" HorizontalContentAlignment="Right" Padding="0" Margin="0, 5, 0, 0" />
+                                <Label Foreground="{StaticResource LightTextColor}" Content="Normal" HorizontalContentAlignment="Right" Padding="0" Margin="0, 5, 0, 0" />
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+                    <Border Style="{StaticResource CustomBorderStyle}" Height="97.5" Width="200" >
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Label Style="{StaticResource CustomBorderLabelStyle}" Content="Other"/>
+
+                            <StackPanel Grid.Column="0" HorizontalAlignment="Left" Margin="10, 10, 0, 0">
+                                <Label Foreground="{StaticResource LightTextColor}" Content="Handles:" Padding="0" Margin="0, 0, 0, 0" />
+                                <Label Foreground="{StaticResource LightTextColor}" Content="Peak handles:" Padding="0" Margin="0, 5, 0, 0" />
+                                <Label Foreground="{StaticResource LightTextColor}" Content="GDI handles:" Padding="0" Margin="0, 5, 0, 0" />
+                                <Label Foreground="{StaticResource LightTextColor}" Content="User handles:" Padding="0" Margin="0, 5, 0, 0" />
+                            </StackPanel>
+                            <StackPanel Grid.Column="1" HorizontalAlignment="Right" Margin="0, 10, 10, 0">
+                                <Label Foreground="{StaticResource LightTextColor}" Content="{Binding HandleCount}" HorizontalContentAlignment="Right" Padding="0" Margin="0, 0, 0, 0" />
+                                <Label Foreground="{StaticResource LightTextColor}" Content="{Binding HandlePeakCount}" HorizontalContentAlignment="Right" Padding="0" Margin="0, 5, 0, 0" />
+                                <Label Foreground="{StaticResource LightTextColor}" Content="{Binding GdiHandleCount}" HorizontalContentAlignment="Right" Padding="0" Margin="0, 5, 0, 0" />
+                                <Label Foreground="{StaticResource LightTextColor}" Content="{Binding UserHandleCount}" HorizontalContentAlignment="Right" Padding="0" Margin="0, 5, 0, 0" />
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+                </StackPanel>
+            </StackPanel>
+        </Border>
+    </Grid>
+</Page>

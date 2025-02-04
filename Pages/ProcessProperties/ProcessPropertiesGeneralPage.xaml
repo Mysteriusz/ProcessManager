@@ -1,0 +1,119 @@
+﻿<Page x:Class="ProcessManager.Pages.ProcessProperties.ProcessPropertiesGeneralPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:ProcessManager.Pages.ProcessProperties"
+      mc:Ignorable="d" 
+      d:DesignHeight="390" d:DesignWidth="800"
+      Title="ProcessPropertiesGeneralPage">
+
+    <Page.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Dictionaries/ColorDictionary.xaml"/>
+                <ResourceDictionary Source="/Dictionaries/IconDictionary.xaml"/>
+                <ResourceDictionary Source="/Dictionaries/ControlDictionary.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+
+            <Style x:Key="PropertyTextBlock" TargetType="Label">
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="Label">
+                            <Grid HorizontalAlignment="Stretch" Margin="5, 0, 0, 0" Background="Transparent">
+                                <TextBlock Text="{TemplateBinding Content}" Foreground="{StaticResource LightTextColor}" Grid.Column="0" />
+                                <Border x:Name="TextBorder" BorderBrush="{StaticResource SelectColor}" Background="{StaticResource MouseOverSelectColor}" CornerRadius="2" BorderThickness="0, 0, 0, 2" Margin="100, 0, 22, 0" Grid.Column="1" >
+                                    <TextBox x:Name="TextBlock" PreviewKeyDown="TextBox_KeyDown" Text="{Binding Tag, RelativeSource={RelativeSource TemplatedParent}}" Background="Transparent" BorderThickness="0" Foreground="{StaticResource LightTextColor}" />
+                                </Border>
+                                <Border BorderBrush="{StaticResource SelectColor}" BorderThickness="1, 1, 1, 1" Background="{StaticResource MouseOverSelectColor}" 
+                                    HorizontalAlignment="Right" Width="20" Height="20" CornerRadius="2" Margin="100, 0, 0, 0" IsHitTestVisible="True" Grid.Column="1" MouseDown="Border_MouseDown" >
+                                    <Border.Style>
+                                        <Style TargetType="Border">
+                                            <Style.Triggers>
+                                                <Trigger Property="IsMouseOver" Value="True">
+                                                    <Setter Property="Cursor" Value="Hand" />
+                                                    <Setter Property="Opacity" Value=".8" />
+                                                </Trigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Border.Style>
+
+                                    <Image Source="{StaticResource CopyIcon}" Width="15" Height="15" Opacity=".9" />
+                                </Border>
+                            </Grid>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+            <Style x:Key="PropertyBlock" TargetType="Label">
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="Label" >
+                            <Grid HorizontalAlignment="Stretch" Margin="5, 0, 0, 0">
+                                <TextBlock Text="{TemplateBinding Content}" Foreground="{StaticResource LightTextColor}" Grid.Column="0" />
+                            </Grid>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+        </ResourceDictionary>
+    </Page.Resources>
+
+    <Grid Background="{StaticResource DefaultColor}" >
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="150"/>
+            <RowDefinition Height="1.5*"/>
+        </Grid.RowDefinitions>
+
+        <Border Style="{StaticResource CustomBorderStyle}" Grid.Row="0" >
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="70"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Label Style="{StaticResource CustomBorderLabelStyle}" Content="File"/>
+
+                <StackPanel Grid.ColumnSpan="2" Grid.Column="0">
+                    <Image Source="{Binding IconSource}" RenderOptions.BitmapScalingMode="HighQuality"
+                       VerticalAlignment="Top" HorizontalAlignment="Left" Width="32" Height="32" Margin="10, 10, 0, 0" />
+
+                    <Label Style="{StaticResource PropertyBlock}"
+                       VerticalAlignment="Top" HorizontalAlignment="Left" Margin="5, 7, 0, 0" >Version:</Label>
+
+                    <Label Style="{StaticResource PropertyBlock}"
+                       VerticalAlignment="Top" HorizontalAlignment="Left" Margin="5, 7, 0, 0" >Pid:</Label>
+
+                    <Label Style="{StaticResource PropertyTextBlock}" Tag="{Binding ImageName}" Margin="5, 17, 105, 0" Grid.ColumnSpan="2">Image file name:</Label>
+                </StackPanel>
+                <StackPanel Grid.Column="1">
+                    <TextBox Text="{Binding Description}" PreviewKeyDown="TextBox_KeyDown" Foreground="{StaticResource LightTextColor}"
+                       VerticalAlignment="Top" HorizontalAlignment="Left" Margin="1,10,0,0" Background="Transparent" BorderThickness="0" Height="16" Width="Auto"/>
+
+                    <TextBox Text="{Binding Version}" PreviewKeyDown="TextBox_KeyDown" Foreground="{StaticResource LightTextColor}"
+                       VerticalAlignment="Top" HorizontalAlignment="Left" Margin="1,22,0,0" Background="Transparent" BorderThickness="0" Height="16" Width="Auto"/>
+
+                    <TextBox Text="{Binding PID}" PreviewKeyDown="TextBox_KeyDown" Foreground="{StaticResource LightTextColor}"
+                       VerticalAlignment="Top" HorizontalAlignment="Left" Margin="1,8,0,0" Background="Transparent" BorderThickness="0" Height="16" Width="Auto"/>
+                </StackPanel>
+
+                <Label Style="{StaticResource PropertyBlock}" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="0, 0, 35, 17" Grid.Column="1">Architecture:</Label>
+                <Label Style="{StaticResource PropertyBlock}" Content="{Binding ArchitectureType}" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="0, 0, 5, 17" Grid.Column="1" />
+            </Grid>
+        </Border>
+        <Border Style="{StaticResource CustomBorderStyle}" Grid.Row="1" >
+            <Grid>
+                <Label Style="{StaticResource CustomBorderLabelStyle}" Content="Process"/>
+                <StackPanel Orientation="Vertical" Margin="0, 10, 0, 0" >
+                    <Label Style="{StaticResource PropertyTextBlock}" Tag="{Binding CommandLine}" Content="Command line:" Margin="0, 7, 3, 0"/>
+                    <Label Style="{StaticResource PropertyTextBlock}" Tag="{Binding ImageName}" Content="Image Path:" Margin="0, 7, 3, 0"/>
+                    <Label Style="{StaticResource PropertyTextBlock}" Tag="{Binding CreationTime}" Content="Started:" Margin="0, 7, 3, 0"/>
+                    <Label Style="{StaticResource PropertyTextBlock}" Tag="{Binding PEBString}" Margin="0, 7, 3, 0" Content="PEB address:" />
+                    <Label Style="{StaticResource PropertyTextBlock}" Tag="{Binding ParentProcessString}" Margin="0, 7, 3, 0" Content="Parent:" />
+                </StackPanel>
+            </Grid>
+        </Border>
+    </Grid>
+</Page>

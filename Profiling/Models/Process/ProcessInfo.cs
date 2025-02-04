@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Windows.Interop;
@@ -6,7 +7,7 @@ using System.Windows.Media;
 
 namespace ProcessManager.Profiling.Models.Process
 {
-    internal class ProcessInfo : INotifyPropertyChanged
+    public class ProcessInfo : INotifyPropertyChanged
     {
         //
         // ---------------------------------- PROPERTIES ----------------------------------
@@ -22,10 +23,12 @@ namespace ProcessManager.Profiling.Models.Process
         public string ArchitectureType { get; set; } = "N/A";
         public string CommandLine { get; set; } = "N/A";
         public string Description { get; set; } = "N/A";
-        public string PEBHex { get; set; } = "N/A";
-        public ulong PEB { get; set; }
-        public uint PID { get; set; }
-        public uint PPID { get; set; }
+        public ulong PEB { get; set; } = 0;
+        public uint PID { get; set; } = 0;
+        public uint PPID { get; set; } = 0;
+
+        public string PEBString => "0x" + PEB.ToString("X2").ToLower();
+        public string ParentProcessString => ParentName + "(" + PPID + ")";
 
         public Icon? Icon
         {
@@ -40,6 +43,25 @@ namespace ProcessManager.Profiling.Models.Process
             { 
                 return Icon != null ? Imaging.CreateBitmapSourceFromHBitmap(Icon.ToBitmap().GetHbitmap(), IntPtr.Zero, System.Windows.Int32Rect.Empty, null) :
                     Imaging.CreateBitmapSourceFromHBitmap(SystemIcons.WinLogo.ToBitmap().GetHbitmap(), IntPtr.Zero, System.Windows.Int32Rect.Empty, null);
+            }
+        }
+
+        // ------------------------ CYCLE COUNT ------------------------ 
+
+        private ulong _cycleCount;
+        public ulong CycleCount
+        {
+            get
+            {
+                return _cycleCount;
+            }
+            set
+            {
+                if (_cycleCount != value)
+                {
+                    _cycleCount = value;
+                    OnPropertyChanged(nameof(CycleCount));
+                }
             }
         }
 
@@ -115,6 +137,8 @@ namespace ProcessManager.Profiling.Models.Process
 
         private uint _handleCount;
         private uint _handlePeakCount;
+        private uint _handleGdiCount;
+        private uint _handleUserCount;
         public uint HandleCount
         {
             get
@@ -142,6 +166,36 @@ namespace ProcessManager.Profiling.Models.Process
                 {
                     _handlePeakCount = value;
                     OnPropertyChanged(nameof(HandlePeakCount));
+                }
+            }
+        }
+        public uint GdiHandleCount
+        {
+            get
+            {
+                return _handleGdiCount;
+            }
+            set
+            {
+                if (_handleGdiCount != value)
+                {
+                    _handleGdiCount = value;
+                    OnPropertyChanged(nameof(GdiHandleCount));
+                }
+            }
+        }
+        public uint UserHandleCount
+        {
+            get
+            {
+                return _handleUserCount;
+            }
+            set
+            {
+                if (_handleUserCount != value)
+                {
+                    _handleUserCount = value;
+                    OnPropertyChanged(nameof(UserHandleCount));
                 }
             }
         }
@@ -293,22 +347,28 @@ namespace ProcessManager.Profiling.Models.Process
             if ((flags & (ulong)ProcessInfoFlags.ProcessPEB) != 0)
             {
                 PEB = infoStruct.peb;
-                PEBHex = "0x" + infoStruct.peb.ToString("X2").ToLower();
             }
 
             if ((flags & (ulong)ProcessInfoFlags.ProcessTimes) != 0)
             {
-                _creationTime = Profiler.ToDateTime(infoStruct.timesInfo.creationTime) ?? new DateTime();
-                _exitTime = Profiler.ToDateTime(infoStruct.timesInfo.exitTime, true) ?? new DateTime();
-                _userTime = Profiler.ToDateTime(infoStruct.timesInfo.userTime, true) ?? new DateTime();
-                _kernelTime = Profiler.ToDateTime(infoStruct.timesInfo.kernelTime, true) ?? new DateTime();
-                _totalTime = Profiler.ToDateTime(infoStruct.timesInfo.totalTime, true) ?? new DateTime();
+                CreationTime = Profiler.ToDateTime(infoStruct.timesInfo.creationTime) ?? new DateTime();
+                ExitTime = Profiler.ToDateTime(infoStruct.timesInfo.exitTime, true) ?? new DateTime();
+                UserTime = Profiler.ToDateTime(infoStruct.timesInfo.userTime, true) ?? new DateTime();
+                KernelTime = Profiler.ToDateTime(infoStruct.timesInfo.kernelTime, true) ?? new DateTime();
+                TotalTime = Profiler.ToDateTime(infoStruct.timesInfo.totalTime, true) ?? new DateTime();
             }
 
             if ((flags & (ulong)ProcessInfoFlags.ProcessHandlesInfo) != 0)
             {
-                _handleCount = infoStruct.handlesInfo.count;
-                _handlePeakCount = infoStruct.handlesInfo.peakCount;
+                HandleCount = infoStruct.handlesInfo.count;
+                HandlePeakCount = infoStruct.handlesInfo.peakCount;
+                GdiHandleCount = infoStruct.handlesInfo.gdiCount;
+                UserHandleCount = infoStruct.handlesInfo.userCount;
+            }
+
+            if ((flags & (ulong)ProcessInfoFlags.ProcessCycleCount) != 0)
+            {
+                CycleCount = infoStruct.cycles;
             }
         }
 

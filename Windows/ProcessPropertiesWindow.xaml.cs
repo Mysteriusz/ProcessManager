@@ -1,17 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using ProcessManager.Pages.ProcessProperties;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
+using System.Windows;
 
 namespace ProcessManager.Windows
 {
@@ -25,11 +15,40 @@ namespace ProcessManager.Windows
             InitializeComponent();
         }
 
-        private void TextBox_KeyDown(object sender, KeyEventArgs e)
+        private readonly ProcessPropertiesGeneralPage _generalPage = new();
+        private readonly ProcessPropertiesStatisticsPage _statsPage = new();
+
+        private void PropertiesButton_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {   
+            if (sender is Border border && e.ChangedButton == MouseButton.Left)
+            {
+                switch (border.Tag)
+                {
+                    case "General":
+                        _generalPage.DataContext = this.DataContext;
+                        PropertiesPageFrame.Navigate(_generalPage);
+                        break;
+                    case "Statistics":
+                        _statsPage.DataContext = this.DataContext;
+                        PropertiesPageFrame.Navigate(_statsPage);
+                        break;
+                    case "Performace":
+                        break;
+                    case "Handles":
+                        break;
+                    case "Modules":
+                        break;
+                    case "Threads":
+                        break;
+                }
+            }
+        }
+
+        private void PropertiesPageFrame_Loaded(object sender, RoutedEventArgs e)
         {
-            // Skip not arrow keys
-            if (!(e.Key == Key.Left || e.Key == Key.Right || e.Key == Key.Up || e.Key == Key.Down))
-                e.Handled = true;  
+            ProcessPropertiesGeneralPage generalPage = new ProcessPropertiesGeneralPage();
+            generalPage.DataContext = this.DataContext;
+            PropertiesPageFrame.Navigate(generalPage);
         }
     }
 }

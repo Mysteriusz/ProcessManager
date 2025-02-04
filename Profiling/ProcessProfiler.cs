@@ -44,6 +44,8 @@ namespace ProcessManager.Profiling
 
         [DllImport(Profiler.DllPath, CallingConvention = CallingConvention.Cdecl)]
         public static extern IntPtr GetProcessPEB(uint pid);
+        [DllImport(Profiler.DllPath, CallingConvention = CallingConvention.Cdecl)]
+        public static extern IntPtr GetProcessCycleCount(uint pid);
 
         //
         // ---------------------------------- FILETIME ----------------------------------

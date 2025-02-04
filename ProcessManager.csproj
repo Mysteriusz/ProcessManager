@@ -11,13 +11,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="WPFHelpers\**" />
-    <EmbeddedResource Remove="WPFHelpers\**" />
-    <None Remove="WPFHelpers\**" />
-    <Page Remove="WPFHelpers\**" />
-  </ItemGroup>
-
-  <ItemGroup>
     <None Remove="Dictionaries\Icons\ArrowDownIcon.png" />
     <None Remove="Dictionaries\Icons\ArrowUpIcon.png" />
     <None Remove="Dictionaries\Icons\CopyIcon.png" />

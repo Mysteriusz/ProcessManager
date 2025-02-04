@@ -47,6 +47,7 @@ namespace ProcessManager
         /// <param name="initialWindow">Window to start with.</param>
         public static void Start(Window initialWindow)
         {
+            Profiler.EnableDebugPrivilages();
             ApplicationObject.Run(initialWindow);
         }
         

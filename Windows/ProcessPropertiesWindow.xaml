@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ProcessManager.Windows"
         mc:Ignorable="d"
-        Title="ProcessPropertiesWindow" Height="450" Width="800" MinHeight="450" MinWidth="300">
+        Title="ProcessPropertiesWindow" Height="450" Width="800" MinHeight="450" MinWidth="467">
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -13,48 +13,6 @@
                 <ResourceDictionary Source="/Dictionaries/IconDictionary.xaml"/>
                 <ResourceDictionary Source="/Dictionaries/DoubleDictionary.xaml"/>
             </ResourceDictionary.MergedDictionaries>
-
-            <Style x:Key="PropertyTextBlock" TargetType="Label">
-                <Setter Property="Template">
-                    <Setter.Value>
-                        <ControlTemplate TargetType="Label">
-                            <Grid HorizontalAlignment="Stretch" Margin="5, 0, 0, 0" Background="Transparent">
-                                <TextBlock Text="{TemplateBinding Content}" Foreground="{StaticResource LightTextColor}" Grid.Column="0" />
-                                <Border BorderBrush="{StaticResource SelectColor}" Background="{StaticResource MouseOverSelectColor}" CornerRadius="2" BorderThickness="0, 0, 0, 2" Margin="100, 0, 22, 0" Grid.Column="1" >
-                                    <TextBox PreviewKeyDown="TextBox_KeyDown" Text="{Binding Tag, RelativeSource={RelativeSource TemplatedParent}}" Background="Transparent" BorderThickness="0" Foreground="{StaticResource LightTextColor}" />
-                                </Border>
-                                <Border HorizontalAlignment="Right" Width="20" Height="20" BorderBrush="Transparent" Background="{StaticResource MouseOverSelectColor}" CornerRadius="2" IsHitTestVisible="True" BorderThickness="0, 0, 0, 0" Margin="100, 0, 0, 0" Grid.Column="1" >
-                                    <Border.Style>
-                                        <Style TargetType="Border">
-                                            <Style.Triggers>
-                                                <Trigger Property="IsMouseOver" Value="True">
-                                                    <Setter Property="Cursor" Value="Hand" />
-                                                    <Setter Property="Opacity" Value=".8" />
-                                                </Trigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </Border.Style>
-
-                                    <Button Background="Transparent" BorderThickness="0" Width="18" Height="18" IsHitTestVisible="False">
-                                        <Image Source="{StaticResource CopyIcon}" />
-                                    </Button>
-                                </Border>
-                            </Grid>
-                        </ControlTemplate>
-                    </Setter.Value>
-                </Setter>
-            </Style>
-            <Style x:Key="PropertyBlock" TargetType="Label">
-                <Setter Property="Template">
-                    <Setter.Value>
-                        <ControlTemplate TargetType="Label" >
-                            <Grid HorizontalAlignment="Stretch" Margin="5, 0, 0, 0">
-                                <TextBlock Text="{TemplateBinding Content}" Foreground="{StaticResource LightTextColor}" Grid.Column="0" />
-                            </Grid>
-                        </ControlTemplate>
-                    </Setter.Value>
-                </Setter>
-            </Style>
         </ResourceDictionary>
     </Window.Resources>
 
@@ -64,59 +22,58 @@
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="30"/>
-            <RowDefinition Height="150"/>
             <RowDefinition Height="1.5*"/>
         </Grid.RowDefinitions>
 
-        <Border Margin="5,5,5,5" BorderThickness="1" BorderBrush="{StaticResource DarkTextColor}" Grid.Row="1">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="70"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-                <Label Foreground="{StaticResource DarkTextColor}" FontSize="12" Background="{StaticResource DefaultColor}" 
-                       HorizontalAlignment="Left" VerticalAlignment="Top" VerticalContentAlignment="Top" HorizontalContentAlignment="Center" Padding="1" Height="18" Margin="15, -10, 0, 0" Width="20" >File</Label>
+        <Frame x:Name="PropertiesPageFrame" Grid.Row="1" NavigationUIVisibility="Hidden" Loaded="PropertiesPageFrame_Loaded"/>
+        <Grid Margin="5" Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
 
-                <StackPanel Grid.ColumnSpan="2" Grid.Column="0">
-                    <Image Source="{Binding IconSource}" RenderOptions.BitmapScalingMode="HighQuality"
-                           VerticalAlignment="Top" HorizontalAlignment="Left" Width="32" Height="32" Margin="10, 10, 0, 0" />
+            <Grid.Resources>
+                <Style x:Key="PropertyButtonStyle" TargetType="Border">
+                    <Setter Property="Background" Value="{StaticResource DefaultColor}" />
+                    <Setter Property="BorderThickness" Value="1" />
+                    <Setter Property="BorderBrush" Value="{StaticResource DarkTextColor}" />
+                    <Setter Property="HorizontalAlignment" Value="Stretch"/>
+                    <Setter Property="VerticalAlignment" Value="Stretch"/>
+                    <Style.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Opacity" Value=".8" />
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </Grid.Resources>
 
-                    <Label Style="{StaticResource PropertyBlock}"
-                           VerticalAlignment="Top" HorizontalAlignment="Left" Margin="5, 7, 0, 0" >Version:</Label>
+            <Border x:Name="PropertiesGeneralButton" Tag="General" Style="{StaticResource PropertyButtonStyle}" PreviewMouseDown="PropertiesButton_PreviewMouseDown">
+                <TextBlock Text="General" Foreground="{StaticResource DarkTextColor}" TextTrimming="CharacterEllipsis" HorizontalAlignment="Center" />
+            </Border>
 
-                    <Label Style="{StaticResource PropertyBlock}"
-                           VerticalAlignment="Top" HorizontalAlignment="Left" Margin="5, 7, 0, 0" >Pid:</Label>
+            <Border x:Name="PropertiesStatisticsButton" Tag="Statistics" Style="{StaticResource PropertyButtonStyle}" Grid.Column="1" PreviewMouseDown="PropertiesButton_PreviewMouseDown">
+                <TextBlock Text="Statistics" Foreground="{StaticResource DarkTextColor}" TextTrimming="CharacterEllipsis" HorizontalAlignment="Center" />
+            </Border>
 
-                    <Label Style="{StaticResource PropertyTextBlock}" Tag="{Binding ImageName}" Margin="5, 17, 105, 0" Grid.ColumnSpan="2">Image file name:</Label>
-                </StackPanel>
-                <StackPanel Grid.Column="1">
-                    <TextBox Text="{Binding Description}" Foreground="{StaticResource LightTextColor}"
-                           VerticalAlignment="Top" HorizontalAlignment="Left" Margin="1,10,0,0" Background="Transparent" BorderThickness="0" Height="16" Width="Auto"/>
+            <Border x:Name="PropertiesPerformanceButton" Tag="Performance" Style="{StaticResource PropertyButtonStyle}" Grid.Column="2" PreviewMouseDown="PropertiesButton_PreviewMouseDown">
+                <TextBlock Text="Performance" Foreground="{StaticResource DarkTextColor}" TextTrimming="CharacterEllipsis" HorizontalAlignment="Center" />
+            </Border>
 
-                    <TextBox Text="{Binding Version}" Foreground="{StaticResource LightTextColor}"
-                           VerticalAlignment="Top" HorizontalAlignment="Left" Margin="1,22,0,0" Background="Transparent" BorderThickness="0" Height="16" Width="Auto"/>
+            <Border x:Name="PropertiesThreadsButton" Tag="Threads" Style="{StaticResource PropertyButtonStyle}" Grid.Column="3" PreviewMouseDown="PropertiesButton_PreviewMouseDown">
+                <TextBlock Text="Threads" Foreground="{StaticResource DarkTextColor}" TextTrimming="CharacterEllipsis" HorizontalAlignment="Center" />
+            </Border>
 
-                    <TextBox Text="{Binding PID}" Foreground="{StaticResource LightTextColor}"
-                           VerticalAlignment="Top" HorizontalAlignment="Left" Margin="1,8,0,0" Background="Transparent" BorderThickness="0" Height="16" Width="Auto"/>
-                </StackPanel>
+            <Border x:Name="PropertiesHandlesButton" Tag="Handles" Style="{StaticResource PropertyButtonStyle}" Grid.Column="4" PreviewMouseDown="PropertiesButton_PreviewMouseDown">
+                <TextBlock Text="Handles" Foreground="{StaticResource DarkTextColor}" TextTrimming="CharacterEllipsis" HorizontalAlignment="Center" />
+            </Border>
 
-                <Label Style="{StaticResource PropertyBlock}" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="0, 0, 35, 17" Grid.Column="1">Architecture:</Label>
-                <Label Style="{StaticResource PropertyBlock}" Content="{Binding ArchitectureType}" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="0, 0, 5, 17" Grid.Column="1" />
-            </Grid>
-        </Border>
-
-        <Border Margin="5,5,5,5" BorderThickness="1" BorderBrush="{StaticResource DarkTextColor}" Grid.Row="2" >
-            <Grid>
-                <Label Foreground="{StaticResource DarkTextColor}" FontSize="12" Background="{StaticResource DefaultColor}" 
-                       HorizontalAlignment="Left" VerticalAlignment="Top" VerticalContentAlignment="Top" HorizontalContentAlignment="Center" Padding="1" Height="18" Margin="15, -10, 0, 0" >Process</Label>
-                <StackPanel Orientation="Vertical" Margin="0, 10, 0, 0" >
-                    <Label Style="{StaticResource PropertyTextBlock}" Tag="{Binding CommandLine}" Margin="0, 7, 3, 0">Command line:</Label>
-                    <Label Style="{StaticResource PropertyTextBlock}" Tag="{Binding ImageName}" Margin="0, 7, 3, 0">Image Path:</Label>
-                    <Label Style="{StaticResource PropertyTextBlock}" Tag="{Binding CreationTime}" Margin="0, 7, 3, 0">Started:</Label>
-                    <Label Style="{StaticResource PropertyTextBlock}" Tag="{Binding PEBHex}" Margin="0, 7, 3, 0">PEB address:</Label>
-                    <Label Style="{StaticResource PropertyTextBlock}" Tag="{Binding ParentName}" Margin="0, 7, 3, 0">Parent:</Label>
-                </StackPanel>
-            </Grid>
-        </Border>
+            <Border x:Name="PropertiesModulesButton" Tag="Modules" Style="{StaticResource PropertyButtonStyle}" Grid.Column="5" PreviewMouseDown="PropertiesButton_PreviewMouseDown">
+                <TextBlock Text="Modules" Foreground="{StaticResource DarkTextColor}" TextTrimming="CharacterEllipsis" HorizontalAlignment="Center" />
+            </Border> 
+        </Grid>
     </Grid>
 </Window>

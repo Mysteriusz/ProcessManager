@@ -23,6 +23,8 @@ namespace ProcessManager.Pages
         private bool canSort = true;
         private int sortCooldownMs = 1000;
 
+        ObservableCollection<ProcessInfo> Processes = new ObservableCollection<ProcessInfo>();
+
         //
         // ---------------------------------- CONSTRUCTORS ----------------------------------
         //
@@ -37,9 +39,7 @@ namespace ProcessManager.Pages
         // ---------------------------------- METHODS ----------------------------------
         //
 
-        ObservableCollection<ProcessInfo> Processes = new ObservableCollection<ProcessInfo>();
-
-        public void InitializeApplicationList()
+        internal void InitializeApplicationList()
         {
             ulong flags = (ulong)(ProcessInfoFlags.ProcessName | ProcessInfoFlags.ProcessImageName | ProcessInfoFlags.ProcessUser | ProcessInfoFlags.ProcessDescription | ProcessInfoFlags.ProcessPriority);
 
@@ -54,18 +54,16 @@ namespace ProcessManager.Pages
 
             ApplicationList.ItemsSource = Processes;
         }
-
         internal void OpenProperties(ProcessInfo info)
         {
-            Debug.WriteLine(info.PID);
-
-            ulong flags = (ulong)(ProcessInfoFlags.ProcessFileVersion | ProcessInfoFlags.ProcessPEB | ProcessInfoFlags.ProcessParentName | ProcessInfoFlags.ProcessCommandLine | ProcessInfoFlags.ProcessTimes | ProcessInfoFlags.ProcessArchitectureType);
+            ulong flags = (ulong)(ProcessInfoFlags.ProcessFileVersion | ProcessInfoFlags.ProcessPEB | ProcessInfoFlags.ProcessParentName | ProcessInfoFlags.ProcessPPID | ProcessInfoFlags.ProcessCommandLine | ProcessInfoFlags.ProcessTimes | ProcessInfoFlags.ProcessArchitectureType);
             IntPtr ptr = ProcessProfiler.GetProcessInfo(flags, info.PID);
             info.Read(flags, Profiler.ToStruct<ProcessInfoStruct>(ptr));
+            
+            Debug.WriteLine(Profiler.ToString(ProcessProfiler.GetProcessDescription(info.PID)));
 
             ProcessPropertiesWindow processPropertiesWindow = new ProcessPropertiesWindow();
             processPropertiesWindow.DataContext = info;
-
 
             processPropertiesWindow.Show();
         }
