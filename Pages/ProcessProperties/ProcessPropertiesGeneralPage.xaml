@@ -4,9 +4,10 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:ProcessManager.Pages.ProcessProperties"
+      xmlns:helpers="clr-namespace:ProcessManager.WPFHelpers"
       mc:Ignorable="d" 
       d:DesignHeight="390" d:DesignWidth="800"
-      Title="ProcessPropertiesGeneralPage">
+      Title="ProcessPropertiesGeneralPage" Loaded="Page_Loaded" Unloaded="Page_Unloaded">
 
     <Page.Resources>
         <ResourceDictionary>
@@ -15,6 +16,8 @@
                 <ResourceDictionary Source="/Dictionaries/IconDictionary.xaml"/>
                 <ResourceDictionary Source="/Dictionaries/ControlDictionary.xaml"/>
             </ResourceDictionary.MergedDictionaries>
+
+            <helpers:UlongToHexConverter x:Key="UlongToHexConverter" />
 
             <Style x:Key="PropertyTextBlock" TargetType="Label">
                 <Setter Property="Template">
@@ -110,8 +113,8 @@
                     <Label Style="{StaticResource PropertyTextBlock}" Tag="{Binding CommandLine}" Content="Command line:" Margin="0, 7, 3, 0"/>
                     <Label Style="{StaticResource PropertyTextBlock}" Tag="{Binding ImageName}" Content="Image Path:" Margin="0, 7, 3, 0"/>
                     <Label Style="{StaticResource PropertyTextBlock}" Tag="{Binding CreationTime}" Content="Started:" Margin="0, 7, 3, 0"/>
-                    <Label Style="{StaticResource PropertyTextBlock}" Tag="{Binding PEBString}" Margin="0, 7, 3, 0" Content="PEB address:" />
-                    <Label Style="{StaticResource PropertyTextBlock}" Tag="{Binding ParentProcessString}" Margin="0, 7, 3, 0" Content="Parent:" />
+                    <Label Style="{StaticResource PropertyTextBlock}" Tag="{Binding PEB, Converter={StaticResource UlongToHexConverter}}" Margin="0, 7, 3, 0" Content="PEB address:" />
+                    <Label Style="{StaticResource PropertyTextBlock}" Tag="{Binding ParentName}" Margin="0, 7, 3, 0" Content="Parent:" />
                 </StackPanel>
             </Grid>
         </Border>

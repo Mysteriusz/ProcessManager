@@ -69,6 +69,13 @@ namespace ProcessManager.Profiling
         public static extern IntPtr GetProcessIOCurrentInfo(uint pid);
 
         //
+        // ---------------------------------- PROCESS_MODULE_INFO_STRUCT ----------------------------------
+        //
+
+        [DllImport(Profiler.DllPath, CallingConvention = CallingConvention.Cdecl)]
+        public static extern IntPtr GetProcessAllModuleInfo(uint pid, out uint size);
+
+        //
         // ---------------------------------- PROCESS_MEMORY_INFO_STRUCT ----------------------------------
         //
 
@@ -81,6 +88,8 @@ namespace ProcessManager.Profiling
 
         [DllImport(Profiler.DllPath, CallingConvention = CallingConvention.Cdecl)]
         public static extern IntPtr GetProcessInfo(ulong infoFlags, uint pid);
+        [DllImport(Profiler.DllPath, CallingConvention = CallingConvention.Cdecl)]
+        public static extern IntPtr FreeProcessInfo(IntPtr info);
         [DllImport(Profiler.DllPath, CallingConvention = CallingConvention.Cdecl)]
         public static extern IntPtr GetAllProcessInfo(ulong infoFlags, out uint size);
     }

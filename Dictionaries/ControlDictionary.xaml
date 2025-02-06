@@ -1,10 +1,14 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:helpers="clr-namespace:ProcessManager.WPFHelpers"
+                    x:Class="ProcessManager.WPFHelpers.ApplicationDataGrid">
 
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="ColorDictionary.xaml" />
+        <ResourceDictionary Source="DoubleDictionary.xaml" />
+        <ResourceDictionary Source="IconDictionary.xaml" />
     </ResourceDictionary.MergedDictionaries>
-
+    
     <Style TargetType="Border" x:Key="CustomBorderStyle">
         <Setter Property="Margin" Value="5"/>
         <Setter Property="BorderThickness" Value="1"/>
@@ -22,4 +26,107 @@
         <Setter Property="Height" Value="18" />
         <Setter Property="Margin" Value="15, -10, 0, 0" />
     </Style>
+
+    <Thickness x:Key="ApplicationGridMargin" Left="5" Top="0" Right="5" Bottom="0" />
+    <Style x:Key="ApplicationDataGridColumnHeader" TargetType="DataGridColumnHeader">
+        <Style.Setters>
+            <Setter Property="Background" Value="{StaticResource DefaultColor}"/>
+            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+
+            <Setter Property="ContentTemplate">
+                <Setter.Value>
+                    <DataTemplate>
+                        <Grid Height="22">
+                            <TextBlock Text="{Binding}" Foreground="#b0b0b0" Margin="{StaticResource ApplicationGridMargin}" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+                            <Image Source="{StaticResource ArrowDownIcon}" Margin="{StaticResource ApplicationGridMargin}" Width="8" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+                            <Border BorderBrush="{StaticResource DarkTextColor}" BorderThickness="0, 0, 1, 0"/>
+                        </Grid>
+                    </DataTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style.Setters>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="{StaticResource MouseOverColor}" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+    <Style x:Key="ApplicationDataGridRow" TargetType="DataGridRow">
+        <Style.Setters>
+            <Setter Property="Background" Value="{StaticResource DefaultColor}"/>
+            <EventSetter Event="MouseDoubleClick" Handler="ApplicationListRow_MouseDoubleClick"/>
+            <EventSetter Event="PreviewKeyUp" Handler="ApplicationListRow_PreviewKeyUp"/>
+        </Style.Setters>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="{StaticResource MouseOverColor}"/>
+            </Trigger>
+
+            <Trigger Property="IsSelected" Value="True">
+                <Setter Property="Background" Value="{StaticResource SelectColor}" />
+            </Trigger>
+
+            <MultiTrigger>
+                <MultiTrigger.Conditions>
+                    <Condition Property="IsMouseOver" Value="True"/>
+                    <Condition Property="IsSelected" Value="True"/>
+                </MultiTrigger.Conditions>
+                <Setter Property="Background" Value="{StaticResource MouseOverSelectColor}" />
+            </MultiTrigger>
+        </Style.Triggers>
+    </Style>
+    <Style x:Key="ApplicationDataGridCell" TargetType="DataGridCell">
+        <Style.Setters>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="Foreground" Value="{StaticResource LightTextColor}"/>
+            <Setter Property="Margin" Value="2, 0, 0, 0"/>
+            <Setter Property="Height" Value="20"/>
+        </Style.Setters>
+        <Style.Triggers>
+            <Trigger Property="IsSelected" Value="True">
+                <Setter Property="Background" Value="Transparent" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+    <Style x:Key="ApplicationDataGridScrollBarThumb" TargetType="Thumb">
+        <Style.Setters>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate>
+                        <Grid>
+                            <Rectangle Fill="Transparent"/>
+                            <Rectangle Fill="{StaticResource DarkTextColor}" Margin="7, 0, 7, 0" RadiusX="5" RadiusY="1.5" />
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style.Setters>
+    </Style>
+    <Style x:Key="ApplicationDataGrid" TargetType="DataGrid">
+        <Setter Property="Background" Value="#1a1a1a"/>
+        <Setter Property="BorderBrush" Value="#1a1a1a"/>
+        <Setter Property="GridLinesVisibility" Value="None"/>
+        <Setter Property="VerticalGridLinesBrush" Value="#404040"/>
+        <Setter Property="VerticalScrollBarVisibility" Value="Auto"/>
+        <Setter Property="HorizontalScrollBarVisibility" Value="Disabled"/>
+        <Setter Property="HeadersVisibility" Value="Column"/>
+        <Setter Property="SelectionUnit" Value="FullRow"/>
+        <Setter Property="SelectionMode" Value="Single"/>
+        <Setter Property="IsReadOnly" Value="True"/>
+        <Setter Property="EnableRowVirtualization" Value="True"/>
+        <Setter Property="EnableColumnVirtualization" Value="True"/>
+        <Setter Property="AutoGenerateColumns" Value="False"/>
+        <Setter Property="CellStyle" Value="{StaticResource ApplicationDataGridCell}"/>
+        <Setter Property="RowStyle" Value="{StaticResource ApplicationDataGridRow}"/>
+        <Setter Property="ColumnHeaderStyle" Value="{StaticResource ApplicationDataGridColumnHeader}"/>
+    </Style>
+
+    <ControlTemplate x:Key="ListScrollBar" TargetType="ScrollBar">
+        <Track Margin="0, -20, 0, 0" IsDirectionReversed="True">
+            <Track.Thumb>
+                <Thumb Style="{StaticResource ApplicationDataGridScrollBarThumb}" DragDelta="Thumb_ScrollBarDragDelta" />
+            </Track.Thumb>
+        </Track>
+    </ControlTemplate>
 </ResourceDictionary>

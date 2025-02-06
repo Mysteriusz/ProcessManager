@@ -2,6 +2,7 @@
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows;
+using System.Diagnostics;
 
 namespace ProcessManager.Windows
 {
@@ -17,6 +18,7 @@ namespace ProcessManager.Windows
 
         private readonly ProcessPropertiesGeneralPage _generalPage = new();
         private readonly ProcessPropertiesStatisticsPage _statsPage = new();
+        private readonly ProcessPropertiesModulesPage _modPage = new();
 
         private void PropertiesButton_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {   
@@ -37,6 +39,8 @@ namespace ProcessManager.Windows
                     case "Handles":
                         break;
                     case "Modules":
+                        _modPage.DataContext = this.DataContext;
+                        PropertiesPageFrame.Navigate(_modPage);
                         break;
                     case "Threads":
                         break;

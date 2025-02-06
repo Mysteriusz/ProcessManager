@@ -18,7 +18,7 @@ namespace ProcessManager.Profiling
         {
             try
             {
-                return Marshal.PtrToStringUTF8(ptr) ?? "N/A";
+                return Marshal.PtrToStringUTF8(ptr) ?? "N/A"; 
             }
             catch { return "N/A"; }
         }

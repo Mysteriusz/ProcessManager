@@ -1,4 +1,5 @@
-﻿using System.Globalization;
+﻿using ProcessManager.Profiling;
+using System.Globalization;
 using System.Windows.Data;
 
 namespace ProcessManager.WPFHelpers
@@ -21,6 +22,24 @@ namespace ProcessManager.WPFHelpers
             throw new NotImplementedException();
         }
     }
+
+    public class IntPtrToStringConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (value is IntPtr ptr)
+            {
+                return Profiler.ToString(ptr);
+            }
+            return "N/A";
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
     public class UlongToStringConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
@@ -55,6 +74,23 @@ namespace ProcessManager.WPFHelpers
                 }
 
                 return $"{len:0.##} {sizes[order]}";
+            }
+
+            return string.Empty;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+    public class UlongToHexConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (value is ulong val)
+            {
+                return "0x" + val.ToString("X");
             }
 
             return string.Empty;
@@ -100,6 +136,24 @@ namespace ProcessManager.WPFHelpers
                 }
 
                 return $"{len:0.##} {sizes[order]}";
+            }
+
+            return string.Empty;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    public class UintToHexConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (value is uint val)
+            {
+                return "0x" + val.ToString("X");
             }
 
             return string.Empty;

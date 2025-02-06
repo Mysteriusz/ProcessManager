@@ -1,22 +1,22 @@
-﻿using ProcessManager.Profiling;
-using ProcessManager.Profiling.Models.Process;
-using System.Diagnostics;
+﻿using ProcessManager.Profiling.Models.Process;
+using ProcessManager.Profiling;
 using System.Windows.Controls;
-using System.Windows.Controls.Ribbon;
+using System.Runtime.InteropServices;
+using System.Diagnostics;
 
 namespace ProcessManager.Pages.ProcessProperties
 {
     /// <summary>
-    /// Interaction logic for ProcessPropertiesStatisticsPage.xaml
+    /// Interaction logic for ProcessPropertiesModulesPage.xaml
     /// </summary>
-    public partial class ProcessPropertiesStatisticsPage : Page
+    public partial class ProcessPropertiesModulesPage : Page
     {
-        public ulong UpdateFlags { get; set; } = (ulong)(ProcessInfoFlags.ProcessTimes | ProcessInfoFlags.ProcessHandlesInfo | ProcessInfoFlags.ProcessCycleCount | ProcessInfoFlags.ProcessMemoryInfo | ProcessInfoFlags.ProcessIOInfo);
-        public int UpdateDelay { get; set; } = 1000;
+        public ulong UpdateFlags { get; set; } = (ulong)(ProcessInfoFlags.ProcessModulesInfo);
+        public int UpdateDelay { get; set; } = 10000;
         public ProcessInfo? Process { get; set; }
         public CancellationTokenSource? Token { get; set; }
 
-        public ProcessPropertiesStatisticsPage()
+        public ProcessPropertiesModulesPage()
         {
             InitializeComponent();
         }
@@ -26,6 +26,9 @@ namespace ProcessManager.Pages.ProcessProperties
             Process = DataContext as ProcessInfo;
             Token = new CancellationTokenSource();
 
+            if (Process == null)
+                throw new Exception();
+
             UpdateThread().Start();
         }
         private void Page_Unloaded(object sender, System.Windows.RoutedEventArgs e)
@@ -33,7 +36,7 @@ namespace ProcessManager.Pages.ProcessProperties
             Token!.Cancel();
         }
 
-        public Thread UpdateThread()
+        private Thread UpdateThread()
         {
             return new Thread(async () =>
             {
@@ -47,8 +50,10 @@ namespace ProcessManager.Pages.ProcessProperties
                     lock (threadLock)
                     {
                         IntPtr ptr = ProcessProfiler.GetProcessInfo(UpdateFlags, Process.PID);
-                        ProcessInfoStruct str = Profiler.ToStruct<ProcessInfoStruct>(ptr);
-                        Process.Read(UpdateFlags, str);
+
+                        ProcessInfoStruct info = Profiler.ToStruct<ProcessInfoStruct>(ptr);
+                        Process.Read(UpdateFlags, info);
+                        ProcessProfiler.FreeProcessInfo(ptr);
                     }
 
                     await Task.Delay(UpdateDelay);

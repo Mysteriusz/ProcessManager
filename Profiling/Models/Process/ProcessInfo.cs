@@ -3,6 +3,9 @@ using System.ComponentModel;
 using System.Windows.Media;
 using System.Drawing;
 using System.IO;
+using System.Diagnostics;
+using System.Collections.ObjectModel;
+using System.Windows;
 
 namespace ProcessManager.Profiling.Models.Process
 {
@@ -12,22 +15,176 @@ namespace ProcessManager.Profiling.Models.Process
         // ---------------------------------- PROPERTIES ----------------------------------
         //
 
-        public string Name { get; set; } = "N/A";
-        public string ParentName { get; set; } = "N/A";
-        public string User { get; set; } = "N/A";
-        public string ImageName { get; set; } = "N/A";
-        public string Priority { get; set; } = "N/A";
-        public string Version { get; set; } = "N/A";
-        public string IntegrityLevel { get; set; } = "N/A";
-        public string ArchitectureType { get; set; } = "N/A";
-        public string CommandLine { get; set; } = "N/A";
-        public string Description { get; set; } = "N/A";
-        public ulong PEB { get; set; } = 0;
-        public uint PID { get; set; } = 0;
-        public uint PPID { get; set; } = 0;
+        private string _name = "N/A";
+        private string _parentName = "N/A";
+        private string _user = "N/A";
+        private string _imageName = "N/A";
+        private string _priority = "N/A";
+        private string _version = "N/A";
+        private string _integrityLevel = "N/A";
+        private string _architectureType = "N/A";
+        private string _commandLine = "N/A";
+        private string _description = "N/A";
+        private ulong _peb = 0;
+        private uint _pid = 0;
+        private uint _ppid = 0;
 
-        public string PEBString => "0x" + PEB.ToString("X2").ToLower();
-        public string ParentProcessString => ParentName + "(" + PPID + ")";
+        public string Name
+        {
+            get => _name;
+            set
+            {
+                if (_name != value)
+                {
+                    _name = value;
+                    OnPropertyChanged(nameof(Name));
+                }
+            }
+        }
+        public string ParentName
+        {
+            get => _parentName;
+            set
+            {
+                if (_parentName != value)
+                {
+                    _parentName = value;
+                    OnPropertyChanged(nameof(ParentName));
+                }
+            }
+        }
+        public string User
+        {
+            get => _user;
+            set
+            {
+                if (_user != value)
+                {
+                    _user = value;
+                    OnPropertyChanged(nameof(User));
+                }
+            }
+        }
+        public string ImageName
+        {
+            get => _imageName;
+            set
+            {
+                if (_imageName != value)
+                {
+                    _imageName = value;
+                    OnPropertyChanged(nameof(ImageName));
+                }
+            }
+        }
+        public string Priority
+        {
+            get => _priority;
+            set
+            {
+                if (_priority != value)
+                {
+                    _priority = value;
+                    OnPropertyChanged(nameof(Priority));
+                }
+            }
+        }
+        public string Version
+        {
+            get => _version;
+            set
+            {
+                if (_version != value)
+                {
+                    _version = value;
+                    OnPropertyChanged(nameof(Version));
+                }
+            }
+        }
+        public string IntegrityLevel
+        {
+            get => _integrityLevel;
+            set
+            {
+                if (_integrityLevel != value)
+                {
+                    _integrityLevel = value;
+                    OnPropertyChanged(nameof(IntegrityLevel));
+                }
+            }
+        }
+        public string ArchitectureType
+        {
+            get => _architectureType;
+            set
+            {
+                if (_architectureType != value)
+                {
+                    _architectureType = value;
+                    OnPropertyChanged(nameof(ArchitectureType));
+                }
+            }
+        }
+        public string CommandLine
+        {
+            get => _commandLine;
+            set
+            {
+                if (_commandLine != value)
+                {
+                    _commandLine = value;
+                    OnPropertyChanged(nameof(CommandLine));
+                }
+            }
+        }
+        public string Description
+        {
+            get => _description;
+            set
+            {
+                if (_description != value)
+                {
+                    _description = value;
+                    OnPropertyChanged(nameof(Description));
+                }
+            }
+        }
+        public ulong PEB
+        {
+            get => _peb;
+            set
+            {
+                if (_peb != value)
+                {
+                    _peb = value;
+                    OnPropertyChanged(nameof(PEB));
+                }
+            }
+        }
+        public uint PID
+        {
+            get => _pid;
+            set
+            {
+                if (_pid != value)
+                {
+                    _pid = value;
+                    OnPropertyChanged(nameof(PID));
+                }
+            }
+        }
+        public uint PPID
+        {
+            get => _ppid;
+            set
+            {
+                if (_ppid != value)
+                {
+                    _ppid = value;
+                    OnPropertyChanged(nameof(PPID));
+                }
+            }
+        }
 
         public Icon? Icon
         {
@@ -402,6 +559,42 @@ namespace ProcessManager.Profiling.Models.Process
             }
         }
 
+        // ------------------------ PROCESS_MODULES_INFO ------------------------ 
+
+        private ObservableCollection<ProcessModuleInfo> _modules = [];
+        private uint _moduleCount;
+
+        public ObservableCollection<ProcessModuleInfo> Modules
+        {
+            get => _modules;
+            set
+            {
+                if (_modules != value)
+                {
+                    _modules = value;
+                    OnPropertyChanged(nameof(Modules));
+                }
+            }
+        }
+        public uint ModuleCount
+        {
+            get => _moduleCount;
+            set
+            {
+                if (_moduleCount != value)
+                {
+                    _moduleCount = value;
+                    OnPropertyChanged(nameof(ModuleCount));
+                }
+            }
+        }
+
+        void UpdateModules(ProcessModuleInfo[] mods)
+        {
+            Modules.Clear();
+            foreach (var module in mods)
+                Modules.Add(module);
+        }
 
         // ------------------------ MISC ------------------------ 
 
@@ -595,6 +788,16 @@ namespace ProcessManager.Profiling.Models.Process
                 Other = infoStruct.ioInfo.other;
                 OtherBytes = infoStruct.ioInfo.otherBytes;
                 IOPriority = infoStruct.ioInfo.ioPriority;
+            }
+
+            if ((flags & (ulong)ProcessInfoFlags.ProcessModulesInfo) != 0)
+            {
+                ModuleCount = infoStruct.moduleCount;
+
+                Application.Current.Dispatcher.Invoke(() =>
+                {
+                    UpdateModules(Profiler.ToArray<ProcessModuleInfo>(infoStruct.modules, infoStruct.moduleCount));
+                });
             }
         }
 

@@ -23,6 +23,7 @@ namespace ProcessManager.Profiling.Models.Process
         ProcessCycleCount = 0x00004000,
         ProcessMemoryInfo = 0x00008000,
         ProcessIOInfo = 0x00010000,
+        ProcessModulesInfo = 0x00020000,
     }
 
     [StructLayout(LayoutKind.Sequential)]
@@ -73,6 +74,16 @@ namespace ProcessManager.Profiling.Models.Process
         public uint ioPriority;
     };
     [StructLayout(LayoutKind.Sequential)]
+    public struct ProcessModuleInfo
+    {
+        public IntPtr name { get; }
+        public IntPtr path { get; } 
+        public IntPtr description { get; }
+        public ulong address { get; }
+        public ulong size { get; }
+
+    }
+    [StructLayout(LayoutKind.Sequential)]
     public struct ProcessInfoStruct
     {
         public IntPtr name;
@@ -95,5 +106,8 @@ namespace ProcessManager.Profiling.Models.Process
         public ProcessHandlesInfoStruct handlesInfo;
         public ProcessMemoryInfo memoryInfo;
         public ProcessIOInfo ioInfo;
+
+        public uint moduleCount;
+        public IntPtr modules;
     }
 }
