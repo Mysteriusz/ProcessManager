@@ -3,6 +3,7 @@ using ProcessManager.Profiling;
 using System.Windows.Controls;
 using System.Runtime.InteropServices;
 using System.Diagnostics;
+using System.Threading;
 
 namespace ProcessManager.Pages.ProcessProperties
 {
@@ -12,6 +13,7 @@ namespace ProcessManager.Pages.ProcessProperties
     public partial class ProcessPropertiesModulesPage : Page
     {
         public ulong UpdateFlags { get; set; } = (ulong)(ProcessInfoFlags.ProcessModulesInfo);
+        public ulong ModuleUpdateFlags { get; set; } = (ulong)(ModuleInfoFlags.ModuleName | ModuleInfoFlags.ModulePath | ModuleInfoFlags.ModuleDescription | ModuleInfoFlags.ModuleAddress | ModuleInfoFlags.ModuleSize);
         public int UpdateDelay { get; set; } = 10000;
         public ProcessInfo? Process { get; set; }
         public CancellationTokenSource? Token { get; set; }
@@ -29,36 +31,26 @@ namespace ProcessManager.Pages.ProcessProperties
             if (Process == null)
                 throw new Exception();
 
-            UpdateThread().Start();
+            IntPtr ptr = ProcessProfiler.GetProcessInfo(UpdateFlags, ModuleUpdateFlags, Process.PID);
+            ProcessInfoStruct info = Profiler.ToStruct<ProcessInfoStruct>(ptr);
+            Process.Read(UpdateFlags, ModuleUpdateFlags, info);
+            ProcessProfiler.FreeProcessInfo(ptr);
         }
         private void Page_Unloaded(object sender, System.Windows.RoutedEventArgs e)
         {
-            Token!.Cancel();
-        }
+            Process?.Unload(UpdateFlags, ModuleUpdateFlags);
 
-        private Thread UpdateThread()
-        {
-            return new Thread(async () =>
-            {
-                if (Token == null || Process == null)
-                    return;
+            Token?.Cancel();
+            Token?.Dispose();
 
-                object threadLock = new object();
+            UpdateFlags = 0;
+            ModuleUpdateFlags = 0;
+            UpdateDelay = 0;
 
-                while (!Token.IsCancellationRequested)
-                {
-                    lock (threadLock)
-                    {
-                        IntPtr ptr = ProcessProfiler.GetProcessInfo(UpdateFlags, Process.PID);
+            Token = null;
+            Process = null;
 
-                        ProcessInfoStruct info = Profiler.ToStruct<ProcessInfoStruct>(ptr);
-                        Process.Read(UpdateFlags, info);
-                        ProcessProfiler.FreeProcessInfo(ptr);
-                    }
-
-                    await Task.Delay(UpdateDelay);
-                }
-            });
+            GC.Collect();
         }
     }
 }

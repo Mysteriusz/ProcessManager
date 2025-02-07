@@ -25,6 +25,15 @@ namespace ProcessManager.Profiling.Models.Process
         ProcessIOInfo = 0x00010000,
         ProcessModulesInfo = 0x00020000,
     }
+    [Flags]
+    public enum ModuleInfoFlags : ulong
+    {
+        ModuleName = 0x00000001,
+        ModulePath = 0x00000002,
+        ModuleDescription = 0x00000004,
+        ModuleAddress = 0x00000008,
+        ModuleSize = 0x00000010
+    }
 
     [StructLayout(LayoutKind.Sequential)]
     public struct FILETIME
@@ -32,7 +41,6 @@ namespace ProcessManager.Profiling.Models.Process
         public uint dwLowDateTime;
         public uint dwHighDateTime;
     }
-
     [StructLayout(LayoutKind.Sequential)]
     public struct ProcessHandlesInfoStruct
     {
@@ -51,7 +59,7 @@ namespace ProcessManager.Profiling.Models.Process
         public FILETIME totalTime;
     }
     [StructLayout(LayoutKind.Sequential)]
-    public struct ProcessMemoryInfo
+    public struct ProcessMemoryInfoStruct
     {
         public uint privateBytes;
         public uint peakPrivateBytes;
@@ -63,7 +71,7 @@ namespace ProcessManager.Profiling.Models.Process
         public ulong priority;
     };
     [StructLayout(LayoutKind.Sequential)]
-    public struct ProcessIOInfo
+    public struct ProcessIOInfoStruct
     {
         public ulong reads;
         public ulong readBytes;
@@ -74,13 +82,13 @@ namespace ProcessManager.Profiling.Models.Process
         public uint ioPriority;
     };
     [StructLayout(LayoutKind.Sequential)]
-    public struct ProcessModuleInfo
+    public struct ProcessModuleInfoStruct
     {
         public IntPtr name { get; }
         public IntPtr path { get; } 
         public IntPtr description { get; }
-        public ulong address { get; }
-        public ulong size { get; }
+        public UInt64 address { get; }
+        public UInt64 size { get; }
 
     }
     [StructLayout(LayoutKind.Sequential)]
@@ -104,8 +112,8 @@ namespace ProcessManager.Profiling.Models.Process
 
         public ProcessTimesInfoStruct timesInfo;
         public ProcessHandlesInfoStruct handlesInfo;
-        public ProcessMemoryInfo memoryInfo;
-        public ProcessIOInfo ioInfo;
+        public ProcessMemoryInfoStruct memoryInfo;
+        public ProcessIOInfoStruct ioInfo;
 
         public uint moduleCount;
         public IntPtr modules;

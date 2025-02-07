@@ -51,7 +51,7 @@ namespace ProcessManager.Pages
 
             ulong flags = (ulong)(ProcessInfoFlags.ProcessName | ProcessInfoFlags.ProcessImageName | ProcessInfoFlags.ProcessUser | ProcessInfoFlags.ProcessDescription | ProcessInfoFlags.ProcessPriority);
 
-            IntPtr ptr = ProcessProfiler.GetAllProcessInfo(flags, out uint size);
+            IntPtr ptr = ProcessProfiler.GetAllProcessInfo(flags, 0, out uint size);
             ProcessInfoStruct[] infos = Profiler.ToArray<ProcessInfoStruct>(ptr, size);
 
             for (int i = 0; i < size; i++)

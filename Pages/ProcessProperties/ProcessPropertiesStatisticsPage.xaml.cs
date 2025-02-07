@@ -1,8 +1,7 @@
-﻿using ProcessManager.Profiling;
-using ProcessManager.Profiling.Models.Process;
-using System.Diagnostics;
+﻿using ProcessManager.Profiling.Models.Process;
+using ProcessManager.Profiling;
 using System.Windows.Controls;
-using System.Windows.Controls.Ribbon;
+using System.Diagnostics;
 
 namespace ProcessManager.Pages.ProcessProperties
 {
@@ -26,31 +25,39 @@ namespace ProcessManager.Pages.ProcessProperties
             Process = DataContext as ProcessInfo;
             Token = new CancellationTokenSource();
 
-            UpdateThread().Start();
+            UpdateTask().Start();
         }
         private void Page_Unloaded(object sender, System.Windows.RoutedEventArgs e)
         {
-            Token!.Cancel();
+            Process?.Unload(UpdateFlags, 0);
+
+            Token?.Cancel();
+            Token?.Dispose();
+
+            UpdateFlags = 0;
+            UpdateDelay = 0;
+
+            Token = null;
+            Process = null;
+
+            GC.Collect();
         }
 
-        public Thread UpdateThread()
+        public Task UpdateTask()
         {
-            return new Thread(async () =>
+            return new Task(async () =>
             {
                 if (Token == null || Process == null)
                     return;
 
-                object threadLock = new object();
-
-                while (!Token.IsCancellationRequested)
+                while (Token != null && !Token.IsCancellationRequested)
                 {
-                    lock (threadLock)
-                    {
-                        IntPtr ptr = ProcessProfiler.GetProcessInfo(UpdateFlags, Process.PID);
-                        ProcessInfoStruct str = Profiler.ToStruct<ProcessInfoStruct>(ptr);
-                        Process.Read(UpdateFlags, str);
-                    }
+                    IntPtr ptr = ProcessProfiler.GetProcessInfo(UpdateFlags, 0, Process.PID);
+                    ProcessInfoStruct str = Profiler.ToStruct<ProcessInfoStruct>(ptr);
+                    Process.Read(UpdateFlags, 0, str);
 
+                    ProcessProfiler.FreeProcessInfo(ptr);
+                
                     await Task.Delay(UpdateDelay);
                 }
             });

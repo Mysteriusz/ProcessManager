@@ -3,9 +3,6 @@ using System.ComponentModel;
 using System.Windows.Media;
 using System.Drawing;
 using System.IO;
-using System.Diagnostics;
-using System.Collections.ObjectModel;
-using System.Windows;
 
 namespace ProcessManager.Profiling.Models.Process
 {
@@ -561,10 +558,10 @@ namespace ProcessManager.Profiling.Models.Process
 
         // ------------------------ PROCESS_MODULES_INFO ------------------------ 
 
-        private ObservableCollection<ProcessModuleInfo> _modules = [];
+        private ProcessModuleInfo[] _modules = [];
         private uint _moduleCount;
 
-        public ObservableCollection<ProcessModuleInfo> Modules
+        public ProcessModuleInfo[] Modules
         {
             get => _modules;
             set
@@ -588,14 +585,7 @@ namespace ProcessManager.Profiling.Models.Process
                 }
             }
         }
-
-        void UpdateModules(ProcessModuleInfo[] mods)
-        {
-            Modules.Clear();
-            foreach (var module in mods)
-                Modules.Add(module);
-        }
-
+        
         // ------------------------ MISC ------------------------ 
 
         private double _cpuUsage;
@@ -683,69 +673,69 @@ namespace ProcessManager.Profiling.Models.Process
         // ---------------------------------- METHODS ----------------------------------
         //
 
-        public void Read(ulong flags, ProcessInfoStruct infoStruct)
+        public void Read(ulong processFlags, ulong moduleFlags, ProcessInfoStruct infoStruct)
         {
-            if ((flags & (ulong)ProcessInfoFlags.ProcessName) != 0)
+            if ((processFlags & (ulong)ProcessInfoFlags.ProcessName) != 0)
             {
                 Name = Profiler.ToString(infoStruct.name) ?? "N/A";
             }
 
-            if ((flags & (ulong)ProcessInfoFlags.ProcessParentName) != 0)
+            if ((processFlags & (ulong)ProcessInfoFlags.ProcessParentName) != 0)
             {
                 ParentName = Profiler.ToString(infoStruct.parentProcessName) ?? "N/A";
             }
 
-            if ((flags & (ulong)ProcessInfoFlags.ProcessImageName) != 0)
+            if ((processFlags & (ulong)ProcessInfoFlags.ProcessImageName) != 0)
             {
                 ImageName = Profiler.ToString(infoStruct.imageName) ?? "N/A";
             }
 
-            if ((flags & (ulong)ProcessInfoFlags.ProcessUser) != 0)
+            if ((processFlags & (ulong)ProcessInfoFlags.ProcessUser) != 0)
             {
                 User = Profiler.ToString(infoStruct.user) ?? "N/A";
             }
 
-            if ((flags & (ulong)ProcessInfoFlags.ProcessPriority) != 0)
+            if ((processFlags & (ulong)ProcessInfoFlags.ProcessPriority) != 0)
             {
                 Priority = Profiler.ToString(infoStruct.priority) ?? "N/A";
             }
 
-            if ((flags & (ulong)ProcessInfoFlags.ProcessFileVersion) != 0)
+            if ((processFlags & (ulong)ProcessInfoFlags.ProcessFileVersion) != 0)
             {
                 Version = Profiler.ToString(infoStruct.fileVersion) ?? "N/A";
             }
 
-            if ((flags & (ulong)ProcessInfoFlags.ProcessArchitectureType) != 0)
+            if ((processFlags & (ulong)ProcessInfoFlags.ProcessArchitectureType) != 0)
             {
                 ArchitectureType = Profiler.ToString(infoStruct.architectureType) ?? "N/A";
             }
 
-            if ((flags & (ulong)ProcessInfoFlags.ProcessIntegrityLevel) != 0)
+            if ((processFlags & (ulong)ProcessInfoFlags.ProcessIntegrityLevel) != 0)
             {
                 IntegrityLevel = Profiler.ToString(infoStruct.integrityLevel) ?? "N/A";
             }
 
-            if ((flags & (ulong)ProcessInfoFlags.ProcessCommandLine) != 0)
+            if ((processFlags & (ulong)ProcessInfoFlags.ProcessCommandLine) != 0)
             {
                 CommandLine = Profiler.ToString(infoStruct.cmd) ?? "N/A";
             }
 
-            if ((flags & (ulong)ProcessInfoFlags.ProcessDescription) != 0)
+            if ((processFlags & (ulong)ProcessInfoFlags.ProcessDescription) != 0)
             {
                 Description = Profiler.ToString(infoStruct.description) ?? "N/A";
             }
 
-            if ((flags & (ulong)ProcessInfoFlags.ProcessPPID) != 0)
+            if ((processFlags & (ulong)ProcessInfoFlags.ProcessPPID) != 0)
             {
                 PPID = infoStruct.ppid;
             }
 
-            if ((flags & (ulong)ProcessInfoFlags.ProcessPEB) != 0)
+            if ((processFlags & (ulong)ProcessInfoFlags.ProcessPEB) != 0)
             {
                 PEB = infoStruct.peb;
             }
 
-            if ((flags & (ulong)ProcessInfoFlags.ProcessTimes) != 0)
+            if ((processFlags & (ulong)ProcessInfoFlags.ProcessTimes) != 0)
             {
                 CreationTime = Profiler.ToDateTime(infoStruct.timesInfo.creationTime) ?? new DateTime();
                 ExitTime = Profiler.ToDateTime(infoStruct.timesInfo.exitTime, true) ?? new DateTime();
@@ -754,7 +744,7 @@ namespace ProcessManager.Profiling.Models.Process
                 TotalTime = Profiler.ToDateTime(infoStruct.timesInfo.totalTime, true) ?? new DateTime();
             }
 
-            if ((flags & (ulong)ProcessInfoFlags.ProcessHandlesInfo) != 0)
+            if ((processFlags & (ulong)ProcessInfoFlags.ProcessHandlesInfo) != 0)
             {
                 HandleCount = infoStruct.handlesInfo.count;
                 HandlePeakCount = infoStruct.handlesInfo.peakCount;
@@ -762,12 +752,12 @@ namespace ProcessManager.Profiling.Models.Process
                 UserHandleCount = infoStruct.handlesInfo.userCount;
             }
 
-            if ((flags & (ulong)ProcessInfoFlags.ProcessCycleCount) != 0)
+            if ((processFlags & (ulong)ProcessInfoFlags.ProcessCycleCount) != 0)
             {
                 CycleCount = infoStruct.cycles;
             }
 
-            if ((flags & (ulong)ProcessInfoFlags.ProcessMemoryInfo) != 0)
+            if ((processFlags & (ulong)ProcessInfoFlags.ProcessMemoryInfo) != 0)
             {
                 PrivateBytes = infoStruct.memoryInfo.privateBytes;
                 PeakPrivateBytes = infoStruct.memoryInfo.peakPrivateBytes;
@@ -779,7 +769,7 @@ namespace ProcessManager.Profiling.Models.Process
                 PageFaults = infoStruct.memoryInfo.pageFaults;
             }
 
-            if ((flags & (ulong)ProcessInfoFlags.ProcessIOInfo) != 0)
+            if ((processFlags & (ulong)ProcessInfoFlags.ProcessIOInfo) != 0)
             {
                 Reads = infoStruct.ioInfo.reads;
                 ReadBytes = infoStruct.ioInfo.readBytes;
@@ -790,16 +780,143 @@ namespace ProcessManager.Profiling.Models.Process
                 IOPriority = infoStruct.ioInfo.ioPriority;
             }
 
-            if ((flags & (ulong)ProcessInfoFlags.ProcessModulesInfo) != 0)
+            if ((processFlags & (ulong)ProcessInfoFlags.ProcessModulesInfo) != 0)
             {
                 ModuleCount = infoStruct.moduleCount;
-
-                Application.Current.Dispatcher.Invoke(() =>
-                {
-                    UpdateModules(Profiler.ToArray<ProcessModuleInfo>(infoStruct.modules, infoStruct.moduleCount));
-                });
+                Modules = ConvertToModules(Profiler.ToArray<ProcessModuleInfoStruct>(infoStruct.modules, infoStruct.moduleCount), moduleFlags)!;
             }
         }
+        public void Unload(ulong processFlags, ulong moduleFlags)
+        {
+            if ((processFlags & (ulong)ProcessInfoFlags.ProcessName) != 0)
+            {
+                _name = "";
+            }
+
+            if ((processFlags & (ulong)ProcessInfoFlags.ProcessParentName) != 0)
+            {
+                _parentName = "";
+            }
+
+            if ((processFlags & (ulong)ProcessInfoFlags.ProcessImageName) != 0)
+            {
+                _imageName = "";
+            }
+
+            if ((processFlags & (ulong)ProcessInfoFlags.ProcessUser) != 0)
+            {
+                _user = "";
+            }
+
+            if ((processFlags & (ulong)ProcessInfoFlags.ProcessPriority) != 0)
+            {
+                _priority = "";
+            }
+
+            if ((processFlags & (ulong)ProcessInfoFlags.ProcessFileVersion) != 0)
+            {
+                _version = "";
+            }
+
+            if ((processFlags & (ulong)ProcessInfoFlags.ProcessArchitectureType) != 0)
+            {
+                ArchitectureType = "";
+            }
+
+            if ((processFlags & (ulong)ProcessInfoFlags.ProcessIntegrityLevel) != 0)
+            {
+                _integrityLevel = "";
+            }
+
+            if ((processFlags & (ulong)ProcessInfoFlags.ProcessCommandLine) != 0)
+            {
+                _commandLine = "";
+            }
+
+            if ((processFlags & (ulong)ProcessInfoFlags.ProcessDescription) != 0)
+            {
+                _description = "";
+            }
+
+            if ((processFlags & (ulong)ProcessInfoFlags.ProcessPPID) != 0)
+            {
+                _ppid = 0;
+            }
+
+            if ((processFlags & (ulong)ProcessInfoFlags.ProcessPEB) != 0)
+            {
+                _peb = 0;
+            }
+
+            if ((processFlags & (ulong)ProcessInfoFlags.ProcessTimes) != 0)
+            {
+                _creationTime = default;
+                _exitTime = default;
+                _userTime = default;
+                _kernelTime = default;
+                _totalTime = default;
+            }
+
+            if ((processFlags & (ulong)ProcessInfoFlags.ProcessHandlesInfo) != 0)
+            {
+                _handleCount = 0;
+                _handlePeakCount = 0;
+                _handleGdiCount = 0;
+                _handleUserCount = 0;
+            }
+
+            if ((processFlags & (ulong)ProcessInfoFlags.ProcessCycleCount) != 0)
+            {
+                _cycleCount = 0;
+            }
+
+            if ((processFlags & (ulong)ProcessInfoFlags.ProcessMemoryInfo) != 0)
+            {
+                _privateBytes = 0;
+                _peakPrivateBytes = 0;
+                _virtualBytes = 0;
+                _peakVirtualBytes = 0;
+                _workingBytes = 0;
+                _peakWorkingBytes = 0;
+                _pagePriority = 0;
+                _pageFaults = 0;
+            }
+
+            if ((processFlags & (ulong)ProcessInfoFlags.ProcessIOInfo) != 0)
+            {
+                _reads = 0;
+                _readBytes = 0;
+                _writes = 0;
+                _writeBytes = 0;
+                _other = 0;
+                _otherBytes = 0;
+                _ioPriority = 0;
+            }
+
+            if ((processFlags & (ulong)ProcessInfoFlags.ProcessModulesInfo) != 0)
+            {
+                foreach (var mod in _modules)
+                    mod.Unload(moduleFlags);
+                
+                _moduleCount = 0;
+                _modules = [];
+            }
+        }
+
+        public ProcessModuleInfo[] ConvertToModules(ProcessModuleInfoStruct[] moduleInfoStructs, ulong flags)
+        {
+            var modules = new ProcessModuleInfo[moduleInfoStructs.Length];
+
+            for (int i = 0; i < moduleInfoStructs.Length; i++)
+            {
+                var moduleInfo = new ProcessModuleInfo();
+                moduleInfo.Read(flags, moduleInfoStructs[i]);  // Fill module info using Read method
+                modules[i] = moduleInfo;
+            }
+
+            return modules;
+        }
+
 
         public event PropertyChangedEventHandler? PropertyChanged;
         private void OnPropertyChanged(string propertyName)

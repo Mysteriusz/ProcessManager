@@ -36,11 +36,11 @@
                     </DataGrid.Resources>
 
                     <DataGrid.Columns>
-                        <DataGridTextColumn Header="Name" Binding="{Binding name, Converter={StaticResource IntPtrToStringConverter}}" Width="*" />
-                        <DataGridTextColumn Header="Path" Binding="{Binding path, Converter={StaticResource IntPtrToStringConverter}}" Width="*" />
-                        <DataGridTextColumn Header="Base Address" Binding="{Binding address, Converter={StaticResource UlongToHexConverter}}" Width="*" />
-                        <DataGridTextColumn Header="Size" Binding="{Binding size, Converter={StaticResource UlongToBytesConverter}}" Width="*" />
-                        <DataGridTextColumn Header="Description" Binding="{Binding description, Converter={StaticResource IntPtrToStringConverter}}" Width="*" />
+                        <DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="*" />
+                        <DataGridTextColumn Header="Path" Binding="{Binding Path}" Width="*" />
+                        <DataGridTextColumn Header="Base Address" Binding="{Binding Address, Converter={StaticResource UlongToHexConverter}}" Width="*" />
+                        <DataGridTextColumn Header="Size" Binding="{Binding Size, Converter={StaticResource UlongToBytesConverter}}" Width="*" />
+                        <DataGridTextColumn Header="Description" Binding="{Binding Description}" Width="*" />
                     </DataGrid.Columns>
                 </DataGrid>
             </Grid>
