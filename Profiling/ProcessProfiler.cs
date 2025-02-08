@@ -55,13 +55,6 @@ namespace ProcessManager.Profiling
         public static extern IntPtr GetProcessCurrentTimes(uint pid, out uint size);
 
         //
-        // ---------------------------------- PROCESS_HANDLES_INFO_STRUCT ----------------------------------
-        //
-
-        [DllImport(Profiler.DllPath, CallingConvention = CallingConvention.Cdecl)]
-        public static extern IntPtr GetProcessHandlesInfo(uint pid);
-
-        //
         // ---------------------------------- PROCESS_MEMORY_INFO_STRUCT ----------------------------------
         //
 
@@ -76,6 +69,13 @@ namespace ProcessManager.Profiling
         public static extern IntPtr GetProcessAllModuleInfo(ulong moduleInfoFlags, uint pid, out uint size);
 
         //
+        // ---------------------------------- PROCESS_HANDLE_INFO_STRUCT ----------------------------------
+        //
+
+        [DllImport(Profiler.DllPath, CallingConvention = CallingConvention.Cdecl)]
+        public static extern IntPtr GetProcessAllHandleInfo(ulong handleInfoFlags, uint pid, out uint size);
+
+        //
         // ---------------------------------- PROCESS_MEMORY_INFO_STRUCT ----------------------------------
         //
 
@@ -87,10 +87,10 @@ namespace ProcessManager.Profiling
         //
 
         [DllImport(Profiler.DllPath, CallingConvention = CallingConvention.Cdecl)]
-        public static extern IntPtr GetProcessInfo(ulong processInfoFlags, ulong moduleInfoFlags, uint pid);
+        public static extern IntPtr GetProcessInfo(ulong processInfoFlags, ulong moduleInfoFlags, ulong handleInfoFlags, uint pid);
         [DllImport(Profiler.DllPath, CallingConvention = CallingConvention.Cdecl)]
         public static extern IntPtr FreeProcessInfo(IntPtr info);
         [DllImport(Profiler.DllPath, CallingConvention = CallingConvention.Cdecl)]
-        public static extern IntPtr GetAllProcessInfo(ulong processInfoFlags, ulong moduleInfoFlags, out uint size);
+        public static extern IntPtr GetAllProcessInfo(ulong processInfoFlags, ulong moduleInfoFlags, ulong handleInfoFlags, out uint size);
     }
 }

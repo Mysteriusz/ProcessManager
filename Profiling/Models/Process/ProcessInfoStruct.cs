@@ -1,5 +1,4 @@
-﻿using System;
-using System.Runtime.InteropServices;
+﻿using System.Runtime.InteropServices;
 
 namespace ProcessManager.Profiling.Models.Process
 {
@@ -34,20 +33,20 @@ namespace ProcessManager.Profiling.Models.Process
         ModuleAddress = 0x00000008,
         ModuleSize = 0x00000010
     }
+    [Flags]
+    public enum HandleInfoFlags : ulong
+    {
+        HandleName = 0x00000001,
+        HandleType = 0x00000002,
+        HandleAddress = 0x00000004,
+    }
+
 
     [StructLayout(LayoutKind.Sequential)]
     public struct FILETIME
     {
-        public uint dwLowDateTime;
-        public uint dwHighDateTime;
-    }
-    [StructLayout(LayoutKind.Sequential)]
-    public struct ProcessHandlesInfoStruct
-    {
-        public UInt32 count;
-        public UInt32 peakCount;
-        public UInt32 gdiCount;
-        public UInt32 userCount;
+        public UInt32 dwLowDateTime;
+        public UInt32 dwHighDateTime;
     }
     [StructLayout(LayoutKind.Sequential)]
     public struct ProcessTimesInfoStruct
@@ -73,24 +72,14 @@ namespace ProcessManager.Profiling.Models.Process
     [StructLayout(LayoutKind.Sequential)]
     public struct ProcessIOInfoStruct
     {
-        public ulong reads;
-        public ulong readBytes;
-        public ulong writes;
-        public ulong writeBytes;
-        public ulong other;
-        public ulong otherBytes;
-        public uint ioPriority;
+        public UInt64 reads;
+        public UInt64 readBytes;
+        public UInt64 writes;
+        public UInt64 writeBytes;
+        public UInt64 other;
+        public UInt64 otherBytes;
+        public UInt32 ioPriority;
     };
-    [StructLayout(LayoutKind.Sequential)]
-    public struct ProcessModuleInfoStruct
-    {
-        public IntPtr name { get; }
-        public IntPtr path { get; } 
-        public IntPtr description { get; }
-        public UInt64 address { get; }
-        public UInt64 size { get; }
-
-    }
     [StructLayout(LayoutKind.Sequential)]
     public struct ProcessInfoStruct
     {
@@ -111,11 +100,16 @@ namespace ProcessManager.Profiling.Models.Process
         public UInt64 cycles;
 
         public ProcessTimesInfoStruct timesInfo;
-        public ProcessHandlesInfoStruct handlesInfo;
         public ProcessMemoryInfoStruct memoryInfo;
         public ProcessIOInfoStruct ioInfo;
 
-        public uint moduleCount;
+        public UInt32 moduleCount;
         public IntPtr modules;
+
+        public UInt32 handleCount;
+        public UInt32 handlePeakCount;
+        public UInt32 gdiHandleCount;
+        public UInt32 userHandleCount;
+        public IntPtr handles;
     }
 }

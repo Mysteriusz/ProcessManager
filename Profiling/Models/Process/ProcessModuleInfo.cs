@@ -1,6 +1,4 @@
 ﻿using System.ComponentModel;
-using System.Reflection;
-using System.Windows.Media.Effects;
 
 namespace ProcessManager.Profiling.Models.Process
 {

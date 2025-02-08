@@ -3,6 +3,8 @@ using System.ComponentModel;
 using System.Windows.Media;
 using System.Drawing;
 using System.IO;
+using System.Runtime.CompilerServices;
+using System.Diagnostics;
 
 namespace ProcessManager.Profiling.Models.Process
 {
@@ -286,12 +288,14 @@ namespace ProcessManager.Profiling.Models.Process
             }
         }
 
-        // ------------------------ PROCESS_HANDLES_INFO ------------------------ 
+        // ------------------------ PROCESS_HANDLE_INFO ------------------------ 
 
         private uint _handleCount;
         private uint _handlePeakCount;
         private uint _handleGdiCount;
         private uint _handleUserCount;
+        private ProcessHandleInfo[] _handles = [];
+
         public uint HandleCount
         {
             get
@@ -349,6 +353,21 @@ namespace ProcessManager.Profiling.Models.Process
                 {
                     _handleUserCount = value;
                     OnPropertyChanged(nameof(UserHandleCount));
+                }
+            }
+        }
+        public ProcessHandleInfo[] Handles
+        {
+            get
+            {
+                return _handles;
+            }
+            set
+            {
+                if (_handles != value)
+                {
+                    _handles = value;
+                    OnPropertyChanged(nameof(Handles));
                 }
             }
         }
@@ -558,21 +577,9 @@ namespace ProcessManager.Profiling.Models.Process
 
         // ------------------------ PROCESS_MODULES_INFO ------------------------ 
 
-        private ProcessModuleInfo[] _modules = [];
         private uint _moduleCount;
+        private ProcessModuleInfo[] _modules = [];
 
-        public ProcessModuleInfo[] Modules
-        {
-            get => _modules;
-            set
-            {
-                if (_modules != value)
-                {
-                    _modules = value;
-                    OnPropertyChanged(nameof(Modules));
-                }
-            }
-        }
         public uint ModuleCount
         {
             get => _moduleCount;
@@ -585,7 +592,19 @@ namespace ProcessManager.Profiling.Models.Process
                 }
             }
         }
-        
+        public ProcessModuleInfo[] Modules
+        {
+            get => _modules;
+            set
+            {
+                if (_modules != value)
+                {
+                    _modules = value;
+                    OnPropertyChanged(nameof(Modules));
+                }
+            }
+        }
+
         // ------------------------ MISC ------------------------ 
 
         private double _cpuUsage;
@@ -665,15 +684,15 @@ namespace ProcessManager.Profiling.Models.Process
             _kernelTime = Profiler.ToDateTime(infoStruct.timesInfo.kernelTime, true) ?? new DateTime();
             _totalTime = Profiler.ToDateTime(infoStruct.timesInfo.totalTime, true) ?? new DateTime();
 
-            _handleCount = infoStruct.handlesInfo.count;
-            _handlePeakCount = infoStruct.handlesInfo.peakCount;
+            _handleCount = infoStruct.handleCount;
+            _handlePeakCount = infoStruct.handlePeakCount;
         }
 
         //
         // ---------------------------------- METHODS ----------------------------------
         //
 
-        public void Read(ulong processFlags, ulong moduleFlags, ProcessInfoStruct infoStruct)
+        public void Read(ulong processFlags, ulong moduleFlags, ulong handleFlags, ProcessInfoStruct infoStruct)
         {
             if ((processFlags & (ulong)ProcessInfoFlags.ProcessName) != 0)
             {
@@ -746,10 +765,12 @@ namespace ProcessManager.Profiling.Models.Process
 
             if ((processFlags & (ulong)ProcessInfoFlags.ProcessHandlesInfo) != 0)
             {
-                HandleCount = infoStruct.handlesInfo.count;
-                HandlePeakCount = infoStruct.handlesInfo.peakCount;
-                GdiHandleCount = infoStruct.handlesInfo.gdiCount;
-                UserHandleCount = infoStruct.handlesInfo.userCount;
+                HandleCount = infoStruct.handleCount;
+                HandlePeakCount = infoStruct.handlePeakCount;
+                GdiHandleCount = infoStruct.gdiHandleCount;
+                UserHandleCount = infoStruct.userHandleCount;
+
+                Handles = ConvertToHandles(Profiler.ToArray<ProcessHandleInfoStruct>(infoStruct.handles, infoStruct.handleCount), handleFlags)!;
             }
 
             if ((processFlags & (ulong)ProcessInfoFlags.ProcessCycleCount) != 0)
@@ -786,7 +807,7 @@ namespace ProcessManager.Profiling.Models.Process
                 Modules = ConvertToModules(Profiler.ToArray<ProcessModuleInfoStruct>(infoStruct.modules, infoStruct.moduleCount), moduleFlags)!;
             }
         }
-        public void Unload(ulong processFlags, ulong moduleFlags)
+        public void Unload(ulong processFlags, ulong moduleFlags, ulong handleFlags)
         {
             if ((processFlags & (ulong)ProcessInfoFlags.ProcessName) != 0)
             {
@@ -859,6 +880,10 @@ namespace ProcessManager.Profiling.Models.Process
 
             if ((processFlags & (ulong)ProcessInfoFlags.ProcessHandlesInfo) != 0)
             {
+                foreach (var han in _handles)
+                    han.Unload(handleFlags);
+
+                _handles = [];
                 _handleCount = 0;
                 _handlePeakCount = 0;
                 _handleGdiCount = 0;
@@ -910,7 +935,20 @@ namespace ProcessManager.Profiling.Models.Process
             for (int i = 0; i < moduleInfoStructs.Length; i++)
             {
                 var moduleInfo = new ProcessModuleInfo();
-                moduleInfo.Read(flags, moduleInfoStructs[i]);  // Fill module info using Read method
+                moduleInfo.Read(flags, moduleInfoStructs[i]);
+                modules[i] = moduleInfo;
+            }
+
+            return modules;
+        }
+        public ProcessHandleInfo[] ConvertToHandles(ProcessHandleInfoStruct[] handleInfoStructs, ulong flags)
+        {
+            var modules = new ProcessHandleInfo[handleInfoStructs.Length];
+
+            for (int i = 0; i < handleInfoStructs.Length; i++)
+            {
+                var moduleInfo = new ProcessHandleInfo();
+                moduleInfo.Read(flags, handleInfoStructs[i]);
                 modules[i] = moduleInfo;
             }
 

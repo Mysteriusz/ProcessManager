@@ -1,4 +1,4 @@
-﻿<Page x:Class="ProcessManager.Pages.ProcessProperties.ProcessPropertiesModulesPage"
+﻿<Page x:Class="ProcessManager.Pages.ProcessProperties.ProcessPropertiesHandlesPage"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -6,9 +6,9 @@
       xmlns:local="clr-namespace:ProcessManager.Pages.ProcessProperties"
       xmlns:helpers="clr-namespace:ProcessManager.WPFHelpers"
       mc:Ignorable="d" 
-      d:DesignHeight="390" d:DesignWidth="800"
-      Title="ProcessPropertiesModulesPage" Loaded="Page_Loaded" Unloaded="Page_Unloaded">
-    
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="ProcessPropertiesHandlesPage" Loaded="Page_Loaded" Unloaded="Page_Unloaded">
+
     <Page.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -17,8 +17,7 @@
                 <ResourceDictionary Source="/Dictionaries/ControlDictionary.xaml"/>
             </ResourceDictionary.MergedDictionaries>
 
-            <helpers:UlongToHexConverter x:Key="UlongToHexConverter" />
-            <helpers:UlongToBytesConverter x:Key="UlongToBytesConverter" />
+            <helpers:IntToHexConverter x:Key="IntToHexConverter" />
         </ResourceDictionary>
     </Page.Resources>
 
@@ -27,7 +26,7 @@
             <Grid>
                 <Label Style="{StaticResource CustomBorderLabelStyle}" Content="Modules"/>
 
-                <DataGrid ItemsSource="{Binding Modules}" Margin="10" x:Name="ApplicationList" Style="{StaticResource ApplicationDataGrid}">
+                <DataGrid ItemsSource="{Binding Handles}" Margin="10" x:Name="ApplicationList" Style="{StaticResource ApplicationDataGrid}">
                     <DataGrid.Resources>
                         <Style TargetType="ScrollBar">
                             <Setter Property="Template" Value="{StaticResource ListScrollBar}"/>
@@ -35,11 +34,9 @@
                     </DataGrid.Resources>
 
                     <DataGrid.Columns>
+                        <DataGridTextColumn Header="Type" Binding="{Binding Type}" Width="*" />
                         <DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="*" />
-                        <DataGridTextColumn Header="Path" Binding="{Binding Path}" Width="*" />
-                        <DataGridTextColumn Header="Base Address" Binding="{Binding Address, Converter={StaticResource UlongToHexConverter}}" Width="*" />
-                        <DataGridTextColumn Header="Size" Binding="{Binding Size, Converter={StaticResource UlongToBytesConverter}}" Width="*" />
-                        <DataGridTextColumn Header="Description" Binding="{Binding Description}" Width="*" />
+                        <DataGridTextColumn Header="Handle" Binding="{Binding Address, Converter={StaticResource IntToHexConverter}}" Width="*" />
                     </DataGrid.Columns>
                 </DataGrid>
             </Grid>

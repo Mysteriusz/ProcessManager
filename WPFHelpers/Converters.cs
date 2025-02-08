@@ -23,23 +23,6 @@ namespace ProcessManager.WPFHelpers
         }
     }
 
-    public class IntPtrToStringConverter : IValueConverter
-    {
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            if (value is IntPtr ptr)
-            {
-                return Profiler.ToString(ptr);
-            }
-            return "N/A";
-        }
-
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            throw new NotImplementedException();
-        }
-    }
-
     public class UlongToStringConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
@@ -152,6 +135,68 @@ namespace ProcessManager.WPFHelpers
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             if (value is uint val)
+            {
+                return "0x" + val.ToString("X");
+            }
+
+            return string.Empty;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    public class IntToStringConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (value is int val)
+            {
+                return val.ToString("N0");
+            }
+
+            return string.Empty;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+    public class IntToBytesConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (value is int bytes)
+            {
+                string[] sizes = { "B", "KB", "MB", "GB", "TB", "PB" };
+                double len = bytes;
+                int order = 0;
+
+                while (len >= 1024 && order < sizes.Length - 1)
+                {
+                    order++;
+                    len /= 1024;
+                }
+
+                return $"{len:0.##} {sizes[order]}";
+            }
+
+            return string.Empty;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+    public class IntToHexConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (value is int val)
             {
                 return "0x" + val.ToString("X");
             }
