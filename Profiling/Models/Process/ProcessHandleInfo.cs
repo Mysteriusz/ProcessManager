@@ -7,7 +7,7 @@ namespace ProcessManager.Profiling.Models.Process
     {
         public string _name = "N/A";
         public string _type = "N/A";
-        public int _address;
+        public ulong _address;
 
         public string Name
         {
@@ -33,7 +33,7 @@ namespace ProcessManager.Profiling.Models.Process
                 }
             }
         }
-        public int Address
+        public ulong Address
         {
             get => _address;
             set

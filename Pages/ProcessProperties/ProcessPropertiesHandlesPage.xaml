@@ -17,7 +17,7 @@
                 <ResourceDictionary Source="/Dictionaries/ControlDictionary.xaml"/>
             </ResourceDictionary.MergedDictionaries>
 
-            <helpers:IntToHexConverter x:Key="IntToHexConverter" />
+            <helpers:UlongToHexConverter x:Key="UlongToHexConverter" />
         </ResourceDictionary>
     </Page.Resources>
 
@@ -36,7 +36,7 @@
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="Type" Binding="{Binding Type}" Width="*" />
                         <DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="*" />
-                        <DataGridTextColumn Header="Handle" Binding="{Binding Address, Converter={StaticResource IntToHexConverter}}" Width="*" />
+                        <DataGridTextColumn Header="Handle" Binding="{Binding Address, Converter={StaticResource UlongToHexConverter}}" Width="*" />
                     </DataGrid.Columns>
                 </DataGrid>
             </Grid>

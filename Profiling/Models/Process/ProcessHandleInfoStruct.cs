@@ -7,6 +7,6 @@ namespace ProcessManager.Profiling.Models.Process
     {
         public IntPtr name;
         public IntPtr type;
-        public Int32 address;
+        public UInt64 address;
     }
 }

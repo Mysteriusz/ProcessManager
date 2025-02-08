@@ -54,10 +54,6 @@ namespace ProcessManager.Pages.ProcessProperties
             Token?.Cancel();
             Token?.Dispose();
 
-            UpdateFlags = 0;
-            HandleFlags = 0;
-            UpdateDelay = 0;
-
             Token = null;
             Process = null;
 
