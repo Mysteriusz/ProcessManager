@@ -87,10 +87,10 @@ namespace ProcessManager.Profiling
         //
 
         [DllImport(Profiler.DllPath, CallingConvention = CallingConvention.Cdecl)]
-        public static extern IntPtr GetProcessInfo(ulong processInfoFlags, ulong moduleInfoFlags, ulong handleInfoFlags, uint pid);
+        public static extern IntPtr GetProcessInfo(ulong processInfoFlags, ulong moduleInfoFlags, ulong handleInfoFlags, ulong threadInfoFlags, uint pid);
         [DllImport(Profiler.DllPath, CallingConvention = CallingConvention.Cdecl)]
         public static extern IntPtr FreeProcessInfo(IntPtr info);
         [DllImport(Profiler.DllPath, CallingConvention = CallingConvention.Cdecl)]
-        public static extern IntPtr GetAllProcessInfo(ulong processInfoFlags, ulong moduleInfoFlags, ulong handleInfoFlags, out uint size);
+        public static extern IntPtr GetAllProcessInfo(ulong processInfoFlags, ulong moduleInfoFlags, ulong handleInfoFlags, ulong threadInfoFlags, out uint size);
     }
 }

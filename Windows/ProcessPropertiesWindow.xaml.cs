@@ -20,6 +20,7 @@ namespace ProcessManager.Windows
         private readonly ProcessPropertiesStatisticsPage _statsPage = new();
         private readonly ProcessPropertiesModulesPage _modulesPage = new();
         private readonly ProcessPropertiesHandlesPage _handlesPage = new();
+        private readonly ProcessPropertiesThreadsPage _threadsPage = new();
 
         private void PropertiesButton_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {   
@@ -46,6 +47,8 @@ namespace ProcessManager.Windows
                         PropertiesPageFrame.Navigate(_modulesPage);
                         break;
                     case "Threads":
+                        _threadsPage.DataContext = this.DataContext;
+                        PropertiesPageFrame.Navigate(_threadsPage);
                         break;
                 }
             }

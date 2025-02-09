@@ -42,14 +42,14 @@ namespace ProcessManager.Pages.ProcessProperties
             if (Process == null)
                 throw new Exception();
 
-            IntPtr ptr = ProcessProfiler.GetProcessInfo(UpdateFlags, 0, HandleFlags, Process.PID);
+            IntPtr ptr = ProcessProfiler.GetProcessInfo(UpdateFlags, 0, HandleFlags, 0, Process.PID);
             ProcessInfoStruct info = Profiler.ToStruct<ProcessInfoStruct>(ptr);
-            Process.Read(UpdateFlags, 0, HandleFlags, info);
+            Process.Read(info, processFlags:UpdateFlags, handleFlags:HandleFlags);
             ProcessProfiler.FreeProcessInfo(ptr);
         }
         private void Page_Unloaded(object sender, System.Windows.RoutedEventArgs e)
         {
-            Process?.Unload(UpdateFlags, 0, HandleFlags);
+            Process?.Unload(processFlags: UpdateFlags, handleFlags:HandleFlags);
 
             Token?.Cancel();
             Token?.Dispose();

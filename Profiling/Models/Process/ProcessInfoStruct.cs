@@ -23,6 +23,7 @@ namespace ProcessManager.Profiling.Models.Process
         ProcessMemoryInfo = 0x00008000,
         ProcessIOInfo = 0x00010000,
         ProcessModulesInfo = 0x00020000,
+        ProcessThreadsInfo = 0x00040000,
     }
     [Flags]
     public enum ModuleInfoFlags : ulong
@@ -39,6 +40,14 @@ namespace ProcessManager.Profiling.Models.Process
         HandleName = 0x00000001,
         HandleType = 0x00000002,
         HandleAddress = 0x00000004,
+    }
+    [Flags]
+    public enum ThreadInfoFlags : ulong
+    {
+        ThreadTid = 0x00000001,
+        ThreadCycles = 0x00000002,
+        ThreadStartAddress = 0x00000004,
+        ThreadPriority = 0x00000008,
     }
 
 
@@ -111,5 +120,8 @@ namespace ProcessManager.Profiling.Models.Process
         public UInt32 gdiHandleCount;
         public UInt32 userHandleCount;
         public IntPtr handles;
+
+        public UInt32 threadCount;
+        public IntPtr threads;
     }
 }

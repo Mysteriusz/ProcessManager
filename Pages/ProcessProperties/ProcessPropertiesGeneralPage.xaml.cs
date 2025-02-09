@@ -29,15 +29,15 @@ namespace ProcessManager.Pages.ProcessProperties
             if (Process == null)
                 throw new Exception();
             
-            IntPtr ptr = ProcessProfiler.GetProcessInfo(UpdateFlags, 0, 0, Process.PID);
+            IntPtr ptr = ProcessProfiler.GetProcessInfo(UpdateFlags, 0, 0, 0, Process.PID);
             ProcessInfoStruct info = Profiler.ToStruct<ProcessInfoStruct>(ptr);
-            Process.Read(UpdateFlags, 0, 0, info);
+            Process.Read(info, processFlags: UpdateFlags);
 
             ProcessProfiler.FreeProcessInfo(ptr);
         }
         private void Page_Unloaded(object sender, System.Windows.RoutedEventArgs e)
         {
-            Process?.Unload(UpdateFlags, 0, 0);
+            Process?.Unload(processFlags: UpdateFlags);
 
             Token?.Cancel();
             Token?.Dispose();
