@@ -31,11 +31,14 @@ namespace ProcessManager.Profiling.GraphFramework
 
         public int GridCycleLengthX { get; set; } = 3;
         public int GridCycleLengthY { get; set; } = 0;
+        
+        public double MaxDataValue { get; set; } = 100.0;
+        public double MinDataValue { get; set; } = 0.0;
 
         private int currentCycleX = 1;
         private int currentCycleY = 1;
 
-        private List<PointF> dataPoints = new List<PointF>();
+        private List<PointF> dataPoints = new List<PointF>() { new PointF(0, 0) };
 
         public GraphRenderer(int width, int height)
         {
@@ -97,29 +100,35 @@ namespace ProcessManager.Profiling.GraphFramework
         public System.Windows.Media.ImageSource RenderData(int width, int height, double data)
         {
             if (DataMap == null || PreviousWidth != width || PreviousHeight  != height)
-                ResizeBitmap(width, height);
+                ResizeDataMap(width, height);
 
             using (Graphics graphics = Graphics.FromImage(DataMap!))
             {
-                double normalized = (double)(data - 0) / (100 - 0);
-                normalized = Math.Min(Math.Max(normalized, 0), 1);
-                int yPosition = (int)(normalized * Height);
+                double normalized = Normalize((int)MinDataValue, (int)MaxDataValue, data);
 
-                PointF newPoint = new PointF(DataOffsetX, yPosition + DataOffsetY);
+                int yPosition = (int)(normalized * Height);
+                int actualPositionY;
+
+                if (data > MaxDataValue)
+                    actualPositionY = (int)(.99 * Height) + DataOffsetY;
+                else if (data < MinDataValue)
+                    actualPositionY = (int)(0 * Height) + DataOffsetY;
+                else
+                    actualPositionY = yPosition + DataOffsetY;
+
+                PointF newPoint = new PointF(DataOffsetX, actualPositionY);
                 dataPoints.Add(newPoint);
 
                 using (Pen pen = new Pen(Color.Yellow, 1))
                 {
                     if (dataPoints.Count > 1)
                         graphics.DrawLine(pen, dataPoints[dataPoints.Count - 2], newPoint);
-                    else
-                        graphics.DrawLine(pen, newPoint.X, newPoint.Y, 1, 1);
                 }
             }
 
             using (MemoryStream memory = new MemoryStream())
             {
-                DataMap.Save(memory, System.Drawing.Imaging.ImageFormat.Png);
+                DataMap!.Save(memory, System.Drawing.Imaging.ImageFormat.Png);
                 memory.Position = 0;
 
                 BitmapImage img = new BitmapImage();
@@ -144,7 +153,7 @@ namespace ProcessManager.Profiling.GraphFramework
             }
 
             if (inverted)
-                merged.RotateFlip(RotateFlipType.RotateNoneFlipXY);
+                merged.RotateFlip(RotateFlipType.RotateNoneFlipY);
 
             using (MemoryStream memory = new MemoryStream())
             {
@@ -195,7 +204,14 @@ namespace ProcessManager.Profiling.GraphFramework
             CycleOffsetY = cycleOffsetY;    
         }
 
-        private void ResizeBitmap(int newWidth, int newHeight)
+        private double Normalize(int min, int max, double data)
+        {
+            double normalized = (double)(data - min) / (max - min);
+            normalized = Math.Min(Math.Max(normalized, min), 1);
+
+            return normalized;
+        }
+        private void ResizeDataMap(int newWidth, int newHeight)
         {
             if (DataMap != null)
                 DataMap.Dispose();
@@ -212,8 +228,11 @@ namespace ProcessManager.Profiling.GraphFramework
                 {
                     for (int i = 0; i < dataPoints.Count; i++)
                     {
-                        PointF newPoint = new PointF(dataPoints[i].X / PreviousWidth, dataPoints[i].Y / PreviousHeight);
-                        
+                        PointF newPoint = new PointF(
+                            (dataPoints[i].X / PreviousWidth) * newWidth,
+                            (dataPoints[i].Y / PreviousHeight) * newHeight
+                        );
+
                         newPoints.Add(newPoint);
 
                         if (i > 0)
@@ -221,6 +240,8 @@ namespace ProcessManager.Profiling.GraphFramework
                     }
                 }
             }
+            DataOffsetX = (int)Math.Round((DataOffsetX / (double)PreviousWidth) * newWidth);
+
 
             Width = newWidth;
             Height = newHeight;

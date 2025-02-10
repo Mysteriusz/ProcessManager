@@ -63,6 +63,7 @@ namespace ProcessManager.Profiling.GraphFramework.Controls
                     if (_cancellationTokenSource.IsCancellationRequested)
                         return;
 
+                    data += 30;
                     Dispatcher.Invoke(() =>
                     {
                         Renderer.RenderGrid((int)ActualWidth, (int)ActualHeight);
