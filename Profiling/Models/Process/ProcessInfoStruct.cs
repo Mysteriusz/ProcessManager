@@ -25,31 +25,6 @@ namespace ProcessManager.Profiling.Models.Process
         ProcessModulesInfo = 0x00020000,
         ProcessThreadsInfo = 0x00040000,
     }
-    [Flags]
-    public enum ModuleInfoFlags : ulong
-    {
-        ModuleName = 0x00000001,
-        ModulePath = 0x00000002,
-        ModuleDescription = 0x00000004,
-        ModuleAddress = 0x00000008,
-        ModuleSize = 0x00000010
-    }
-    [Flags]
-    public enum HandleInfoFlags : ulong
-    {
-        HandleName = 0x00000001,
-        HandleType = 0x00000002,
-        HandleAddress = 0x00000004,
-    }
-    [Flags]
-    public enum ThreadInfoFlags : ulong
-    {
-        ThreadTid = 0x00000001,
-        ThreadCycles = 0x00000002,
-        ThreadStartAddress = 0x00000004,
-        ThreadPriority = 0x00000008,
-    }
-
 
     [StructLayout(LayoutKind.Sequential)]
     public struct FILETIME

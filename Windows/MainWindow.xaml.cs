@@ -1,7 +1,4 @@
-﻿using ProcessManager.Profiling;
-using System.Diagnostics;
-using System.Runtime.InteropServices;
-using System.Windows;
+﻿using System.Windows;
 
 namespace ProcessManager
 {

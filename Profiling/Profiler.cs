@@ -5,6 +5,10 @@ namespace ProcessManager.Profiling
 {
     internal static class Profiler 
     {
+        //
+        // ---------------------------------- CONSTANTS ----------------------------------
+        //
+
         public const string DllPath = "C:\\Users\\wixxx\\source\\repos\\ProcessManager\\x64\\Debug\\ProcessManagerLib.dll";
 
         //
@@ -14,6 +18,15 @@ namespace ProcessManager.Profiling
         [DllImport(DllPath, CallingConvention = CallingConvention.Cdecl)]
         public static extern void EnableDebugPrivilages();
 
+        //
+        // ---------------------------------- METHODS ----------------------------------
+        //
+
+        /// <summary>
+        /// Converts pointer to UTF-8 encoded string.
+        /// </summary>
+        /// <param name="ptr">Pointer to the int.</param>
+        /// <returns>If conversion was successfull returns the string; else returns "N/A".</returns>
         public static string ToString(IntPtr ptr)
         {
             try
@@ -22,6 +35,12 @@ namespace ProcessManager.Profiling
             }
             catch { return "N/A"; }
         }
+        
+        /// <summary>
+        /// Converts pointer to Int32.
+        /// </summary>
+        /// <param name="ptr">Pointer to the char array.</param>
+        /// <returns>If conversion was successfull returns the Int32; else returns null.</returns>
         public static Int32? ToInt32(IntPtr ptr)
         {
             try
@@ -30,6 +49,12 @@ namespace ProcessManager.Profiling
             }
             catch { return null; }
         }
+
+        /// <summary>
+        /// Converts pointer to Int64.
+        /// </summary>
+        /// <param name="ptr">Pointer to the int.</param>
+        /// <returns>If conversion was successfull returns the Int64; else returns null.</returns>
         public static Int64? ToInt64(IntPtr ptr)
         {
             try
@@ -38,6 +63,13 @@ namespace ProcessManager.Profiling
             }
             catch { return null; }
         }
+
+        /// <summary>
+        /// Converts <see cref="FILETIME"/> structure to DateTime.
+        /// </summary>
+        /// <param name="time"><see cref="FILETIME"/> structure.</param>
+        /// <param name="utc">UTC conversion.</param>
+        /// <returns>If conversion was successfull returns the DateTime; else returns null.</returns>
         public static DateTime? ToDateTime(FILETIME time, bool utc = false)
         {
             try
@@ -51,6 +83,12 @@ namespace ProcessManager.Profiling
             }
             catch { return null; }
         }
+
+        /// <summary>
+        /// Converts pointer to <typeparamref name="TStruct"/>.
+        /// </summary>
+        /// <param name="ptr">Pointer to the structure.</param>
+        /// <returns>If conversion was successfull returns the <typeparamref name="TStruct"/>; else returns null.</returns>
         public static TStruct? ToStruct<TStruct>(IntPtr ptr)
         {
             try
@@ -59,6 +97,13 @@ namespace ProcessManager.Profiling
             }
             catch { return default; }
         }
+
+        /// <summary>
+        /// Converts pointer to value array.
+        /// </summary>
+        /// <param name="ptr">Pointer to the <typeparamref name="TValue"/> array.</param>
+        /// <param name="size">Size of the array.</param>
+        /// <returns>If conversion was successfull returns the <typeparamref name="TValue[]"/>; else returns empty array.</returns>
         public static TValue?[] ToArray<TValue>(IntPtr ptr, uint size)
         {
             try

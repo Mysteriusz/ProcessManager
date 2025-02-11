@@ -1,7 +1,7 @@
 ﻿using System.Windows.Controls;
 using System.ComponentModel;
-using System.Diagnostics;
-using System.Threading;
+using System.Windows.Media;
+using System.Windows;
 
 namespace ProcessManager.Profiling.GraphFramework.Controls
 {
@@ -10,22 +10,41 @@ namespace ProcessManager.Profiling.GraphFramework.Controls
     /// </summary>
     public partial class DataGraph : UserControl
     {
+        //
+        //---------------------------------- PROPERTIES ----------------------------------
+        //
+
         public GraphRenderer? Renderer { get; set; }
-        
-        public int GraphDelay { get; set; }
-        public int RenderWidth { get; set; }
-        public int RenderHeight { get; set; }
 
-        public int GridCycleLengthX { get; set; } = -1;
-        public int GridCycleLengthY { get; set; } = -1;
+        public int GraphDelay { get; set; } = 1000;
 
+        public SolidColorBrush GridBackground { get; set; } = new SolidColorBrush(Colors.Gray);
+        public SolidColorBrush GridForeground { get; set; } = new SolidColorBrush(Colors.Black);
+        public SolidColorBrush DataForeground { get; set; } = new SolidColorBrush(Colors.Yellow);
+
+        public int CellCountX { get; set; } = 20;
+        public int CellCountY { get; set; } = 10;
+
+        public double GridCycleLengthX { get; set; } = 2;
+        public double GridCycleLengthY { get; set; } = 0;
+
+        public double MaxDataValue { get; set; } = 100;
+        public double MinDataValue { get; set; } = 0.0;
 
         private CancellationTokenSource? _cancellationTokenSource;
+
+        //
+        // ---------------------------------- CONSTRUCTORS ----------------------------------
+        //
 
         public DataGraph()
         {
             InitializeComponent();
         }
+
+        //
+        // ---------------------------------- EVENTS ----------------------------------
+        //
 
         private void UserControl_Loaded(object sender, System.Windows.RoutedEventArgs e)
         {
@@ -36,11 +55,14 @@ namespace ProcessManager.Profiling.GraphFramework.Controls
 
             RendererThread().Start();
         }
-
         private void UserControl_Unloaded(object sender, System.Windows.RoutedEventArgs e)
         {
             _cancellationTokenSource!.Cancel();
         }
+
+        //
+        // ---------------------------------- METHODS ----------------------------------
+        //
 
         private Thread RendererThread()
         {
@@ -48,11 +70,21 @@ namespace ProcessManager.Profiling.GraphFramework.Controls
             {
                 Renderer = new GraphRenderer((int)ActualWidth, (int)ActualHeight);
 
-                if (GridCycleLengthX >= 0)
-                    Renderer.GridCycleLengthX = GridCycleLengthX;
+                Renderer.GridCycleLengthX = (int)GridCycleLengthX;
+                Renderer.GridCycleLengthY = (int)GridCycleLengthY;
                 
-                if (GridCycleLengthY >= 0)
-                    Renderer.GridCycleLengthY = GridCycleLengthY;
+                Application.Current.Dispatcher.Invoke(() =>
+                {
+                    Renderer.GridBackground = SWMToSD(GridBackground.Color);
+                    Renderer.GridForeground = SWMToSD(GridForeground.Color);
+                    Renderer.DataForeground = SWMToSD(DataForeground.Color);
+                });
+
+                Renderer.CellCountX = CellCountX;
+                Renderer.CellCountY = CellCountY;
+
+                Renderer.MaxDataValue = MaxDataValue;
+                Renderer.MinDataValue = MinDataValue;
 
                 if (_cancellationTokenSource == null)
                     return;
@@ -75,6 +107,10 @@ namespace ProcessManager.Profiling.GraphFramework.Controls
                     await Task.Delay(GraphDelay);
                 }
             });
+        }
+        private System.Drawing.Color SWMToSD(System.Windows.Media.Color color)
+        {
+            return System.Drawing.Color.FromArgb(color.A, color.R, color.G, color.B);
         }
     }
 }

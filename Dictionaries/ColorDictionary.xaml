@@ -7,4 +7,5 @@
     <SolidColorBrush x:Key="MouseOverSelectColor" Color="#2a2a2a"/>
     <SolidColorBrush x:Key="DarkTextColor" Color="#666666"/>
     <SolidColorBrush x:Key="LightTextColor" Color="#c7c7c7"/>
+    <SolidColorBrush x:Key="DataGraphColor" Color="Yellow"/>
 </ResourceDictionary>

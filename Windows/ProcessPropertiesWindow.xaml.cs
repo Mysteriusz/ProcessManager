@@ -2,7 +2,6 @@
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows;
-using System.Diagnostics;
 
 namespace ProcessManager.Windows
 {
@@ -11,10 +10,9 @@ namespace ProcessManager.Windows
     /// </summary>
     public partial class ProcessPropertiesWindow : Window
     {
-        public ProcessPropertiesWindow()
-        {
-            InitializeComponent();
-        }
+        //
+        // ---------------------------------- CONSTANTS ----------------------------------
+        //
 
         private readonly ProcessPropertiesGeneralPage _generalPage = new();
         private readonly ProcessPropertiesStatisticsPage _statsPage = new();
@@ -22,6 +20,19 @@ namespace ProcessManager.Windows
         private readonly ProcessPropertiesHandlesPage _handlesPage = new();
         private readonly ProcessPropertiesThreadsPage _threadsPage = new();
         private readonly ProcessPropertiesPerformancePage _performancePage = new();
+
+        //
+        // ---------------------------------- CONSTRUCTORS ----------------------------------
+        //
+
+        public ProcessPropertiesWindow()
+        {
+            InitializeComponent();
+        }
+
+        //
+        // ---------------------------------- EVENTS ----------------------------------
+        //
 
         private void PropertiesButton_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {   
@@ -56,7 +67,6 @@ namespace ProcessManager.Windows
                 }
             }
         }
-
         private void PropertiesPageFrame_Loaded(object sender, RoutedEventArgs e)
         {
             ProcessPropertiesGeneralPage generalPage = new ProcessPropertiesGeneralPage();

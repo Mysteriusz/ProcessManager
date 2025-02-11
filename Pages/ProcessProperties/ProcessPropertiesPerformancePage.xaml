@@ -31,21 +31,21 @@
             <Grid>
                 <Label Style="{StaticResource CustomBorderLabelStyle}" Content="CPU"/>
 
-                <graph:DataGraph GraphDelay="2000" RenderWidth="752" RenderHeight="95" Margin="10" GridCycleLengthX="2" />
+                <graph:DataGraph GraphDelay="1000" Margin="10" GridCycleLengthX="5" GridBackground="{StaticResource DefaultColor}" DataForeground="{StaticResource DataGraphColor}" GridForeground="{StaticResource DarkTextColor}" />
             </Grid>
         </Border>
         <Border Style="{StaticResource CustomBorderStyle}" Grid.Row="1" Margin="5">
             <Grid>
                 <Label Style="{StaticResource CustomBorderLabelStyle}" Content="Memory"/>
 
-                <graph:DataGraph GraphDelay="2000" RenderWidth="752" RenderHeight="95" Margin="10" GridCycleLengthX="2" />
+                <graph:DataGraph GraphDelay="1000" Margin="10" GridCycleLengthX="5" GridBackground="{StaticResource DefaultColor}" DataForeground="{StaticResource DataGraphColor}" GridForeground="{StaticResource DarkTextColor}" />
             </Grid>
         </Border>
         <Border Style="{StaticResource CustomBorderStyle}" Grid.Row="2" Margin="5">
             <Grid>
                 <Label Style="{StaticResource CustomBorderLabelStyle}" Content="IO"/>
 
-                <graph:DataGraph GraphDelay="2000" RenderWidth="752" RenderHeight="95" Margin="10" GridCycleLengthX="2" />
+                <graph:DataGraph GraphDelay="1000" Margin="10" GridCycleLengthX="5" GridBackground="{StaticResource DefaultColor}" DataForeground="{StaticResource DataGraphColor}" GridForeground="{StaticResource DarkTextColor}" />
             </Grid>
         </Border>
     </Grid>

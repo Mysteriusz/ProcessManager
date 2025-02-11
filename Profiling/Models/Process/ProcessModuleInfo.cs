@@ -4,6 +4,10 @@ namespace ProcessManager.Profiling.Models.Process
 {
     public class ProcessModuleInfo : INotifyPropertyChanged
     {
+        //
+        // ---------------------------------- PROPERTIES ----------------------------------
+        //
+
         private string _name = "N/A";
         private string _description = "N/A";
         private string _path = "N/A";
@@ -71,7 +75,22 @@ namespace ProcessManager.Profiling.Models.Process
             }
         }
 
-        public void Read(ulong flags, ProcessModuleInfoStruct infoStruct)
+
+        //
+        // ---------------------------------- EVENTS ----------------------------------
+        //
+
+        public event PropertyChangedEventHandler? PropertyChanged;
+        private void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        //
+        // ---------------------------------- METHODS ----------------------------------
+        //
+
+        public void Load(ulong flags, ProcessModuleInfoStruct infoStruct)
         {
             if ((flags & (ulong)ModuleInfoFlags.ModuleName) != 0)
             {
@@ -124,12 +143,6 @@ namespace ProcessManager.Profiling.Models.Process
             {
                 _size = 0;
             }
-        }
-
-        public event PropertyChangedEventHandler? PropertyChanged;
-        private void OnPropertyChanged(string propertyName)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

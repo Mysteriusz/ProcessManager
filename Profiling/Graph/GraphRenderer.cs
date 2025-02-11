@@ -1,44 +1,151 @@
 ﻿using System.Windows.Media.Imaging;
 using System.Drawing;
 using System.IO;
-using System.Diagnostics;
-using System.Windows.Media.Media3D;
 
 namespace ProcessManager.Profiling.GraphFramework
 {
+    /// <summary>
+    /// Class responsible for rendering graph.
+    /// </summary>
     public class GraphRenderer
     {
-        public Bitmap? GridMap { get; set; }
-        public Bitmap? DataMap { get; set; }
+        //
+        // ---------------------------------- PROPERTIES ----------------------------------
+        //
 
+        /// <summary>
+        /// Current grid bitmap.
+        /// </summary>
+        public Bitmap? GridMap { get; private set; }
+
+        /// <summary>
+        /// Current data bitmap.
+        /// </summary>
+        public Bitmap? DataMap { get; private set; }
+
+        /// <summary>
+        /// Grid background color.
+        /// </summary>
+        public Color GridBackground { get; set; }
+
+        /// <summary>
+        /// Grid foreground color.
+        /// </summary>
+        public Color GridForeground { get; set; }
+
+        /// <summary>
+        /// Data foreground color.
+        /// </summary>
+        public Color DataForeground { get; set; }
+
+        /// <summary>
+        /// Previous graph width.
+        /// </summary>
         public int PreviousWidth { get; set; }
+
+        /// <summary>
+        /// Previous graph height.
+        /// </summary>
         public int PreviousHeight { get; set; }
 
+        /// <summary>
+        /// Current graph width.
+        /// </summary>
         public int Width { get; set; }
+
+        /// <summary>
+        /// Current graph height.
+        /// </summary>
         public int Height { get; set; }
-        
+
+        /// <summary>
+        /// Size X of grid cell.
+        /// </summary>
         public int CellSizeX { get; set; }
+
+        /// <summary>
+        /// Size Y of grid cell.
+        /// </summary>
         public int CellSizeY { get; set; }
 
+        /// <summary>
+        /// Grid X cell count.
+        /// </summary>
         public int CellCountX { get; set; }
+
+        /// <summary>
+        /// Grid Y cell count.
+        /// </summary>
         public int CellCountY { get; set; }
 
+        /// <summary>
+        /// Current Grid X cycle shift.
+        /// </summary>
         public int CycleOffsetX { get; set; }
+
+        /// <summary>
+        /// Current Grid Y cycle shift.
+        /// </summary>
         public int CycleOffsetY { get; set; }
 
+        /// <summary>
+        /// Constant Grid X cycle shift.
+        /// </summary>
+        public int CycleOffsetConstantX => CellSizeX / GridCycleLengthX;
+
+        /// <summary>
+        /// Constant Grid Y cycle shift.
+        /// </summary>
+        public int CycleOffsetConstantY => CellSizeY / GridCycleLengthY;
+
+        /// <summary>
+        /// Current Data X shift value.
+        /// </summary>
         public int DataOffsetX { get; set; }
+
+        /// <summary>
+        /// Current Data Y shift value.
+        /// </summary>
         public int DataOffsetY { get; set; }
 
-        public int GridCycleLengthX { get; set; } = 3;
-        public int GridCycleLengthY { get; set; } = 0;
-        
-        public double MaxDataValue { get; set; } = 100.0;
-        public double MinDataValue { get; set; } = 0.0;
+        /// <summary>
+        /// Count of X cycles before completion.
+        /// </summary>
+        public int GridCycleLengthX { get; set; }
 
+        /// <summary>
+        /// Count of Y cycles before completion.
+        /// </summary>
+        public int GridCycleLengthY { get; set; }
+
+        /// <summary>
+        /// Maximum value data (100%).
+        /// </summary>
+        public double MaxDataValue { get; set; }
+
+        /// <summary>
+        /// Minimum value data (0%).
+        /// </summary>
+        public double MinDataValue { get; set; }
+        
+        /// <summary>
+        /// Current Grid X cycle.
+        /// </summary>
         private int currentCycleX = 1;
+
+        /// <summary>
+        /// Current Grid Y cycle.
+        /// </summary>
         private int currentCycleY = 1;
 
-        private List<PointF> dataPoints = new List<PointF>() { new PointF(0, 0) };
+        /// <summary>
+        /// List of points.
+        /// </summary>
+        private List<PointF> dataPoints = new List<PointF>();
+
+        //
+        // ---------------------------------- CONSTRUCTORS ----------------------------------
+        //
 
         public GraphRenderer(int width, int height)
         {
@@ -46,7 +153,19 @@ namespace ProcessManager.Profiling.GraphFramework
             PreviousHeight = height;
         }
 
-        public System.Windows.Media.ImageSource RenderGrid(int width, int height, int cellCountX = 20, int cellCountY = 10, bool invertedCycle = true)
+        //
+        // ---------------------------------- METHODS ----------------------------------
+        //
+
+        /// <summary>
+        /// Render grid given current parameters.
+        /// </summary>
+        /// <param name="width">Grid render width.</param>
+        /// <param name="height">Grid render height.</param>
+        /// <param name="cellCountX">Grid X cell count.</param>
+        /// <param name="cellCountY">Grid Y cell count.</param>
+        /// <param name="invertedCycle">Is cycle inverted</param>
+        public void RenderGrid(int width, int height, int cellCountX = 20, int cellCountY = 10, bool invertedCycle = true)
         {
             Width = width;
             Height = height;
@@ -55,9 +174,9 @@ namespace ProcessManager.Profiling.GraphFramework
 
             using (Graphics graphics = Graphics.FromImage(GridMap))
             {
-                graphics.Clear(Color.DarkGray);
+                graphics.Clear(GridBackground);
 
-                using (Pen pen = new Pen(Color.Black, 1))
+                using (Pen pen = new Pen(GridForeground, 1))
                 {
                     CellCountX = cellCountX;
                     CellCountY = cellCountY;
@@ -83,62 +202,60 @@ namespace ProcessManager.Profiling.GraphFramework
                     currentCycleY++;
                 }
             }
-
-            using (MemoryStream memory = new MemoryStream())
-            {
-                GridMap.Save(memory, System.Drawing.Imaging.ImageFormat.Png);
-                memory.Position = 0;
-
-                BitmapImage img = new BitmapImage();
-                img.BeginInit();
-                img.StreamSource = memory;
-                img.CacheOption = BitmapCacheOption.OnLoad;
-                img.EndInit();
-                return img;
-            }
         }
-        public System.Windows.Media.ImageSource RenderData(int width, int height, double data)
+        /// <summary>
+        /// Render data given current parameters.
+        /// </summary>
+        /// <param name="width">Data render width.</param>
+        /// <param name="height">Data render height.</param>
+        /// <param name="data">Data value to render.</param>
+        public void RenderData(int width, int height, double data)
         {
-            if (DataMap == null || PreviousWidth != width || PreviousHeight  != height)
+            if (dataPoints.Count == 0)
+                dataPoints.Add(new PointF(width, 0));
+            
+            if (DataMap == null || PreviousWidth != width || PreviousHeight != height)
                 ResizeDataMap(width, height);
 
             using (Graphics graphics = Graphics.FromImage(DataMap!))
             {
+                graphics.Clear(Color.Transparent);
+
                 double normalized = Normalize((int)MinDataValue, (int)MaxDataValue, data);
 
                 int yPosition = (int)(normalized * Height);
-                int actualPositionY;
+                int actualPositionY = yPosition + DataOffsetY;
+
+                for (int i = 0; i < dataPoints.Count; i++)
+                {
+                    dataPoints[i] = new PointF(dataPoints[i].X - CycleOffsetConstantX, dataPoints[i].Y);
+
+                    if (i > 0)
+                        using (Pen pen = new Pen(DataForeground, 1))
+                            graphics.DrawLine(pen, dataPoints[i - 1], dataPoints[i]);
+                }
 
                 if (data > MaxDataValue)
                     actualPositionY = (int)(.99 * Height) + DataOffsetY;
                 else if (data < MinDataValue)
                     actualPositionY = (int)(0 * Height) + DataOffsetY;
-                else
-                    actualPositionY = yPosition + DataOffsetY;
 
-                PointF newPoint = new PointF(DataOffsetX, actualPositionY);
+                PointF newPoint = new PointF(width, actualPositionY);
                 dataPoints.Add(newPoint);
 
-                using (Pen pen = new Pen(Color.Yellow, 1))
+                using (Pen pen = new Pen(DataForeground, 1))
                 {
                     if (dataPoints.Count > 1)
                         graphics.DrawLine(pen, dataPoints[dataPoints.Count - 2], newPoint);
                 }
             }
-
-            using (MemoryStream memory = new MemoryStream())
-            {
-                DataMap!.Save(memory, System.Drawing.Imaging.ImageFormat.Png);
-                memory.Position = 0;
-
-                BitmapImage img = new BitmapImage();
-                img.BeginInit();
-                img.StreamSource = memory;
-                img.CacheOption = BitmapCacheOption.OnLoad;
-                img.EndInit();
-                return img;
-            }
         }
+        
+        /// <summary>
+        /// Combines <see cref="GridMap"/> and <see cref="DataMap"/>.
+        /// </summary>
+        /// <param name="inverted">Is inverted.</param>
+        /// <returns>Image source of complete graph.</returns>
         public System.Windows.Media.ImageSource GetGraph(bool inverted = true)
         {
             Bitmap merged = new Bitmap(Width, Height);
@@ -203,14 +320,6 @@ namespace ProcessManager.Profiling.GraphFramework
             CycleOffsetX = cycleOffsetX; 
             CycleOffsetY = cycleOffsetY;    
         }
-
-        private double Normalize(int min, int max, double data)
-        {
-            double normalized = (double)(data - min) / (max - min);
-            normalized = Math.Min(Math.Max(normalized, min), 1);
-
-            return normalized;
-        }
         private void ResizeDataMap(int newWidth, int newHeight)
         {
             if (DataMap != null)
@@ -224,7 +333,7 @@ namespace ProcessManager.Profiling.GraphFramework
             {
                 g.Clear(Color.Transparent);
 
-                using (Pen pen = new Pen(Color.Yellow, 1))
+                using (Pen pen = new Pen(DataForeground, 1))
                 {
                     for (int i = 0; i < dataPoints.Count; i++)
                     {
@@ -250,6 +359,14 @@ namespace ProcessManager.Profiling.GraphFramework
             PreviousHeight = newHeight;
 
             dataPoints = newPoints;
+        }
+
+        private double Normalize(int min, int max, double data)
+        {
+            double normalized = (double)(data - min) / (max - min);
+            normalized = Math.Min(Math.Max(normalized, min), 1);
+
+            return normalized;
         }
     }
 }

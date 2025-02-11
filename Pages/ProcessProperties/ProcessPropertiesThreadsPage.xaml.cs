@@ -1,4 +1,5 @@
-﻿using ProcessManager.Profiling.Models.Process;
+﻿using ProcessManager.Pages.ProcessProperties.Models;
+using ProcessManager.Profiling.Models.Process;
 using ProcessManager.Profiling;
 using System.Windows.Controls;
 using System.Windows;
@@ -8,35 +9,51 @@ namespace ProcessManager.Pages.ProcessProperties
     /// <summary>
     /// Interaction logic for ProcessPropertiesThreadsPage.xaml
     /// </summary>
-    public partial class ProcessPropertiesThreadsPage : Page
+    public partial class ProcessPropertiesThreadsPage : Page, IProcessPropertiesPage
     {
-        public ulong UpdateFlags { get; set; } = (ulong)(ProcessInfoFlags.ProcessThreadsInfo);
-        public ulong ThreadUpdateFlags { get; set; } = (ulong)(ThreadInfoFlags.ThreadStartAddress | ThreadInfoFlags.ThreadTid | ThreadInfoFlags.ThreadPriority | ThreadInfoFlags.ThreadCycles);
+        //
+        //---------------------------------- PROPERTIES ----------------------------------
+        //
+
+        public ulong ProcessInfoUpdateFlags { get; set; } = (ulong)(ProcessInfoFlags.ProcessThreadsInfo);
+        public ulong ThreadInfoUpdateFlags { get; set; } = (ulong)(ThreadInfoFlags.ThreadStartAddress | ThreadInfoFlags.ThreadTid | ThreadInfoFlags.ThreadPriority | ThreadInfoFlags.ThreadCycles);
+        public ulong HandleInfoUpdateFlags { get; set; } = 0;
+        public ulong ModuleInfoUpdateFlags { get; set; } = 0;
+
         public int UpdateDelay { get; set; } = 5000;
-        public ProcessInfo? Process { get; set; }
-        public CancellationTokenSource? Token { get; set; }
+        public CancellationTokenSource? UpdateCancellation { get; set; }
+
+        public ProcessInfo? ProcessInfo { get; set; }
+
+        //
+        //---------------------------------- CONSTRUCTORS ----------------------------------
+        //
 
         public ProcessPropertiesThreadsPage()
         {
             InitializeComponent();
         }
 
-        private void Page_Loaded(object sender, System.Windows.RoutedEventArgs e)
+        //
+        //---------------------------------- EVENTS ----------------------------------
+        //
+
+        public void Page_Loaded(object sender, System.Windows.RoutedEventArgs e)
         {
-            Process = DataContext as ProcessInfo;
-            Token = new CancellationTokenSource();
+            ProcessInfo = DataContext as ProcessInfo;
+            UpdateCancellation = new CancellationTokenSource();
 
             UpdateTask().Start();
         }
-        private void Page_Unloaded(object sender, System.Windows.RoutedEventArgs e)
+        public void Page_Unloaded(object sender, System.Windows.RoutedEventArgs e)
         {
-            Process?.Unload(processFlags:UpdateFlags, threadFlags: ThreadUpdateFlags);
+            ProcessInfo?.Unload(ProcessInfoUpdateFlags, ModuleInfoUpdateFlags, HandleInfoUpdateFlags, ThreadInfoUpdateFlags);
 
-            Token?.Cancel();
-            Token?.Dispose();
+            UpdateCancellation?.Cancel();
+            UpdateCancellation?.Dispose();
 
-            Token = null;
-            Process = null;
+            UpdateCancellation = null;
+            ProcessInfo = null;
 
             GC.Collect();
         }
@@ -45,16 +62,16 @@ namespace ProcessManager.Pages.ProcessProperties
         {
             return new Task(async () =>
             {
-                if (Token == null || Process == null)
+                if (UpdateCancellation == null || ProcessInfo == null)
                     return;
 
-                while (Token != null && !Token.IsCancellationRequested)
+                while (UpdateCancellation != null && !UpdateCancellation.IsCancellationRequested)
                 {
                     Application.Current.Dispatcher.Invoke(() =>
                     {
-                        IntPtr ptr = ProcessProfiler.GetProcessInfo(UpdateFlags, 0, 0, ThreadUpdateFlags, Process.PID);
+                        IntPtr ptr = ProcessProfiler.GetProcessInfo(ProcessInfoUpdateFlags, ModuleInfoUpdateFlags, HandleInfoUpdateFlags, ThreadInfoUpdateFlags, ProcessInfo.PID);
                         ProcessInfoStruct str = Profiler.ToStruct<ProcessInfoStruct>(ptr);
-                        Process.Read(str, processFlags: UpdateFlags, threadFlags: ThreadUpdateFlags);
+                        ProcessInfo.Load(str, ProcessInfoUpdateFlags, ModuleInfoUpdateFlags, HandleInfoUpdateFlags, ThreadInfoUpdateFlags);
                         ProcessProfiler.FreeProcessInfo(ptr);
                     });
 

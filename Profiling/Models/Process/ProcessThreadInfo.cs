@@ -4,6 +4,10 @@ namespace ProcessManager.Profiling.Models.Process
 {
     public class ProcessThreadInfo : INotifyPropertyChanged
     {
+        //
+        // ---------------------------------- PROPERTIES ----------------------------------
+        //
+
         private uint _priority;
         private uint _tid;
         private ulong _startAddress;
@@ -58,7 +62,21 @@ namespace ProcessManager.Profiling.Models.Process
             }
         }
 
-        public void Read(ulong flags, ProcessThreadInfoStruct infoStruct)
+        //
+        // ---------------------------------- EVENTS ----------------------------------
+        //
+
+        public event PropertyChangedEventHandler? PropertyChanged;
+        private void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        //
+        // ---------------------------------- METHODS ----------------------------------
+        //
+
+        public void Load(ulong flags, ProcessThreadInfoStruct infoStruct)
         {
             if ((flags & (ulong)ThreadInfoFlags.ThreadPriority) != 0)
             {
@@ -101,12 +119,6 @@ namespace ProcessManager.Profiling.Models.Process
             {
                 _cyclesDelta = 0;
             }
-        }
-
-        public event PropertyChangedEventHandler? PropertyChanged;
-        private void OnPropertyChanged(string propertyName)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

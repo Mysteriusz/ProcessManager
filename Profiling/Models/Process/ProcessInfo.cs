@@ -26,6 +26,8 @@ namespace ProcessManager.Profiling.Models.Process
         private uint _pid = 0;
         private uint _ppid = 0;
 
+        // ------------------------ GENERAL ------------------------ 
+ 
         public string Name
         {
             get => _name;
@@ -717,10 +719,20 @@ namespace ProcessManager.Profiling.Models.Process
         }
 
         //
+        // ---------------------------------- EVENTS ----------------------------------
+        //
+
+        public event PropertyChangedEventHandler? PropertyChanged;
+        private void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        //
         // ---------------------------------- METHODS ----------------------------------
         //
 
-        public void Read(ProcessInfoStruct infoStruct, ulong processFlags = 0, ulong moduleFlags = 0, ulong handleFlags = 0, ulong threadFlags = 0)
+        public void Load(ProcessInfoStruct infoStruct, ulong processFlags = 0, ulong moduleFlags = 0, ulong handleFlags = 0, ulong threadFlags = 0)
         {
             if ((processFlags & (ulong)ProcessInfoFlags.ProcessName) != 0)
             {
@@ -978,7 +990,7 @@ namespace ProcessManager.Profiling.Models.Process
             for (int i = 0; i < moduleInfoStructs.Length; i++)
             {
                 var moduleInfo = new ProcessModuleInfo();
-                moduleInfo.Read(flags, moduleInfoStructs[i]);
+                moduleInfo.Load(flags, moduleInfoStructs[i]);
                 modules[i] = moduleInfo;
             }
 
@@ -991,7 +1003,7 @@ namespace ProcessManager.Profiling.Models.Process
             for (int i = 0; i < handleInfoStructs.Length; i++)
             {
                 var handleInfo = new ProcessHandleInfo();
-                handleInfo.Read(flags, handleInfoStructs[i]);
+                handleInfo.Load(flags, handleInfoStructs[i]);
                 handles[i] = handleInfo;
             }
 
@@ -1004,17 +1016,11 @@ namespace ProcessManager.Profiling.Models.Process
             for (int i = 0; i < threadInfoStructs.Length; i++)
             {
                 var threadInfo = new ProcessThreadInfo();
-                threadInfo.Read(flags, threadInfoStructs[i]);
+                threadInfo.Load(flags, threadInfoStructs[i]);
                 threads[i] = threadInfo;
             }
 
             return threads;
-        }
-
-        public event PropertyChangedEventHandler? PropertyChanged;
-        private void OnPropertyChanged(string propertyName)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

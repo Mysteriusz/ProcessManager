@@ -1,61 +1,64 @@
-﻿using ProcessManager.Profiling.Models.Process;
+﻿using ProcessManager.Pages.ProcessProperties.Models;
+using ProcessManager.Profiling.Models.Process;
 using ProcessManager.Profiling;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace ProcessManager.Pages.ProcessProperties
 {
     /// <summary>
     /// Interaction logic for ProcessPropertiesHandlesPage.xaml
     /// </summary>
-    public partial class ProcessPropertiesHandlesPage : Page
+    public partial class ProcessPropertiesHandlesPage : Page, IProcessPropertiesPage
     {
-        public ulong UpdateFlags { get; set; } = (ulong)(ProcessInfoFlags.ProcessHandlesInfo);
-        public ulong HandleFlags { get; set; } = (ulong)(HandleInfoFlags.HandleName | HandleInfoFlags.HandleType | HandleInfoFlags.HandleAddress);
+        //
+        //---------------------------------- PROPERTIES ----------------------------------
+        //
+     
+        public ulong ProcessInfoUpdateFlags { get; set; } = (ulong)(ProcessInfoFlags.ProcessHandlesInfo);
+        public ulong ThreadInfoUpdateFlags { get; set; } = 0;
+        public ulong HandleInfoUpdateFlags { get; set; } = (ulong)(HandleInfoFlags.HandleName | HandleInfoFlags.HandleType | HandleInfoFlags.HandleAddress);
+        public ulong ModuleInfoUpdateFlags { get; set; } = 0;
+
         public int UpdateDelay { get; set; } = 1000;
-        public ProcessInfo? Process { get; set; }
-        public CancellationTokenSource? Token { get; set; }
+        public CancellationTokenSource? UpdateCancellation { get; set; }
+        
+        public ProcessInfo? ProcessInfo { get; set; }
+
+        //
+        //---------------------------------- CONSTRUCTORS ----------------------------------
+        //
 
         public ProcessPropertiesHandlesPage()
         {
             InitializeComponent();
         }
 
-        private void Page_Loaded(object sender, System.Windows.RoutedEventArgs e)
-        {
-            Process = DataContext as ProcessInfo;
-            Token = new CancellationTokenSource();
+        //
+        //---------------------------------- EVENTS ----------------------------------
+        //
 
-            if (Process == null)
+        public void Page_Loaded(object sender, System.Windows.RoutedEventArgs e)
+        {
+            ProcessInfo = DataContext as ProcessInfo;
+            UpdateCancellation = new CancellationTokenSource();
+
+            if (ProcessInfo == null)
                 throw new Exception();
 
-            IntPtr ptr = ProcessProfiler.GetProcessInfo(UpdateFlags, 0, HandleFlags, 0, Process.PID);
+            IntPtr ptr = ProcessProfiler.GetProcessInfo(ProcessInfoUpdateFlags, ModuleInfoUpdateFlags, HandleInfoUpdateFlags, ThreadInfoUpdateFlags, ProcessInfo.PID);
             ProcessInfoStruct info = Profiler.ToStruct<ProcessInfoStruct>(ptr);
-            Process.Read(info, processFlags:UpdateFlags, handleFlags:HandleFlags);
+            ProcessInfo.Load(info, ProcessInfoUpdateFlags, ModuleInfoUpdateFlags, HandleInfoUpdateFlags, ThreadInfoUpdateFlags);
             ProcessProfiler.FreeProcessInfo(ptr);
         }
-        private void Page_Unloaded(object sender, System.Windows.RoutedEventArgs e)
+        public void Page_Unloaded(object sender, System.Windows.RoutedEventArgs e)
         {
-            Process?.Unload(processFlags: UpdateFlags, handleFlags:HandleFlags);
+            ProcessInfo?.Unload(processFlags: ProcessInfoUpdateFlags, ModuleInfoUpdateFlags, HandleInfoUpdateFlags, ThreadInfoUpdateFlags);
 
-            Token?.Cancel();
-            Token?.Dispose();
+            UpdateCancellation?.Cancel();
+            UpdateCancellation?.Dispose();
 
-            Token = null;
-            Process = null;
+            UpdateCancellation = null;
+            ProcessInfo = null;
 
             GC.Collect();
         }
