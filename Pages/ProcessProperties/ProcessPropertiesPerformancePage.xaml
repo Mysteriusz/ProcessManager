@@ -8,7 +8,7 @@
       xmlns:graph="clr-namespace:ProcessManager.Profiling.GraphFramework.Controls"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
-      Title="ProcessPropertiesPerformancePage">
+      Title="ProcessPropertiesPerformancePage" Loaded="Page_Loaded" Unloaded="Page_Unloaded">
 
     <Page.Resources>
         <ResourceDictionary>
@@ -17,36 +17,55 @@
                 <ResourceDictionary Source="/Dictionaries/IconDictionary.xaml"/>
                 <ResourceDictionary Source="/Dictionaries/ControlDictionary.xaml"/>
             </ResourceDictionary.MergedDictionaries>
+
+            <helpers:DoubleToPercentageConverter x:Key="DoubleToPercentageConverter"/>
+            <helpers:UlongToStringConverter x:Key="UlongToStringConverter"/>
+            <helpers:UintToBytesConverter x:Key="UintToBytesConverter"/>
         </ResourceDictionary>
     </Page.Resources>
 
     <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="120"/>
+        </Grid.ColumnDefinitions>
+
         <Grid.RowDefinitions>
-            <RowDefinition Height="*"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <Border Style="{StaticResource CustomBorderStyle}" Grid.Row="0" Margin="5">
+        <Border Style="{StaticResource CustomBorderStyle}" Grid.Row="0" Grid.Column="0" Margin="5">
             <Grid>
                 <Label Style="{StaticResource CustomBorderLabelStyle}" Content="CPU"/>
 
-                <graph:DataGraph GraphDelay="1000" Margin="10" GridCycleLengthX="5" GridBackground="{StaticResource DefaultColor}" DataForeground="{StaticResource DataGraphColor}" GridForeground="{StaticResource DarkTextColor}" />
+                <Border Style="{StaticResource CustomBorderStyle}" Margin="10">
+                    <graph:DataGraph Data="{Binding CpuUsage}" MaxDataValue="100" MinDataValue="0" GraphDelay="1000" GridCycleLengthX="5" GridBackground="{StaticResource DefaultColor}" DataForeground="{StaticResource DataGraphColor}" GridForeground="{StaticResource DarkTextColor}" />
+                </Border>
             </Grid>
         </Border>
-        <Border Style="{StaticResource CustomBorderStyle}" Grid.Row="1" Margin="5">
+        <Border Style="{StaticResource CustomBorderStyle}" Grid.Row="1" Grid.Column="0" Margin="5">
             <Grid>
                 <Label Style="{StaticResource CustomBorderLabelStyle}" Content="Memory"/>
-
-                <graph:DataGraph GraphDelay="1000" Margin="10" GridCycleLengthX="5" GridBackground="{StaticResource DefaultColor}" DataForeground="{StaticResource DataGraphColor}" GridForeground="{StaticResource DarkTextColor}" />
+                <Border Style="{StaticResource CustomBorderStyle}" Margin="10">
+                    <graph:DataGraph Data="{Binding WorkingBytes}" GraphDelay="1000" GridCycleLengthX="5" GridBackground="{StaticResource DefaultColor}" DataForeground="{StaticResource DataGraphColor}" GridForeground="{StaticResource DarkTextColor}" />
+                </Border>
             </Grid>
         </Border>
-        <Border Style="{StaticResource CustomBorderStyle}" Grid.Row="2" Margin="5">
-            <Grid>
-                <Label Style="{StaticResource CustomBorderLabelStyle}" Content="IO"/>
 
-                <graph:DataGraph GraphDelay="1000" Margin="10" GridCycleLengthX="5" GridBackground="{StaticResource DefaultColor}" DataForeground="{StaticResource DataGraphColor}" GridForeground="{StaticResource DarkTextColor}" />
-            </Grid>
+        <Border Style="{StaticResource CustomBorderStyle}" Grid.Row="0" Grid.Column="1" Margin="5">
+            <StackPanel>
+                <Label Style="{StaticResource CustomBorderLabelStyle}" Content="Data"/>
+                <Label Foreground="{StaticResource LightTextColor}" Content="{Binding CpuUsage, Converter={StaticResource DoubleToPercentageConverter}}" FontSize="18" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="5" />
+                <Label Foreground="{StaticResource LightTextColor}" Content="{Binding CycleCount, Converter={StaticResource UlongToStringConverter}}" FontSize="10" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="5" />
+            </StackPanel>
+        </Border>
+
+        <Border Style="{StaticResource CustomBorderStyle}" Grid.Row="1" Grid.Column="1" Margin="5">
+            <StackPanel>
+                <Label Style="{StaticResource CustomBorderLabelStyle}" Content="Data"/>
+                <Label Foreground="{StaticResource LightTextColor}" Content="{Binding VirtualBytes, Converter={StaticResource UintToBytesConverter}}" FontSize="18" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="5" />
+            </StackPanel>
         </Border>
     </Grid>
 </Page>

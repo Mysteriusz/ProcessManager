@@ -14,7 +14,7 @@ namespace ProcessManager.Pages.ProcessProperties
         //---------------------------------- PROPERTIES ----------------------------------
         //
 
-        public ulong ProcessInfoUpdateFlags { get; set; } = (ulong)(ProcessInfoFlags.ProcessTimes | ProcessInfoFlags.ProcessHandlesInfo | ProcessInfoFlags.ProcessCycleCount | ProcessInfoFlags.ProcessMemoryInfo | ProcessInfoFlags.ProcessIOInfo);
+        public ulong ProcessInfoUpdateFlags { get; set; } = (ulong)(ProcessInfoFlags.ProcessTimes | ProcessInfoFlags.ProcessHandlesInfo | ProcessInfoFlags.ProcessCpuInfo | ProcessInfoFlags.ProcessMemoryInfo | ProcessInfoFlags.ProcessIOInfo);
         public ulong ThreadInfoUpdateFlags { get; set; } = 0;
         public ulong HandleInfoUpdateFlags { get; set; } = 0;
         public ulong ModuleInfoUpdateFlags { get; set; } = 0;

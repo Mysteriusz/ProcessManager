@@ -38,16 +38,21 @@ namespace ProcessManager.Pages
 
         internal void InitializeApplicationList()
         {
-            //Thread threa = new Thread(async () =>
+            //Thread thread = new Thread(async () =>
             //{
             //    while (true)
             //    {
             //        Thread.Sleep(1000);
 
-            //        IntPtr ptr = ProcessProfiler.GetProcessAllModuleInfo(1880, out uint size);
-            //        ProcessModuleInfo[] infos = Process.
+            //        IntPtr ptr = ProcessProfiler.GetProcessCurrentCPUInfo(24752);
+            //        ProcessCpuInfoStruct str = Profiler.ToStruct<ProcessCpuInfoStruct>(ptr);
+            //        Debug.WriteLine(str.usage);
             //    }
             //});
+
+            //thread.Start();
+
+            //Debug.WriteLine(str.cycles);
 
             ulong flags = (ulong)(ProcessInfoFlags.ProcessName | ProcessInfoFlags.ProcessImageName | ProcessInfoFlags.ProcessUser | ProcessInfoFlags.ProcessDescription | ProcessInfoFlags.ProcessPriority);
 

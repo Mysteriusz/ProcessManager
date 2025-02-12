@@ -19,7 +19,7 @@ namespace ProcessManager.Profiling.Models.Process
         ProcessTimes = 0x00000800,
         ProcessPPID = 0x00001000,
         ProcessHandlesInfo = 0x00002000,
-        ProcessCycleCount = 0x00004000,
+        ProcessCpuInfo = 0x00004000,
         ProcessMemoryInfo = 0x00008000,
         ProcessIOInfo = 0x00010000,
         ProcessModulesInfo = 0x00020000,
@@ -44,14 +44,14 @@ namespace ProcessManager.Profiling.Models.Process
     [StructLayout(LayoutKind.Sequential)]
     public struct ProcessMemoryInfoStruct
     {
-        public uint privateBytes;
-        public uint peakPrivateBytes;
-        public uint virtualBytes;
-        public uint peakVirtualBytes;
-        public uint pageFaults;
-        public uint workingBytes;
-        public uint peakWorkingBytes;
-        public ulong priority;
+        public UInt32 privateBytes;
+        public UInt32 peakPrivateBytes;
+        public UInt32 virtualBytes;
+        public UInt32 peakVirtualBytes;
+        public UInt32 pageFaults;
+        public UInt32 workingBytes;
+        public UInt32 peakWorkingBytes;
+        public UInt64 priority;
     };
     [StructLayout(LayoutKind.Sequential)]
     public struct ProcessIOInfoStruct
@@ -64,6 +64,12 @@ namespace ProcessManager.Profiling.Models.Process
         public UInt64 otherBytes;
         public UInt32 ioPriority;
     };
+    [StructLayout(LayoutKind.Sequential)]
+    public struct ProcessCpuInfoStruct
+    {
+        public Double usage;
+        public UInt64 cycles;
+    }
     [StructLayout(LayoutKind.Sequential)]
     public struct ProcessInfoStruct
     {
@@ -81,11 +87,11 @@ namespace ProcessManager.Profiling.Models.Process
         public UInt32 pid;
         public UInt32 ppid;
         public UInt64 peb;
-        public UInt64 cycles;
 
         public ProcessTimesInfoStruct timesInfo;
         public ProcessMemoryInfoStruct memoryInfo;
         public ProcessIOInfoStruct ioInfo;
+        public ProcessCpuInfoStruct cpuInfo;
 
         public UInt32 moduleCount;
         public IntPtr modules;

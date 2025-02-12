@@ -22,9 +22,9 @@ namespace ProcessManager.Profiling.Models.Process
         private string _architectureType = "N/A";
         private string _commandLine = "N/A";
         private string _description = "N/A";
-        private ulong _peb = 0;
-        private uint _pid = 0;
-        private uint _ppid = 0;
+        private UInt64 _peb = 0;
+        private UInt32 _pid = 0;
+        private UInt32 _ppid = 0;
 
         // ------------------------ GENERAL ------------------------ 
  
@@ -148,7 +148,7 @@ namespace ProcessManager.Profiling.Models.Process
                 }
             }
         }
-        public ulong PEB
+        public UInt64 PEB
         {
             get => _peb;
             set
@@ -160,7 +160,7 @@ namespace ProcessManager.Profiling.Models.Process
                 }
             }
         }
-        public uint PID
+        public UInt32 PID
         {
             get => _pid;
             set
@@ -172,7 +172,7 @@ namespace ProcessManager.Profiling.Models.Process
                 }
             }
         }
-        public uint PPID
+        public UInt32 PPID
         {
             get => _ppid;
             set
@@ -201,24 +201,6 @@ namespace ProcessManager.Profiling.Models.Process
             }
         }
 
-        // ------------------------ CYCLE COUNT ------------------------ 
-
-        private ulong _cycleCount;
-        public ulong CycleCount
-        {
-            get
-            {
-                return _cycleCount;
-            }
-            set
-            {
-                if (_cycleCount != value)
-                {
-                    _cycleCount = value;
-                    OnPropertyChanged(nameof(CycleCount));
-                }
-            }
-        }
 
         // ------------------------ PROCESS_TIMES_INFO ------------------------ 
 
@@ -290,13 +272,13 @@ namespace ProcessManager.Profiling.Models.Process
 
         // ------------------------ PROCESS_HANDLE_INFO ------------------------ 
 
-        private uint _handleCount;
-        private uint _handlePeakCount;
-        private uint _handleGdiCount;
-        private uint _handleUserCount;
+        private UInt32 _handleCount;
+        private UInt32 _handlePeakCount;
+        private UInt32 _handleGdiCount;
+        private UInt32 _handleUserCount;
         private ProcessHandleInfo[] _handles = [];
 
-        public uint HandleCount
+        public UInt32 HandleCount
         {
             get
             {
@@ -311,7 +293,7 @@ namespace ProcessManager.Profiling.Models.Process
                 }
             }
         }
-        public uint HandlePeakCount
+        public UInt32 HandlePeakCount
         {
             get
             {
@@ -326,7 +308,7 @@ namespace ProcessManager.Profiling.Models.Process
                 }
             }
         }
-        public uint GdiHandleCount
+        public UInt32 GdiHandleCount
         {
             get
             {
@@ -341,7 +323,7 @@ namespace ProcessManager.Profiling.Models.Process
                 }
             }
         }
-        public uint UserHandleCount
+        public UInt32 UserHandleCount
         {
             get
             {
@@ -374,10 +356,10 @@ namespace ProcessManager.Profiling.Models.Process
 
         // ------------------------ PROCESS_MODULE_INFO ------------------------ 
 
-        private uint _moduleCount;
+        private UInt32 _moduleCount;
         private ProcessModuleInfo[] _modules = [];
 
-        public uint ModuleCount
+        public UInt32 ModuleCount
         {
             get => _moduleCount;
             set
@@ -404,10 +386,10 @@ namespace ProcessManager.Profiling.Models.Process
 
         // ------------------------ PROCESS_THREAD_INFO ------------------------ 
 
-        private uint _threadCount;
+        private UInt32 _threadCount;
         private ProcessThreadInfo[] _threads = [];
 
-        public uint ThreadCount
+        public UInt32 ThreadCount
         {
             get => _threadCount;
             set
@@ -434,16 +416,16 @@ namespace ProcessManager.Profiling.Models.Process
 
         // ------------------------ PROCESS_MEMORY_INFO ------------------------ 
 
-        private uint _privateBytes;
-        private uint _peakPrivateBytes;
-        private uint _virtualBytes;
-        private uint _peakVirtualBytes;
-        private uint _pageFaults;
-        private uint _workingBytes;
-        private uint _peakWorkingBytes;
-        private ulong _pagePriority;
+        private UInt32 _privateBytes;
+        private UInt32 _peakPrivateBytes;
+        private UInt32 _virtualBytes;
+        private UInt32 _peakVirtualBytes;
+        private UInt32 _pageFaults;
+        private UInt32 _workingBytes;
+        private UInt32 _peakWorkingBytes;
+        private UInt64 _pagePriority;
 
-        public uint PrivateBytes
+        public UInt32 PrivateBytes
         {
             get { return _privateBytes; }
             set
@@ -455,7 +437,7 @@ namespace ProcessManager.Profiling.Models.Process
                 }
             }
         }
-        public uint PeakPrivateBytes
+        public UInt32 PeakPrivateBytes
         {
             get { return _peakPrivateBytes; }
             set
@@ -467,7 +449,7 @@ namespace ProcessManager.Profiling.Models.Process
                 }
             }
         }
-        public uint VirtualBytes
+        public UInt32 VirtualBytes
         {
             get { return _virtualBytes; }
             set
@@ -479,7 +461,7 @@ namespace ProcessManager.Profiling.Models.Process
                 }
             }
         }
-        public uint PeakVirtualBytes
+        public UInt32 PeakVirtualBytes
         {
             get { return _peakVirtualBytes; }
             set
@@ -491,7 +473,7 @@ namespace ProcessManager.Profiling.Models.Process
                 }
             }
         }
-        public uint PageFaults
+        public UInt32 PageFaults
         {
             get { return _pageFaults; }
             set
@@ -503,7 +485,7 @@ namespace ProcessManager.Profiling.Models.Process
                 }
             }
         }
-        public uint WorkingBytes
+        public UInt32 WorkingBytes
         {
             get { return _workingBytes; }
             set
@@ -515,7 +497,7 @@ namespace ProcessManager.Profiling.Models.Process
                 }
             }
         }
-        public uint PeakWorkingBytes
+        public UInt32 PeakWorkingBytes
         {
             get { return _peakWorkingBytes; }
             set
@@ -527,7 +509,7 @@ namespace ProcessManager.Profiling.Models.Process
                 }
             }
         }
-        public ulong PagePriority
+        public UInt64 PagePriority
         {
             get { return _pagePriority; }
             set
@@ -542,15 +524,15 @@ namespace ProcessManager.Profiling.Models.Process
 
         // ------------------------ PROCESS_IO_INFO ------------------------ 
 
-        private ulong _reads;
-        private ulong _readBytes;
-        private ulong _writes;
-        private ulong _writeBytes;
-        private ulong _other;
-        private ulong _otherBytes;
-        private uint _ioPriority;
+        private UInt64 _reads;
+        private UInt64 _readBytes;
+        private UInt64 _writes;
+        private UInt64 _writeBytes;
+        private UInt64 _other;
+        private UInt64 _otherBytes;
+        private UInt32 _ioPriority;
 
-        public ulong Reads
+        public UInt64 Reads
         {
             get => _reads;
             set
@@ -562,7 +544,7 @@ namespace ProcessManager.Profiling.Models.Process
                 }
             }
         }
-        public ulong ReadBytes
+        public UInt64 ReadBytes
         {
             get => _readBytes;
             set
@@ -574,7 +556,7 @@ namespace ProcessManager.Profiling.Models.Process
                 }
             }
         }
-        public ulong Writes
+        public UInt64 Writes
         {
             get => _writes;
             set
@@ -586,7 +568,7 @@ namespace ProcessManager.Profiling.Models.Process
                 }
             }
         }
-        public ulong WriteBytes
+        public UInt64 WriteBytes
         {
             get => _writeBytes;
             set
@@ -598,7 +580,7 @@ namespace ProcessManager.Profiling.Models.Process
                 }
             }
         }
-        public ulong Other
+        public UInt64 Other
         {
             get => _other;
             set
@@ -610,7 +592,7 @@ namespace ProcessManager.Profiling.Models.Process
                 }
             }
         }
-        public ulong OtherBytes
+        public UInt64 OtherBytes
         {
             get => _otherBytes;
             set
@@ -622,7 +604,7 @@ namespace ProcessManager.Profiling.Models.Process
                 }
             }
         }
-        public uint IOPriority
+        public UInt32 IOPriority
         {
             get => _ioPriority;
             set
@@ -635,12 +617,12 @@ namespace ProcessManager.Profiling.Models.Process
             }
         }
 
-        // ------------------------ MISC ------------------------ 
+        // ------------------------ PROCESS_CPU_INFO ------------------------ 
 
-        private double _cpuUsage;
-        private double _memUsage;
-        private double _ioUsage;
-        public double CpuUsage
+        private Double _cpuUsage;
+        private UInt64 _cycleCount;
+        
+        public Double CpuUsage
         {
             get
             {
@@ -655,6 +637,26 @@ namespace ProcessManager.Profiling.Models.Process
                 }
             }
         }
+        public UInt64 CycleCount
+        {
+            get
+            {
+                return _cycleCount;
+            }
+            set
+            {
+                if (_cycleCount != value)
+                {
+                    _cycleCount = value;
+                    OnPropertyChanged(nameof(CycleCount));
+                }
+            }
+        }
+
+        // ------------------------ MISC ------------------------ 
+
+        private double _memUsage;
+        private double _ioUsage;
         public double MemoryUsage
         {
             get
@@ -732,69 +734,69 @@ namespace ProcessManager.Profiling.Models.Process
         // ---------------------------------- METHODS ----------------------------------
         //
 
-        public void Load(ProcessInfoStruct infoStruct, ulong processFlags = 0, ulong moduleFlags = 0, ulong handleFlags = 0, ulong threadFlags = 0)
+        public void Load(ProcessInfoStruct infoStruct, UInt64 processFlags = 0, UInt64 moduleFlags = 0, UInt64 handleFlags = 0, UInt64 threadFlags = 0)
         {
-            if ((processFlags & (ulong)ProcessInfoFlags.ProcessName) != 0)
+            if ((processFlags & (UInt64)ProcessInfoFlags.ProcessName) != 0)
             {
                 Name = Profiler.ToString(infoStruct.name) ?? "N/A";
             }
 
-            if ((processFlags & (ulong)ProcessInfoFlags.ProcessParentName) != 0)
+            if ((processFlags & (UInt64)ProcessInfoFlags.ProcessParentName) != 0)
             {
                 ParentName = Profiler.ToString(infoStruct.parentProcessName) ?? "N/A";
             }
 
-            if ((processFlags & (ulong)ProcessInfoFlags.ProcessImageName) != 0)
+            if ((processFlags & (UInt64)ProcessInfoFlags.ProcessImageName) != 0)
             {
                 ImageName = Profiler.ToString(infoStruct.imageName) ?? "N/A";
             }
 
-            if ((processFlags & (ulong)ProcessInfoFlags.ProcessUser) != 0)
+            if ((processFlags & (UInt64)ProcessInfoFlags.ProcessUser) != 0)
             {
                 User = Profiler.ToString(infoStruct.user) ?? "N/A";
             }
 
-            if ((processFlags & (ulong)ProcessInfoFlags.ProcessPriority) != 0)
+            if ((processFlags & (UInt64)ProcessInfoFlags.ProcessPriority) != 0)
             {
                 Priority = Profiler.ToString(infoStruct.priority) ?? "N/A";
             }
 
-            if ((processFlags & (ulong)ProcessInfoFlags.ProcessFileVersion) != 0)
+            if ((processFlags & (UInt64)ProcessInfoFlags.ProcessFileVersion) != 0)
             {
                 Version = Profiler.ToString(infoStruct.fileVersion) ?? "N/A";
             }
 
-            if ((processFlags & (ulong)ProcessInfoFlags.ProcessArchitectureType) != 0)
+            if ((processFlags & (UInt64)ProcessInfoFlags.ProcessArchitectureType) != 0)
             {
                 ArchitectureType = Profiler.ToString(infoStruct.architectureType) ?? "N/A";
             }
 
-            if ((processFlags & (ulong)ProcessInfoFlags.ProcessIntegrityLevel) != 0)
+            if ((processFlags & (UInt64)ProcessInfoFlags.ProcessIntegrityLevel) != 0)
             {
                 IntegrityLevel = Profiler.ToString(infoStruct.integrityLevel) ?? "N/A";
             }
 
-            if ((processFlags & (ulong)ProcessInfoFlags.ProcessCommandLine) != 0)
+            if ((processFlags & (UInt64)ProcessInfoFlags.ProcessCommandLine) != 0)
             {
                 CommandLine = Profiler.ToString(infoStruct.cmd) ?? "N/A";
             }
 
-            if ((processFlags & (ulong)ProcessInfoFlags.ProcessDescription) != 0)
+            if ((processFlags & (UInt64)ProcessInfoFlags.ProcessDescription) != 0)
             {
                 Description = Profiler.ToString(infoStruct.description) ?? "N/A";
             }
 
-            if ((processFlags & (ulong)ProcessInfoFlags.ProcessPPID) != 0)
+            if ((processFlags & (UInt64)ProcessInfoFlags.ProcessPPID) != 0)
             {
                 PPID = infoStruct.ppid;
             }
 
-            if ((processFlags & (ulong)ProcessInfoFlags.ProcessPEB) != 0)
+            if ((processFlags & (UInt64)ProcessInfoFlags.ProcessPEB) != 0)
             {
                 PEB = infoStruct.peb;
             }
 
-            if ((processFlags & (ulong)ProcessInfoFlags.ProcessTimes) != 0)
+            if ((processFlags & (UInt64)ProcessInfoFlags.ProcessTimes) != 0)
             {
                 CreationTime = Profiler.ToDateTime(infoStruct.timesInfo.creationTime) ?? new DateTime();
                 ExitTime = Profiler.ToDateTime(infoStruct.timesInfo.exitTime, true) ?? new DateTime();
@@ -803,12 +805,13 @@ namespace ProcessManager.Profiling.Models.Process
                 TotalTime = Profiler.ToDateTime(infoStruct.timesInfo.totalTime, true) ?? new DateTime();
             }
 
-            if ((processFlags & (ulong)ProcessInfoFlags.ProcessCycleCount) != 0)
+            if ((processFlags & (UInt64)ProcessInfoFlags.ProcessCpuInfo) != 0)
             {
-                CycleCount = infoStruct.cycles;
+                CycleCount = infoStruct.cpuInfo.cycles;
+                CpuUsage = infoStruct.cpuInfo.usage;
             }
 
-            if ((processFlags & (ulong)ProcessInfoFlags.ProcessMemoryInfo) != 0)
+            if ((processFlags & (UInt64)ProcessInfoFlags.ProcessMemoryInfo) != 0)
             {
                 PrivateBytes = infoStruct.memoryInfo.privateBytes;
                 PeakPrivateBytes = infoStruct.memoryInfo.peakPrivateBytes;
@@ -820,7 +823,7 @@ namespace ProcessManager.Profiling.Models.Process
                 PageFaults = infoStruct.memoryInfo.pageFaults;
             }
 
-            if ((processFlags & (ulong)ProcessInfoFlags.ProcessIOInfo) != 0)
+            if ((processFlags & (UInt64)ProcessInfoFlags.ProcessIOInfo) != 0)
             {
                 Reads = infoStruct.ioInfo.reads;
                 ReadBytes = infoStruct.ioInfo.readBytes;
@@ -831,7 +834,7 @@ namespace ProcessManager.Profiling.Models.Process
                 IOPriority = infoStruct.ioInfo.ioPriority;
             }
 
-            if ((processFlags & (ulong)ProcessInfoFlags.ProcessHandlesInfo) != 0)
+            if ((processFlags & (UInt64)ProcessInfoFlags.ProcessHandlesInfo) != 0)
             {
                 HandleCount = infoStruct.handleCount;
                 HandlePeakCount = infoStruct.handlePeakCount;
@@ -841,81 +844,81 @@ namespace ProcessManager.Profiling.Models.Process
                 Handles = ConvertToHandles(Profiler.ToArray<ProcessHandleInfoStruct>(infoStruct.handles, infoStruct.handleCount), handleFlags)!;
             }
 
-            if ((processFlags & (ulong)ProcessInfoFlags.ProcessModulesInfo) != 0)
+            if ((processFlags & (UInt64)ProcessInfoFlags.ProcessModulesInfo) != 0)
             {
                 ModuleCount = infoStruct.moduleCount;
                 Modules = ConvertToModules(Profiler.ToArray<ProcessModuleInfoStruct>(infoStruct.modules, infoStruct.moduleCount), moduleFlags)!;
             }
 
-            if ((processFlags & (ulong)ProcessInfoFlags.ProcessThreadsInfo) != 0)
+            if ((processFlags & (UInt64)ProcessInfoFlags.ProcessThreadsInfo) != 0)
             {
                 ThreadCount = infoStruct.threadCount;
                 Threads = ConvertToThreads(Profiler.ToArray<ProcessThreadInfoStruct>(infoStruct.threads, infoStruct.threadCount), threadFlags)!;
             }
         }
-        public void Unload(ulong processFlags = 0, ulong moduleFlags = 0, ulong handleFlags = 0, ulong threadFlags = 0)
+        public void Unload(UInt64 processFlags = 0, UInt64 moduleFlags = 0, UInt64 handleFlags = 0, UInt64 threadFlags = 0)
         {
-            if ((processFlags & (ulong)ProcessInfoFlags.ProcessName) != 0)
+            if ((processFlags & (UInt64)ProcessInfoFlags.ProcessName) != 0)
             {
                 _name = "";
             }
 
-            if ((processFlags & (ulong)ProcessInfoFlags.ProcessParentName) != 0)
+            if ((processFlags & (UInt64)ProcessInfoFlags.ProcessParentName) != 0)
             {
                 _parentName = "";
             }
 
-            if ((processFlags & (ulong)ProcessInfoFlags.ProcessImageName) != 0)
+            if ((processFlags & (UInt64)ProcessInfoFlags.ProcessImageName) != 0)
             {
                 _imageName = "";
             }
 
-            if ((processFlags & (ulong)ProcessInfoFlags.ProcessUser) != 0)
+            if ((processFlags & (UInt64)ProcessInfoFlags.ProcessUser) != 0)
             {
                 _user = "";
             }
 
-            if ((processFlags & (ulong)ProcessInfoFlags.ProcessPriority) != 0)
+            if ((processFlags & (UInt64)ProcessInfoFlags.ProcessPriority) != 0)
             {
                 _priority = "";
             }
 
-            if ((processFlags & (ulong)ProcessInfoFlags.ProcessFileVersion) != 0)
+            if ((processFlags & (UInt64)ProcessInfoFlags.ProcessFileVersion) != 0)
             {
                 _version = "";
             }
 
-            if ((processFlags & (ulong)ProcessInfoFlags.ProcessArchitectureType) != 0)
+            if ((processFlags & (UInt64)ProcessInfoFlags.ProcessArchitectureType) != 0)
             {
                 ArchitectureType = "";
             }
 
-            if ((processFlags & (ulong)ProcessInfoFlags.ProcessIntegrityLevel) != 0)
+            if ((processFlags & (UInt64)ProcessInfoFlags.ProcessIntegrityLevel) != 0)
             {
                 _integrityLevel = "";
             }
 
-            if ((processFlags & (ulong)ProcessInfoFlags.ProcessCommandLine) != 0)
+            if ((processFlags & (UInt64)ProcessInfoFlags.ProcessCommandLine) != 0)
             {
                 _commandLine = "";
             }
 
-            if ((processFlags & (ulong)ProcessInfoFlags.ProcessDescription) != 0)
+            if ((processFlags & (UInt64)ProcessInfoFlags.ProcessDescription) != 0)
             {
                 _description = "";
             }
 
-            if ((processFlags & (ulong)ProcessInfoFlags.ProcessPPID) != 0)
+            if ((processFlags & (UInt64)ProcessInfoFlags.ProcessPPID) != 0)
             {
                 _ppid = 0;
             }
 
-            if ((processFlags & (ulong)ProcessInfoFlags.ProcessPEB) != 0)
+            if ((processFlags & (UInt64)ProcessInfoFlags.ProcessPEB) != 0)
             {
                 _peb = 0;
             }
 
-            if ((processFlags & (ulong)ProcessInfoFlags.ProcessTimes) != 0)
+            if ((processFlags & (UInt64)ProcessInfoFlags.ProcessTimes) != 0)
             {
                 _creationTime = default;
                 _exitTime = default;
@@ -924,12 +927,13 @@ namespace ProcessManager.Profiling.Models.Process
                 _totalTime = default;
             }
 
-            if ((processFlags & (ulong)ProcessInfoFlags.ProcessCycleCount) != 0)
+            if ((processFlags & (UInt64)ProcessInfoFlags.ProcessCpuInfo) != 0)
             {
                 _cycleCount = 0;
+                _cpuUsage = 0;
             }
 
-            if ((processFlags & (ulong)ProcessInfoFlags.ProcessMemoryInfo) != 0)
+            if ((processFlags & (UInt64)ProcessInfoFlags.ProcessMemoryInfo) != 0)
             {
                 _privateBytes = 0;
                 _peakPrivateBytes = 0;
@@ -941,7 +945,7 @@ namespace ProcessManager.Profiling.Models.Process
                 _pageFaults = 0;
             }
 
-            if ((processFlags & (ulong)ProcessInfoFlags.ProcessIOInfo) != 0)
+            if ((processFlags & (UInt64)ProcessInfoFlags.ProcessIOInfo) != 0)
             {
                 _reads = 0;
                 _readBytes = 0;
@@ -952,7 +956,7 @@ namespace ProcessManager.Profiling.Models.Process
                 _ioPriority = 0;
             }
 
-            if ((processFlags & (ulong)ProcessInfoFlags.ProcessHandlesInfo) != 0)
+            if ((processFlags & (UInt64)ProcessInfoFlags.ProcessHandlesInfo) != 0)
             {
                 foreach (var han in _handles)
                     han.Unload(handleFlags);
@@ -964,7 +968,7 @@ namespace ProcessManager.Profiling.Models.Process
                 _handleUserCount = 0;
             }
 
-            if ((processFlags & (ulong)ProcessInfoFlags.ProcessModulesInfo) != 0)
+            if ((processFlags & (UInt64)ProcessInfoFlags.ProcessModulesInfo) != 0)
             {
                 foreach (var mod in _modules)
                     mod.Unload(moduleFlags);
@@ -973,7 +977,7 @@ namespace ProcessManager.Profiling.Models.Process
                 _modules = [];
             }
 
-            if ((processFlags & (ulong)ProcessInfoFlags.ProcessThreadsInfo) != 0)
+            if ((processFlags & (UInt64)ProcessInfoFlags.ProcessThreadsInfo) != 0)
             {
                 foreach (var th in _threads)
                     th.Unload(threadFlags);
@@ -983,7 +987,7 @@ namespace ProcessManager.Profiling.Models.Process
             }
         }
 
-        public ProcessModuleInfo[] ConvertToModules(ProcessModuleInfoStruct[] moduleInfoStructs, ulong flags)
+        public ProcessModuleInfo[] ConvertToModules(ProcessModuleInfoStruct[] moduleInfoStructs, UInt64 flags)
         {
             var modules = new ProcessModuleInfo[moduleInfoStructs.Length];
 
@@ -996,7 +1000,7 @@ namespace ProcessManager.Profiling.Models.Process
 
             return modules;
         }
-        public ProcessHandleInfo[] ConvertToHandles(ProcessHandleInfoStruct[] handleInfoStructs, ulong flags)
+        public ProcessHandleInfo[] ConvertToHandles(ProcessHandleInfoStruct[] handleInfoStructs, UInt64 flags)
         {
             var handles = new ProcessHandleInfo[handleInfoStructs.Length];
 
@@ -1009,7 +1013,7 @@ namespace ProcessManager.Profiling.Models.Process
 
             return handles;
         }
-        public ProcessThreadInfo[] ConvertToThreads(ProcessThreadInfoStruct[] threadInfoStructs, ulong flags)
+        public ProcessThreadInfo[] ConvertToThreads(ProcessThreadInfoStruct[] threadInfoStructs, UInt64 flags)
         {
             var threads = new ProcessThreadInfo[threadInfoStructs.Length];
 

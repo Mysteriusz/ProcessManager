@@ -8,12 +8,12 @@ namespace ProcessManager.Profiling.Models.Process
         // ---------------------------------- PROPERTIES ----------------------------------
         //
 
-        private uint _priority;
-        private uint _tid;
+        private ulong _priority;
+        private ulong _tid;
         private ulong _startAddress;
         private ulong _cyclesDelta;
 
-        public uint Priority
+        public ulong Priority
         {
             get => _priority;
             set
@@ -25,7 +25,7 @@ namespace ProcessManager.Profiling.Models.Process
                 }
             }
         }
-        public uint TID
+        public ulong TID
         {
             get => _tid;
             set

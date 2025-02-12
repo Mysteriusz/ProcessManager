@@ -33,6 +33,16 @@ namespace ProcessManager.Profiling.GraphFramework.Controls
 
         private CancellationTokenSource? _cancellationTokenSource;
 
+
+        public static readonly DependencyProperty DataProperty =
+            DependencyProperty.Register(
+                "Data", typeof(double), typeof(DataGraph), new PropertyMetadata(0.0));
+        public double Data
+        {
+            get { return (double)GetValue(DataProperty); }
+            set { SetValue(DataProperty, value); }
+        }
+
         //
         // ---------------------------------- CONSTRUCTORS ----------------------------------
         //
@@ -89,17 +99,16 @@ namespace ProcessManager.Profiling.GraphFramework.Controls
                 if (_cancellationTokenSource == null)
                     return;
 
-                double data = 0;
                 while (!_cancellationTokenSource.IsCancellationRequested)
                 {
                     if (_cancellationTokenSource.IsCancellationRequested)
                         return;
 
-                    data += 30;
                     Dispatcher.Invoke(() =>
                     {
                         Renderer.RenderGrid((int)ActualWidth, (int)ActualHeight);
-                        Renderer.RenderData((int)ActualWidth, (int)ActualHeight, data);
+
+                        Renderer.RenderData((int)ActualWidth, (int)ActualHeight, Data);
 
                         GraphDisplayer.Source = Renderer.GetGraph();
                     });
