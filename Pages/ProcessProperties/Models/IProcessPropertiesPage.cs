@@ -1,4 +1,5 @@
 ﻿using ProcessManager.Profiling.Models.Process;
+using ProcessManager.Profiling.Models.Process.Models;
 
 namespace ProcessManager.Pages.ProcessProperties.Models
 {
@@ -13,17 +14,37 @@ namespace ProcessManager.Pages.ProcessProperties.Models
         public ulong ProcessInfoUpdateFlags { get; set; }
 
         /// <summary>
-        /// <see cref="ThreadInfoFlags"/> of the page.
+        /// <see cref="ProcessThreadInfoFlags"/> of the page.
         /// </summary>
         public ulong ThreadInfoUpdateFlags { get; set; }
 
         /// <summary>
-        /// <see cref="HandleInfoFlags"/> of the page.
+        /// <see cref="ProcessIOInfoFlags"/> of the page.
+        /// </summary>
+        public ulong IOInfoUpdateFlags { get; set; }
+
+        /// <summary>
+        /// <see cref="ProcessMemoryInfoFlags"/> of the page.
+        /// </summary>
+        public ulong MemoryInfoUpdateFlags { get; set; }
+
+        /// <summary>
+        /// <see cref="ProcessTimesInfoFlags"/> of the page.
+        /// </summary>
+        public ulong TimesInfoUpdateFlags { get; set; }
+
+        /// <summary>
+        /// <see cref="ProcessCpuInfoFlags"/> of the page.
+        /// </summary>
+        public ulong CpuInfoUpdateFlags { get; set; }
+
+        /// <summary>
+        /// <see cref="ProcessHandleInfoFlags"/> of the page.
         /// </summary>
         public ulong HandleInfoUpdateFlags { get; set; }
 
         /// <summary>
-        /// <see cref="ModuleInfoFlags"/> of the page.
+        /// <see cref="ProcessModuleInfoFlags"/> of the page.
         /// </summary>
         public ulong ModuleInfoUpdateFlags { get; set; }
 

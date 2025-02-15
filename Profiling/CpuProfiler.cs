@@ -27,15 +27,10 @@ namespace ProcessManager.Profiling
         
         [DllImport(Profiler.DllPath)]
         public static extern IntPtr GetCpuStepping();
-
         [DllImport(Profiler.DllPath)]
-        public static extern IntPtr GetCpuLevel1CacheSize();
-
+        public static extern IntPtr GetCpuThreadCount();
         [DllImport(Profiler.DllPath)]
-        public static extern IntPtr GetCpuLevel2CacheSize();
-
-        [DllImport(Profiler.DllPath)]
-        public static extern IntPtr GetCpuLevel3CacheSize();
+        public static extern IntPtr GetCpuHandleCount();
 
         //
         // ---------------------------------- DOUBLE ----------------------------------
@@ -43,6 +38,26 @@ namespace ProcessManager.Profiling
 
         [DllImport(Profiler.DllPath)]
         public static extern IntPtr GetCpuUsage();
+        [DllImport(Profiler.DllPath)]
+        public static extern IntPtr GetCpuBaseFrequency();
+        [DllImport(Profiler.DllPath)]
+        public static extern IntPtr GetCpuMaxFrequency();
+
+        //
+        // ---------------------------------- BOOLEAN ----------------------------------
+        //
+
+        [DllImport(Profiler.DllPath)]
+        public static extern IntPtr IsCpuVirtualization();
+        [DllImport(Profiler.DllPath)]
+        public static extern IntPtr IsCpuHyperThreading();
+
+        //
+        // ---------------------------------- CPU_SYSTEM_INFO_STRUCT ----------------------------------
+        //
+
+        [DllImport(Profiler.DllPath)]
+        public static extern IntPtr GetCpuSystemInfo();
 
         //
         // ---------------------------------- CPU_TIMES_INFO_STRUCT ----------------------------------
@@ -50,5 +65,12 @@ namespace ProcessManager.Profiling
 
         [DllImport(Profiler.DllPath)]
         public static extern IntPtr GetCpuTimes();
+
+        //
+        // ---------------------------------- CPU_CACHE_INFO_STRUCT ----------------------------------
+        //
+
+        [DllImport(Profiler.DllPath)]
+        public static extern IntPtr GetCpuAllLevelsCacheInfo(out uint size);
     }
 }

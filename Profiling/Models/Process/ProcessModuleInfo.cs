@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using ProcessManager.Profiling.Models.Process.Models;
+using System.ComponentModel;
 
 namespace ProcessManager.Profiling.Models.Process
 {
@@ -92,54 +93,55 @@ namespace ProcessManager.Profiling.Models.Process
 
         public void Load(ulong flags, ProcessModuleInfoStruct infoStruct)
         {
-            if ((flags & (ulong)ModuleInfoFlags.ModuleName) != 0)
+            if ((flags & (ulong)ProcessModuleInfoFlags.PROCESS_MIF_NAME) != 0)
             {
                 Name = Profiler.ToString(infoStruct.name) ?? "N/A";
             }
 
-            if ((flags & (ulong)ModuleInfoFlags.ModulePath) != 0)
+            if ((flags & (ulong)ProcessModuleInfoFlags.PROCESS_MIF_PATH) != 0)
             {
                 Path = Profiler.ToString(infoStruct.path) ?? "N/A";
             }
 
-            if ((flags & (ulong)ModuleInfoFlags.ModuleAddress) != 0)
+            if ((flags & (ulong)ProcessModuleInfoFlags.PROCESS_MIF_ADDRESS) != 0)
             {
                 Address = infoStruct.address;
             }
 
-            if ((flags & (ulong)ModuleInfoFlags.ModuleDescription) != 0)
+            if ((flags & (ulong)ProcessModuleInfoFlags.PROCESS_MIF_DESCRIPTION) != 0)
             {
                 Description = Profiler.ToString(infoStruct.description) ?? "N/A";
             }
 
-            if ((flags & (ulong)ModuleInfoFlags.ModuleSize) != 0)
+            if ((flags & (ulong)ProcessModuleInfoFlags.PROCESS_MIF_SIZE) != 0)
             {
                 Size = infoStruct.size;
             }
         }
+
         public void Unload(ulong flags)
         {
-            if ((flags & (ulong)ModuleInfoFlags.ModuleName) != 0)
+            if ((flags & (ulong)ProcessModuleInfoFlags.PROCESS_MIF_NAME) != 0)
             {
                 _name = "";
             }
 
-            if ((flags & (ulong)ModuleInfoFlags.ModulePath) != 0)
+            if ((flags & (ulong)ProcessModuleInfoFlags.PROCESS_MIF_PATH) != 0)
             {
                 _path = "";
             }
 
-            if ((flags & (ulong)ModuleInfoFlags.ModuleAddress) != 0)
+            if ((flags & (ulong)ProcessModuleInfoFlags.PROCESS_MIF_ADDRESS) != 0)
             {
                 _address = 0;
             }
 
-            if ((flags & (ulong)ModuleInfoFlags.ModuleDescription) != 0)
+            if ((flags & (ulong)ProcessModuleInfoFlags.PROCESS_MIF_DESCRIPTION) != 0)
             {
                 _description = "";
             }
 
-            if ((flags & (ulong)ModuleInfoFlags.ModuleSize) != 0)
+            if ((flags & (ulong)ProcessModuleInfoFlags.PROCESS_MIF_SIZE) != 0)
             {
                 _size = 0;
             }

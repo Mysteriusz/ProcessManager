@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using ProcessManager.Profiling.Models.Process.Models;
+using System.ComponentModel;
 
 namespace ProcessManager.Profiling.Models.Process
 {
@@ -78,44 +79,45 @@ namespace ProcessManager.Profiling.Models.Process
 
         public void Load(ulong flags, ProcessThreadInfoStruct infoStruct)
         {
-            if ((flags & (ulong)ThreadInfoFlags.ThreadPriority) != 0)
+            if ((flags & (ulong)ProcessThreadInfoFlags.PROCESS_RIF_PRIORITY) != 0)
             {
                 Priority = infoStruct.priority;
             }
 
-            if ((flags & (ulong)ThreadInfoFlags.ThreadTid) != 0)
+            if ((flags & (ulong)ProcessThreadInfoFlags.PROCESS_RIF_TID) != 0)
             {
                 TID = infoStruct.tid;
             }
 
-            if ((flags & (ulong)ThreadInfoFlags.ThreadStartAddress) != 0)
+            if ((flags & (ulong)ProcessThreadInfoFlags.PROCESS_RIF_START_ADDRESS) != 0)
             {
                 StartAddress = infoStruct.startAddress;
             }
 
-            if ((flags & (ulong)ThreadInfoFlags.ThreadCycles) != 0)
+            if ((flags & (ulong)ProcessThreadInfoFlags.PROCESS_RIF_CYCLES) != 0)
             {
                 CyclesDelta = infoStruct.cyclesDelta;
             }
         }
+
         public void Unload(ulong flags)
         {
-            if ((flags & (ulong)ThreadInfoFlags.ThreadPriority) != 0)
+            if ((flags & (ulong)ProcessThreadInfoFlags.PROCESS_RIF_PRIORITY) != 0)
             {
                 _priority = 0;
             }
 
-            if ((flags & (ulong)ThreadInfoFlags.ThreadTid) != 0)
+            if ((flags & (ulong)ProcessThreadInfoFlags.PROCESS_RIF_TID) != 0)
             {
                 _tid = 0;
             }
 
-            if ((flags & (ulong)ThreadInfoFlags.ThreadStartAddress) != 0)
+            if ((flags & (ulong)ProcessThreadInfoFlags.PROCESS_RIF_START_ADDRESS) != 0)
             {
                 _startAddress = 0;
             }
 
-            if ((flags & (ulong)ThreadInfoFlags.ThreadCycles) != 0)
+            if ((flags & (ulong)ProcessThreadInfoFlags.PROCESS_RIF_CYCLES) != 0)
             {
                 _cyclesDelta = 0;
             }

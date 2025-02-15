@@ -17,21 +17,25 @@
         </ResourceDictionary>
     </Page.Resources>
 
-    <Grid>
-        <DataGrid x:Name="ApplicationList" Style="{StaticResource ApplicationDataGrid}">
-            <DataGrid.Resources>
-                <Style TargetType="ScrollBar">
-                    <Setter Property="Template" Value="{StaticResource ListScrollBar}"/>
-                </Style>
-            </DataGrid.Resources>
-            
-            <DataGrid.Columns>
-                <DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="*" />
-                <DataGridTextColumn Header="Image Name" Binding="{Binding ImageName}" Width="*" />
-                <DataGridTextColumn Header="User" Binding="{Binding User}" Width="*" />
-                <DataGridTextColumn Header="Priority" Binding="{Binding Priority}" Width="*" />
-                <DataGridTextColumn Header="PID" Binding="{Binding PID}" Width="*" />
-            </DataGrid.Columns>
-        </DataGrid>
-    </Grid>
+    <Border Style="{StaticResource CustomBorderStyle}" Grid.Row="1" >
+        <Grid>
+            <Label Style="{StaticResource CustomBorderLabelStyle}" Content="Processes"/>
+
+            <DataGrid x:Name="ApplicationList" Style="{StaticResource ApplicationDataGrid}" Margin="10">
+                <DataGrid.Resources>
+                    <Style TargetType="ScrollBar">
+                        <Setter Property="Template" Value="{StaticResource ListScrollBar}"/>
+                    </Style>
+                </DataGrid.Resources>
+
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="*" />
+                    <DataGridTextColumn Header="Image Name" Binding="{Binding ImageName}" Width="*" />
+                    <DataGridTextColumn Header="User" Binding="{Binding User}" Width="*" />
+                    <DataGridTextColumn Header="Priority" Binding="{Binding Priority}" Width="*" />
+                    <DataGridTextColumn Header="PID" Binding="{Binding PID}" Width="*" />
+                </DataGrid.Columns>
+            </DataGrid>
+        </Grid>
+    </Border>
 </Page>

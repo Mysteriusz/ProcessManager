@@ -11,18 +11,19 @@
 
     <Grid Background="#1c1c1c" HorizontalAlignment="Stretch">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="0"/>
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="20"/>
             <RowDefinition Height="22"/>
-            <RowDefinition Height="2*"/>
-            <RowDefinition/>
+            <RowDefinition Height="400*"/>
+            <RowDefinition Height="225*"/>
+            <RowDefinition Height="25*"/>
         </Grid.RowDefinitions>
 
-        <Frame Source="/Pages/UtilitiesPage.xaml" Grid.Row="0" Grid.Column="1" />
-        <Frame Source="/Pages/ButtonPage.xaml" Grid.Row="1" Grid.Column="1" />
-        <Frame Source="/Pages/ApplicationPage.xaml" Grid.Row="2" Grid.Column="1" />
+        <Frame Source="/Pages/UtilitiesPage.xaml" Grid.Row="0" Grid.Column="0" />
+        <Frame Source="/Pages/ButtonPage.xaml" Grid.Row="1" Grid.Column="0" />
+        <Frame Source="/Pages/ApplicationPage.xaml" Grid.Row="2" Grid.Column="1" Margin="5" />
+        <Frame Source="/Pages/InfoBarPage.xaml" Grid.Row="4" Grid.Column="0" />
     </Grid>
 </Window>

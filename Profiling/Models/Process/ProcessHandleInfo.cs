@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using ProcessManager.Profiling.Models.Process.Models;
+using System.ComponentModel;
 
 namespace ProcessManager.Profiling.Models.Process
 {
@@ -65,34 +66,34 @@ namespace ProcessManager.Profiling.Models.Process
 
         public void Load(ulong flags, ProcessHandleInfoStruct infoStruct)
         {
-            if ((flags & (ulong)HandleInfoFlags.HandleName) != 0)
+            if ((flags & (ulong)ProcessHandleInfoFlags.PROCESS_HIF_NAME) != 0)
             {
                 Name = Profiler.ToString(infoStruct.name) ?? "N/A";
             }
 
-            if ((flags & (ulong)HandleInfoFlags.HandleType) != 0)
+            if ((flags & (ulong)ProcessHandleInfoFlags.PROCESS_HIF_TYPE) != 0)
             {
                 Type = Profiler.ToString(infoStruct.type) ?? "N/A";
             }
 
-            if ((flags & (ulong)HandleInfoFlags.HandleAddress) != 0)
+            if ((flags & (ulong)ProcessHandleInfoFlags.PROCESS_HIF_ADDRESS) != 0)
             {
                 Address = infoStruct.address;
             }
         }
         public void Unload(ulong flags)
         {
-            if ((flags & (ulong)HandleInfoFlags.HandleName) != 0)
+            if ((flags & (ulong)ProcessHandleInfoFlags.PROCESS_HIF_NAME) != 0)
             {
                 _name = "";
             }
 
-            if ((flags & (ulong)HandleInfoFlags.HandleType) != 0)
+            if ((flags & (ulong)ProcessHandleInfoFlags.PROCESS_HIF_TYPE) != 0)
             {
                 _type = "";
             }
 
-            if ((flags & (ulong)HandleInfoFlags.HandleAddress) != 0)
+            if ((flags & (ulong)ProcessHandleInfoFlags.PROCESS_HIF_ADDRESS) != 0)
             {
                 _address = 0;
             }

@@ -2,6 +2,7 @@
 using ProcessManager.Profiling.Models.Process;
 using ProcessManager.Profiling;
 using System.Windows.Controls;
+using ProcessManager.Profiling.Models.Process.Models;
 
 namespace ProcessManager.Pages.ProcessProperties
 {
@@ -14,10 +15,14 @@ namespace ProcessManager.Pages.ProcessProperties
         //---------------------------------- PROPERTIES ----------------------------------
         //
 
-        public ulong ProcessInfoUpdateFlags { get; set; } = (ulong)(ProcessInfoFlags.ProcessModulesInfo);
+        public ulong ProcessInfoUpdateFlags { get; set; } = (ulong)(ProcessInfoFlags.PROCESS_PIF_MODULES_INFO);
         public ulong ThreadInfoUpdateFlags { get; set; } = 0;
         public ulong HandleInfoUpdateFlags { get; set; } = 0;
-        public ulong ModuleInfoUpdateFlags { get; set; } = (ulong)(ModuleInfoFlags.ModuleName | ModuleInfoFlags.ModulePath | ModuleInfoFlags.ModuleDescription | ModuleInfoFlags.ModuleAddress | ModuleInfoFlags.ModuleSize);
+        public ulong ModuleInfoUpdateFlags { get; set; } = (ulong)(ProcessModuleInfoFlags.PROCESS_MIF_NAME | ProcessModuleInfoFlags.PROCESS_MIF_PATH | ProcessModuleInfoFlags.PROCESS_MIF_DESCRIPTION | ProcessModuleInfoFlags.PROCESS_MIF_ADDRESS | ProcessModuleInfoFlags.PROCESS_MIF_SIZE);
+        public ulong IOInfoUpdateFlags { get; set; } = 0;
+        public ulong MemoryInfoUpdateFlags { get; set; } = 0;
+        public ulong TimesInfoUpdateFlags { get; set; } = 0;
+        public ulong CpuInfoUpdateFlags { get; set; } = 0;
 
         public int UpdateDelay { get; set; } = 10000;
         public CancellationTokenSource? UpdateCancellation { get; set; }
@@ -45,14 +50,14 @@ namespace ProcessManager.Pages.ProcessProperties
             if (ProcessInfo == null)
                 throw new Exception();
 
-            IntPtr ptr = ProcessProfiler.GetProcessInfo(ProcessInfoUpdateFlags, ModuleInfoUpdateFlags, HandleInfoUpdateFlags, ThreadInfoUpdateFlags, ProcessInfo.PID);
+            IntPtr ptr = ProcessProfiler.GetProcessInfo(ProcessInfoUpdateFlags, ModuleInfoUpdateFlags, HandleInfoUpdateFlags, ThreadInfoUpdateFlags, TimesInfoUpdateFlags, MemoryInfoUpdateFlags, CpuInfoUpdateFlags, IOInfoUpdateFlags, ProcessInfo.PID);
             ProcessInfoStruct info = Profiler.ToStruct<ProcessInfoStruct>(ptr);
-            ProcessInfo.Load(info, ProcessInfoUpdateFlags, ModuleInfoUpdateFlags, HandleInfoUpdateFlags, ThreadInfoUpdateFlags);
+            ProcessInfo.Load(info, ProcessInfoUpdateFlags, ModuleInfoUpdateFlags, HandleInfoUpdateFlags, ThreadInfoUpdateFlags, TimesInfoUpdateFlags, MemoryInfoUpdateFlags, CpuInfoUpdateFlags, IOInfoUpdateFlags);
             ProcessProfiler.FreeProcessInfo(ptr);
         }
         public void Page_Unloaded(object sender, System.Windows.RoutedEventArgs e)
         {
-            ProcessInfo?.Unload(ProcessInfoUpdateFlags, ModuleInfoUpdateFlags, HandleInfoUpdateFlags, ThreadInfoUpdateFlags);
+            ProcessInfo?.Unload(ProcessInfoUpdateFlags, ModuleInfoUpdateFlags, HandleInfoUpdateFlags, ThreadInfoUpdateFlags, TimesInfoUpdateFlags, MemoryInfoUpdateFlags, CpuInfoUpdateFlags, IOInfoUpdateFlags);
 
             UpdateCancellation?.Cancel();
             UpdateCancellation?.Dispose();

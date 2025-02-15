@@ -1,4 +1,4 @@
-﻿using ProcessManager.Profiling.Models.Process;
+﻿using ProcessManager.Profiling.Models.Sys;
 using System.Runtime.InteropServices;
 
 namespace ProcessManager.Profiling
@@ -107,21 +107,35 @@ namespace ProcessManager.Profiling
         }
 
         /// <summary>
-        /// Converts <see cref="FILETIME"/> structure to DateTime.
+        /// Converts pointer to Boolean.
         /// </summary>
-        /// <param name="time"><see cref="FILETIME"/> structure.</param>
-        /// <param name="utc">UTC conversion.</param>
-        /// <returns>If conversion was successfull returns the DateTime; else returns null.</returns>
-        public static DateTime? ToDateTime(FILETIME time, bool utc = false)
+        /// <param name="ptr">Pointer to the int.</param>
+        /// <returns>If conversion was successfull returns the Boolean; else returns null.</returns>
+        public static Boolean? ToBoolean(IntPtr ptr)
         {
             try
             {
-                long fileTimeValue = (long)((ulong)time.dwHighDateTime << 32 | time.dwLowDateTime);
+                return Marshal.PtrToStructure<Boolean>(ptr);
+            }
+            catch { return null; }
+        }
+
+        /// <summary>
+        /// Converts <see cref="Filetime"/> structure to DateTime.
+        /// </summary>
+        /// <param name="time"><see cref="Filetime"/> structure.</param>
+        /// <param name="utc">UTC conversion.</param>
+        /// <returns>If conversion was successfull returns the DateTime; else returns null.</returns>
+        public static DateTime? ToDateTime(Filetime time, bool utc = false)
+        {
+            try
+            {
+                long FiletimeValue = (long)((ulong)time.dwHighDateTime << 32 | time.dwLowDateTime);
 
                 if (utc)
-                    return DateTime.FromFileTimeUtc(fileTimeValue);
+                    return DateTime.FromFileTimeUtc(FiletimeValue);
                 else
-                    return DateTime.FromFileTime(fileTimeValue);
+                    return DateTime.FromFileTime(FiletimeValue);
             }
             catch { return null; }
         }

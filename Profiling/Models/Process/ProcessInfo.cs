@@ -1,4 +1,5 @@
-﻿using System.Windows.Interop;
+﻿using ProcessManager.Profiling.Models.Process.Models;
+using System.Windows.Interop;
 using System.ComponentModel;
 using System.Windows.Media;
 using System.Drawing;
@@ -11,6 +12,8 @@ namespace ProcessManager.Profiling.Models.Process
         //
         // ---------------------------------- PROPERTIES ----------------------------------
         //
+
+        // ------------------------ PROCESS_INFO_STRUCT ------------------------ 
 
         private string _name = "N/A";
         private string _parentName = "N/A";
@@ -26,8 +29,6 @@ namespace ProcessManager.Profiling.Models.Process
         private UInt32 _pid = 0;
         private UInt32 _ppid = 0;
 
-        // ------------------------ GENERAL ------------------------ 
- 
         public string Name
         {
             get => _name;
@@ -270,150 +271,6 @@ namespace ProcessManager.Profiling.Models.Process
             }
         }
 
-        // ------------------------ PROCESS_HANDLE_INFO ------------------------ 
-
-        private UInt32 _handleCount;
-        private UInt32 _handlePeakCount;
-        private UInt32 _handleGdiCount;
-        private UInt32 _handleUserCount;
-        private ProcessHandleInfo[] _handles = [];
-
-        public UInt32 HandleCount
-        {
-            get
-            {
-                return _handleCount;
-            }
-            set
-            {
-                if (_handleCount != value)
-                {
-                    _handleCount = value;
-                    OnPropertyChanged(nameof(HandleCount));
-                }
-            }
-        }
-        public UInt32 HandlePeakCount
-        {
-            get
-            {
-                return _handlePeakCount;
-            }
-            set
-            {
-                if (_handlePeakCount != value)
-                {
-                    _handlePeakCount = value;
-                    OnPropertyChanged(nameof(HandlePeakCount));
-                }
-            }
-        }
-        public UInt32 GdiHandleCount
-        {
-            get
-            {
-                return _handleGdiCount;
-            }
-            set
-            {
-                if (_handleGdiCount != value)
-                {
-                    _handleGdiCount = value;
-                    OnPropertyChanged(nameof(GdiHandleCount));
-                }
-            }
-        }
-        public UInt32 UserHandleCount
-        {
-            get
-            {
-                return _handleUserCount;
-            }
-            set
-            {
-                if (_handleUserCount != value)
-                {
-                    _handleUserCount = value;
-                    OnPropertyChanged(nameof(UserHandleCount));
-                }
-            }
-        }
-        public ProcessHandleInfo[] Handles
-        {
-            get
-            {
-                return _handles;
-            }
-            set
-            {
-                if (_handles != value)
-                {
-                    _handles = value;
-                    OnPropertyChanged(nameof(Handles));
-                }
-            }
-        }
-
-        // ------------------------ PROCESS_MODULE_INFO ------------------------ 
-
-        private UInt32 _moduleCount;
-        private ProcessModuleInfo[] _modules = [];
-
-        public UInt32 ModuleCount
-        {
-            get => _moduleCount;
-            set
-            {
-                if (_moduleCount != value)
-                {
-                    _moduleCount = value;
-                    OnPropertyChanged(nameof(ModuleCount));
-                }
-            }
-        }
-        public ProcessModuleInfo[] Modules
-        {
-            get => _modules;
-            set
-            {
-                if (_modules != value)
-                {
-                    _modules = value;
-                    OnPropertyChanged(nameof(Modules));
-                }
-            }
-        }
-
-        // ------------------------ PROCESS_THREAD_INFO ------------------------ 
-
-        private UInt32 _threadCount;
-        private ProcessThreadInfo[] _threads = [];
-
-        public UInt32 ThreadCount
-        {
-            get => _threadCount;
-            set
-            {
-                if (_threadCount != value)
-                {
-                    _threadCount = value;
-                    OnPropertyChanged(nameof(ThreadCount));
-                }
-            }
-        }
-        public ProcessThreadInfo[] Threads
-        {
-            get => _threads;
-            set
-            {
-                if (_threads != value)
-                {
-                    _threads = value;
-                    OnPropertyChanged(nameof(Threads));
-                }
-            }
-        }
-
         // ------------------------ PROCESS_MEMORY_INFO ------------------------ 
 
         private UInt32 _privateBytes;
@@ -621,7 +478,7 @@ namespace ProcessManager.Profiling.Models.Process
 
         private Double _cpuUsage;
         private UInt64 _cycleCount;
-        
+
         public Double CpuUsage
         {
             get
@@ -649,6 +506,151 @@ namespace ProcessManager.Profiling.Models.Process
                 {
                     _cycleCount = value;
                     OnPropertyChanged(nameof(CycleCount));
+                }
+            }
+        }
+
+
+        // ------------------------ PROCESS_HANDLE_INFO ------------------------ 
+
+        private UInt32 _handleCount;
+        private UInt32 _handlePeakCount;
+        private UInt32 _handleGdiCount;
+        private UInt32 _handleUserCount;
+        private ProcessHandleInfo[] _handles = [];
+
+        public UInt32 HandleCount
+        {
+            get
+            {
+                return _handleCount;
+            }
+            set
+            {
+                if (_handleCount != value)
+                {
+                    _handleCount = value;
+                    OnPropertyChanged(nameof(HandleCount));
+                }
+            }
+        }
+        public UInt32 HandlePeakCount
+        {
+            get
+            {
+                return _handlePeakCount;
+            }
+            set
+            {
+                if (_handlePeakCount != value)
+                {
+                    _handlePeakCount = value;
+                    OnPropertyChanged(nameof(HandlePeakCount));
+                }
+            }
+        }
+        public UInt32 GdiHandleCount
+        {
+            get
+            {
+                return _handleGdiCount;
+            }
+            set
+            {
+                if (_handleGdiCount != value)
+                {
+                    _handleGdiCount = value;
+                    OnPropertyChanged(nameof(GdiHandleCount));
+                }
+            }
+        }
+        public UInt32 UserHandleCount
+        {
+            get
+            {
+                return _handleUserCount;
+            }
+            set
+            {
+                if (_handleUserCount != value)
+                {
+                    _handleUserCount = value;
+                    OnPropertyChanged(nameof(UserHandleCount));
+                }
+            }
+        }
+        public ProcessHandleInfo[] Handles
+        {
+            get
+            {
+                return _handles;
+            }
+            set
+            {
+                if (_handles != value)
+                {
+                    _handles = value;
+                    OnPropertyChanged(nameof(Handles));
+                }
+            }
+        }
+
+        // ------------------------ PROCESS_MODULE_INFO ------------------------ 
+
+        private UInt32 _moduleCount;
+        private ProcessModuleInfo[] _modules = [];
+
+        public UInt32 ModuleCount
+        {
+            get => _moduleCount;
+            set
+            {
+                if (_moduleCount != value)
+                {
+                    _moduleCount = value;
+                    OnPropertyChanged(nameof(ModuleCount));
+                }
+            }
+        }
+        public ProcessModuleInfo[] Modules
+        {
+            get => _modules;
+            set
+            {
+                if (_modules != value)
+                {
+                    _modules = value;
+                    OnPropertyChanged(nameof(Modules));
+                }
+            }
+        }
+
+        // ------------------------ PROCESS_THREAD_INFO ------------------------ 
+
+        private UInt32 _threadCount;
+        private ProcessThreadInfo[] _threads = [];
+
+        public UInt32 ThreadCount
+        {
+            get => _threadCount;
+            set
+            {
+                if (_threadCount != value)
+                {
+                    _threadCount = value;
+                    OnPropertyChanged(nameof(ThreadCount));
+                }
+            }
+        }
+        public ProcessThreadInfo[] Threads
+        {
+            get => _threads;
+            set
+            {
+                if (_threads != value)
+                {
+                    _threads = value;
+                    OnPropertyChanged(nameof(Threads));
                 }
             }
         }
@@ -699,234 +701,278 @@ namespace ProcessManager.Profiling.Models.Process
         // ---------------------------------- METHODS ----------------------------------
         //
 
-        public void Load(ProcessInfoStruct infoStruct, UInt64 processFlags = 0, UInt64 moduleFlags = 0, UInt64 handleFlags = 0, UInt64 threadFlags = 0)
+        public void Load(ProcessInfoStruct infoStruct, ulong pif, ulong mif, ulong hif, ulong rif, ulong tif, ulong eif, ulong cif, ulong oif)
         {
             PID = infoStruct.pid;
 
-            if ((processFlags & (UInt64)ProcessInfoFlags.ProcessName) != 0)
+            if ((pif & (UInt64)ProcessInfoFlags.PROCESS_PIF_NAME) != 0)
             {
                 Name = Profiler.ToString(infoStruct.name) ?? "N/A";
             }
 
-            if ((processFlags & (UInt64)ProcessInfoFlags.ProcessParentName) != 0)
+            if ((pif & (UInt64)ProcessInfoFlags.PROCESS_PIF_PARENT_NAME) != 0)
             {
                 ParentName = Profiler.ToString(infoStruct.parentProcessName) ?? "N/A";
             }
 
-            if ((processFlags & (UInt64)ProcessInfoFlags.ProcessImageName) != 0)
+            if ((pif & (UInt64)ProcessInfoFlags.PROCESS_PIF_IMAGE_NAME) != 0)
             {
                 ImageName = Profiler.ToString(infoStruct.imageName) ?? "N/A";
             }
 
-            if ((processFlags & (UInt64)ProcessInfoFlags.ProcessUser) != 0)
+            if ((pif & (UInt64)ProcessInfoFlags.PROCESS_PIF_USER) != 0)
             {
                 User = Profiler.ToString(infoStruct.user) ?? "N/A";
             }
 
-            if ((processFlags & (UInt64)ProcessInfoFlags.ProcessPriority) != 0)
+            if ((pif & (UInt64)ProcessInfoFlags.PROCESS_PIF_PRIORITY) != 0)
             {
                 Priority = Profiler.ToString(infoStruct.priority) ?? "N/A";
             }
 
-            if ((processFlags & (UInt64)ProcessInfoFlags.ProcessFileVersion) != 0)
+            if ((pif & (UInt64)ProcessInfoFlags.PROCESS_PIF_FILE_VERSION) != 0)
             {
                 Version = Profiler.ToString(infoStruct.fileVersion) ?? "N/A";
             }
 
-            if ((processFlags & (UInt64)ProcessInfoFlags.ProcessArchitectureType) != 0)
+            if ((pif & (UInt64)ProcessInfoFlags.PROCESS_PIF_ARCHITECTURE_TYPE) != 0)
             {
                 ArchitectureType = Profiler.ToString(infoStruct.architectureType) ?? "N/A";
             }
 
-            if ((processFlags & (UInt64)ProcessInfoFlags.ProcessIntegrityLevel) != 0)
+            if ((pif & (UInt64)ProcessInfoFlags.PROCESS_PIF_INTEGRITY_LEVEL) != 0)
             {
                 IntegrityLevel = Profiler.ToString(infoStruct.integrityLevel) ?? "N/A";
             }
 
-            if ((processFlags & (UInt64)ProcessInfoFlags.ProcessCommandLine) != 0)
+            if ((pif & (UInt64)ProcessInfoFlags.PROCESS_PIF_COMMAND_LINE) != 0)
             {
                 CommandLine = Profiler.ToString(infoStruct.cmd) ?? "N/A";
             }
 
-            if ((processFlags & (UInt64)ProcessInfoFlags.ProcessDescription) != 0)
+            if ((pif & (UInt64)ProcessInfoFlags.PROCESS_PIF_DESCRIPTION) != 0)
             {
                 Description = Profiler.ToString(infoStruct.description) ?? "N/A";
             }
 
-            if ((processFlags & (UInt64)ProcessInfoFlags.ProcessPPID) != 0)
+            if ((pif & (UInt64)ProcessInfoFlags.PROCESS_PIF_PPID) != 0)
             {
                 PPID = infoStruct.ppid;
             }
 
-            if ((processFlags & (UInt64)ProcessInfoFlags.ProcessPEB) != 0)
+            if ((pif & (UInt64)ProcessInfoFlags.PROCESS_PIF_PEB) != 0)
             {
                 PEB = infoStruct.peb;
             }
 
-            if ((processFlags & (UInt64)ProcessInfoFlags.ProcessTimes) != 0)
+            if ((pif & (UInt64)ProcessInfoFlags.PROCESS_PIF_TIMES) != 0)
             {
-                CreationTime = Profiler.ToDateTime(infoStruct.timesInfo.creationTime) ?? new DateTime();
-                ExitTime = Profiler.ToDateTime(infoStruct.timesInfo.exitTime, true) ?? new DateTime();
-                UserTime = Profiler.ToDateTime(infoStruct.timesInfo.userTime, true) ?? new DateTime();
-                KernelTime = Profiler.ToDateTime(infoStruct.timesInfo.kernelTime, true) ?? new DateTime();
-                TotalTime = Profiler.ToDateTime(infoStruct.timesInfo.totalTime, true) ?? new DateTime();
+                if ((tif & (UInt64)ProcessTimesInfoFlags.PROCESS_TIF_CREATION_TIME) != 0)
+                    CreationTime = Profiler.ToDateTime(infoStruct.timesInfo.creationTime) ?? new DateTime();
+                if ((tif & (UInt64)ProcessTimesInfoFlags.PROCESS_TIF_EXIT_TIME) != 0)
+                    ExitTime = Profiler.ToDateTime(infoStruct.timesInfo.exitTime, true) ?? new DateTime();
+                if ((tif & (UInt64)ProcessTimesInfoFlags.PROCESS_TIF_USER_TIME) != 0)
+                    UserTime = Profiler.ToDateTime(infoStruct.timesInfo.userTime, true) ?? new DateTime();
+                if ((tif & (UInt64)ProcessTimesInfoFlags.PROCESS_TIF_KERNEL_TIME) != 0)
+                    KernelTime = Profiler.ToDateTime(infoStruct.timesInfo.kernelTime, true) ?? new DateTime();
+                if ((tif & (UInt64)ProcessTimesInfoFlags.PROCESS_TIF_TOTAL_TIME) != 0)
+                    TotalTime = Profiler.ToDateTime(infoStruct.timesInfo.totalTime, true) ?? new DateTime();
             }
 
-            if ((processFlags & (UInt64)ProcessInfoFlags.ProcessCpuInfo) != 0)
+            if ((pif & (UInt64)ProcessInfoFlags.PROCESS_PIF_CPU_INFO) != 0)
             {
-                CycleCount = infoStruct.cpuInfo.cycles;
-                CpuUsage = infoStruct.cpuInfo.usage;
+                if ((cif & (UInt64)ProcessCpuInfoFlags.PROCESS_CIF_CYCLES) != 0)
+                    CycleCount = infoStruct.cpuInfo.cycles;
+                if ((cif & (UInt64)ProcessCpuInfoFlags.PROCESS_CIF_USAGE) != 0)
+                    CpuUsage = infoStruct.cpuInfo.usage;
             }
 
-            if ((processFlags & (UInt64)ProcessInfoFlags.ProcessMemoryInfo) != 0)
+            if ((pif & (UInt64)ProcessInfoFlags.PROCESS_PIF_MEMORY_INFO) != 0)
             {
-                PrivateBytes = infoStruct.memoryInfo.privateBytes;
-                PeakPrivateBytes = infoStruct.memoryInfo.peakPrivateBytes;
-                VirtualBytes = infoStruct.memoryInfo.virtualBytes;
-                PeakVirtualBytes = infoStruct.memoryInfo.peakVirtualBytes;
-                WorkingBytes = infoStruct.memoryInfo.workingBytes;
-                PeakWorkingBytes = infoStruct.memoryInfo.peakWorkingBytes;
-                PagePriority = infoStruct.memoryInfo.priority;
-                PageFaults = infoStruct.memoryInfo.pageFaults;
+                if ((eif & (UInt64)ProcessMemoryInfoFlags.PROCESS_EIF_PRIVATE_BYTES) != 0)
+                    PrivateBytes = infoStruct.memoryInfo.privateBytes;
+                if ((eif & (UInt64)ProcessMemoryInfoFlags.PROCESS_EIF_PEAK_PRIVATE_BYTES) != 0)
+                    PeakPrivateBytes = infoStruct.memoryInfo.peakPrivateBytes;
+                if ((eif & (UInt64)ProcessMemoryInfoFlags.PROCESS_EIF_VIRTUAL_BYTES) != 0)
+                    VirtualBytes = infoStruct.memoryInfo.virtualBytes;
+                if ((eif & (UInt64)ProcessMemoryInfoFlags.PROCESS_EIF_PEAK_VIRTUAL_BYTES) != 0)
+                    PeakVirtualBytes = infoStruct.memoryInfo.peakVirtualBytes;
+                if ((eif & (UInt64)ProcessMemoryInfoFlags.PROCESS_EIF_WORKING_BYTES) != 0)
+                    WorkingBytes = infoStruct.memoryInfo.workingBytes;
+                if ((eif & (UInt64)ProcessMemoryInfoFlags.PROCESS_EIF_PEAK_WORKING_BYTES) != 0)
+                    PeakWorkingBytes = infoStruct.memoryInfo.peakWorkingBytes;
+                if ((eif & (UInt64)ProcessMemoryInfoFlags.PROCESS_EIF_PAGE_PRIORITY) != 0)
+                    PagePriority = infoStruct.memoryInfo.priority;
+                if ((eif & (UInt64)ProcessMemoryInfoFlags.PROCESS_EIF_PAGE_FAULTS) != 0)
+                    PageFaults = infoStruct.memoryInfo.pageFaults;
             }
 
-            if ((processFlags & (UInt64)ProcessInfoFlags.ProcessIOInfo) != 0)
+            if ((pif & (UInt64)ProcessInfoFlags.PROCESS_PIF_IO_INFO) != 0)
             {
-                Reads = infoStruct.ioInfo.reads;
-                ReadBytes = infoStruct.ioInfo.readBytes;
-                Writes = infoStruct.ioInfo.writes;
-                WriteBytes = infoStruct.ioInfo.writeBytes;
-                Other = infoStruct.ioInfo.other;
-                OtherBytes = infoStruct.ioInfo.otherBytes;
-                IOPriority = infoStruct.ioInfo.ioPriority;
+                if ((oif & (UInt64)ProcessIOInfoFlags.PROCESS_OIF_READS) != 0)
+                    Reads = infoStruct.ioInfo.reads;
+                if ((oif & (UInt64)ProcessIOInfoFlags.PROCESS_OIF_READ_BYTES) != 0)
+                    ReadBytes = infoStruct.ioInfo.readBytes;
+                if ((oif & (UInt64)ProcessIOInfoFlags.PROCESS_OIF_WRITES) != 0)
+                    Writes = infoStruct.ioInfo.writes;
+                if ((oif & (UInt64)ProcessIOInfoFlags.PROCESS_OIF_WRITE_BYTES) != 0)
+                    WriteBytes = infoStruct.ioInfo.writeBytes;
+                if ((oif & (UInt64)ProcessIOInfoFlags.PROCESS_OIF_OTHER) != 0)
+                    Other = infoStruct.ioInfo.other;
+                if ((oif & (UInt64)ProcessIOInfoFlags.PROCESS_OIF_OTHER_BYTES) != 0)
+                    OtherBytes = infoStruct.ioInfo.otherBytes;
+                if ((oif & (UInt64)ProcessIOInfoFlags.PROCESS_OIF_IO_PRIORITY) != 0)
+                    IOPriority = infoStruct.ioInfo.ioPriority;
             }
 
-            if ((processFlags & (UInt64)ProcessInfoFlags.ProcessHandlesInfo) != 0)
+            if ((pif & (UInt64)ProcessInfoFlags.PROCESS_PIF_HANDLES_INFO) != 0)
             {
                 HandleCount = infoStruct.handleCount;
                 HandlePeakCount = infoStruct.handlePeakCount;
                 GdiHandleCount = infoStruct.gdiHandleCount;
                 UserHandleCount = infoStruct.userHandleCount;
 
-                Handles = ConvertToHandles(Profiler.ToArray<ProcessHandleInfoStruct>(infoStruct.handles, infoStruct.handleCount), handleFlags)!;
+                Handles = ConvertToHandles(Profiler.ToArray<ProcessHandleInfoStruct>(infoStruct.handles, infoStruct.handleCount), hif)!;
             }
 
-            if ((processFlags & (UInt64)ProcessInfoFlags.ProcessModulesInfo) != 0)
+            if ((pif & (UInt64)ProcessInfoFlags.PROCESS_PIF_MODULES_INFO) != 0)
             {
                 ModuleCount = infoStruct.moduleCount;
-                Modules = ConvertToModules(Profiler.ToArray<ProcessModuleInfoStruct>(infoStruct.modules, infoStruct.moduleCount), moduleFlags)!;
+                Modules = ConvertToModules(Profiler.ToArray<ProcessModuleInfoStruct>(infoStruct.modules, infoStruct.moduleCount), mif)!;
             }
 
-            if ((processFlags & (UInt64)ProcessInfoFlags.ProcessThreadsInfo) != 0)
+            if ((pif & (UInt64)ProcessInfoFlags.PROCESS_PIF_THREADS_INFO) != 0)
             {
                 ThreadCount = infoStruct.threadCount;
-                Threads = ConvertToThreads(Profiler.ToArray<ProcessThreadInfoStruct>(infoStruct.threads, infoStruct.threadCount), threadFlags)!;
+                Threads = ConvertToThreads(Profiler.ToArray<ProcessThreadInfoStruct>(infoStruct.threads, infoStruct.threadCount), rif)!;
             }
         }
-        public void Unload(UInt64 processFlags = 0, UInt64 moduleFlags = 0, UInt64 handleFlags = 0, UInt64 threadFlags = 0)
+        public void Unload(ulong pif, ulong mif, ulong hif, ulong rif, ulong tif, ulong eif, ulong cif, ulong oif)
         {
-            if ((processFlags & (UInt64)ProcessInfoFlags.ProcessName) != 0)
+            if ((pif & (UInt64)ProcessInfoFlags.PROCESS_PIF_NAME) != 0)
             {
                 _name = "";
             }
 
-            if ((processFlags & (UInt64)ProcessInfoFlags.ProcessParentName) != 0)
+            if ((pif & (UInt64)ProcessInfoFlags.PROCESS_PIF_PARENT_NAME) != 0)
             {
                 _parentName = "";
             }
 
-            if ((processFlags & (UInt64)ProcessInfoFlags.ProcessImageName) != 0)
+            if ((pif & (UInt64)ProcessInfoFlags.PROCESS_PIF_IMAGE_NAME) != 0)
             {
                 _imageName = "";
             }
 
-            if ((processFlags & (UInt64)ProcessInfoFlags.ProcessUser) != 0)
+            if ((pif & (UInt64)ProcessInfoFlags.PROCESS_PIF_USER) != 0)
             {
                 _user = "";
             }
 
-            if ((processFlags & (UInt64)ProcessInfoFlags.ProcessPriority) != 0)
+            if ((pif & (UInt64)ProcessInfoFlags.PROCESS_PIF_PRIORITY) != 0)
             {
                 _priority = "";
             }
 
-            if ((processFlags & (UInt64)ProcessInfoFlags.ProcessFileVersion) != 0)
+            if ((pif & (UInt64)ProcessInfoFlags.PROCESS_PIF_FILE_VERSION) != 0)
             {
                 _version = "";
             }
 
-            if ((processFlags & (UInt64)ProcessInfoFlags.ProcessArchitectureType) != 0)
+            if ((pif & (UInt64)ProcessInfoFlags.PROCESS_PIF_ARCHITECTURE_TYPE) != 0)
             {
-                ArchitectureType = "";
+                _architectureType = "";
             }
 
-            if ((processFlags & (UInt64)ProcessInfoFlags.ProcessIntegrityLevel) != 0)
+            if ((pif & (UInt64)ProcessInfoFlags.PROCESS_PIF_INTEGRITY_LEVEL) != 0)
             {
                 _integrityLevel = "";
             }
 
-            if ((processFlags & (UInt64)ProcessInfoFlags.ProcessCommandLine) != 0)
+            if ((pif & (UInt64)ProcessInfoFlags.PROCESS_PIF_COMMAND_LINE) != 0)
             {
                 _commandLine = "";
             }
 
-            if ((processFlags & (UInt64)ProcessInfoFlags.ProcessDescription) != 0)
+            if ((pif & (UInt64)ProcessInfoFlags.PROCESS_PIF_DESCRIPTION) != 0)
             {
                 _description = "";
             }
 
-            if ((processFlags & (UInt64)ProcessInfoFlags.ProcessPPID) != 0)
+            if ((pif & (UInt64)ProcessInfoFlags.PROCESS_PIF_PPID) != 0)
             {
                 _ppid = 0;
             }
 
-            if ((processFlags & (UInt64)ProcessInfoFlags.ProcessPEB) != 0)
+            if ((pif & (UInt64)ProcessInfoFlags.PROCESS_PIF_PEB) != 0)
             {
                 _peb = 0;
             }
 
-            if ((processFlags & (UInt64)ProcessInfoFlags.ProcessTimes) != 0)
+            if ((pif & (UInt64)ProcessInfoFlags.PROCESS_PIF_TIMES) != 0)
             {
-                _creationTime = default;
-                _exitTime = default;
-                _userTime = default;
-                _kernelTime = default;
-                _totalTime = default;
+                if ((tif & (UInt64)ProcessTimesInfoFlags.PROCESS_TIF_CREATION_TIME) != 0)
+                    _creationTime = default;
+                if ((tif & (UInt64)ProcessTimesInfoFlags.PROCESS_TIF_EXIT_TIME) != 0)
+                    _exitTime = default;
+                if ((tif & (UInt64)ProcessTimesInfoFlags.PROCESS_TIF_USER_TIME) != 0)
+                    _userTime = default;
+                if ((tif & (UInt64)ProcessTimesInfoFlags.PROCESS_TIF_KERNEL_TIME) != 0)
+                    _kernelTime = default;
+                if ((tif & (UInt64)ProcessTimesInfoFlags.PROCESS_TIF_TOTAL_TIME) != 0)
+                    _totalTime = default;
             }
 
-            if ((processFlags & (UInt64)ProcessInfoFlags.ProcessCpuInfo) != 0)
+            if ((pif & (UInt64)ProcessInfoFlags.PROCESS_PIF_CPU_INFO) != 0)
             {
-                _cycleCount = 0;
-                _cpuUsage = 0;
+                if ((cif & (UInt64)ProcessCpuInfoFlags.PROCESS_CIF_CYCLES) != 0)
+                    _cycleCount = 0;
+                if ((cif & (UInt64)ProcessCpuInfoFlags.PROCESS_CIF_USAGE) != 0)
+                    _cpuUsage = 0;
             }
 
-            if ((processFlags & (UInt64)ProcessInfoFlags.ProcessMemoryInfo) != 0)
+            if ((pif & (UInt64)ProcessInfoFlags.PROCESS_PIF_MEMORY_INFO) != 0)
             {
-                _privateBytes = 0;
-                _peakPrivateBytes = 0;
-                _virtualBytes = 0;
-                _peakVirtualBytes = 0;
-                _workingBytes = 0;
-                _peakWorkingBytes = 0;
-                _pagePriority = 0;
-                _pageFaults = 0;
+                if ((eif & (UInt64)ProcessMemoryInfoFlags.PROCESS_EIF_PRIVATE_BYTES) != 0)
+                    _privateBytes = 0;
+                if ((eif & (UInt64)ProcessMemoryInfoFlags.PROCESS_EIF_PEAK_PRIVATE_BYTES) != 0)
+                    _peakPrivateBytes = 0;
+                if ((eif & (UInt64)ProcessMemoryInfoFlags.PROCESS_EIF_VIRTUAL_BYTES) != 0)
+                    _virtualBytes = 0;
+                if ((eif & (UInt64)ProcessMemoryInfoFlags.PROCESS_EIF_PEAK_VIRTUAL_BYTES) != 0)
+                    _peakVirtualBytes = 0;
+                if ((eif & (UInt64)ProcessMemoryInfoFlags.PROCESS_EIF_WORKING_BYTES) != 0)
+                    _workingBytes = 0;
+                if ((eif & (UInt64)ProcessMemoryInfoFlags.PROCESS_EIF_PEAK_WORKING_BYTES) != 0)
+                    _peakWorkingBytes = 0;
+                if ((eif & (UInt64)ProcessMemoryInfoFlags.PROCESS_EIF_PAGE_PRIORITY) != 0)
+                    _pagePriority = 0;
+                if ((eif & (UInt64)ProcessMemoryInfoFlags.PROCESS_EIF_PAGE_FAULTS) != 0)
+                    _pageFaults = 0;
             }
 
-            if ((processFlags & (UInt64)ProcessInfoFlags.ProcessIOInfo) != 0)
+            if ((pif & (UInt64)ProcessInfoFlags.PROCESS_PIF_IO_INFO) != 0)
             {
-                _reads = 0;
-                _readBytes = 0;
-                _writes = 0;
-                _writeBytes = 0;
-                _other = 0;
-                _otherBytes = 0;
-                _ioPriority = 0;
+                if ((oif & (UInt64)ProcessIOInfoFlags.PROCESS_OIF_READS) != 0)
+                    _reads = 0;
+                if ((oif & (UInt64)ProcessIOInfoFlags.PROCESS_OIF_READ_BYTES) != 0)
+                    _readBytes = 0;
+                if ((oif & (UInt64)ProcessIOInfoFlags.PROCESS_OIF_WRITES) != 0)
+                    _writes = 0;
+                if ((oif & (UInt64)ProcessIOInfoFlags.PROCESS_OIF_WRITE_BYTES) != 0)
+                    _writeBytes = 0;
+                if ((oif & (UInt64)ProcessIOInfoFlags.PROCESS_OIF_OTHER) != 0)
+                    _other = 0;
+                if ((oif & (UInt64)ProcessIOInfoFlags.PROCESS_OIF_OTHER_BYTES) != 0)
+                    _otherBytes = 0;
+                if ((oif & (UInt64)ProcessIOInfoFlags.PROCESS_OIF_IO_PRIORITY) != 0)
+                    _ioPriority = 0;
             }
 
-            if ((processFlags & (UInt64)ProcessInfoFlags.ProcessHandlesInfo) != 0)
+            if ((pif & (UInt64)ProcessInfoFlags.PROCESS_PIF_HANDLES_INFO) != 0)
             {
                 foreach (var han in _handles)
-                    han.Unload(handleFlags);
+                    han.Unload(hif);
 
                 _handles = [];
                 _handleCount = 0;
@@ -935,19 +981,19 @@ namespace ProcessManager.Profiling.Models.Process
                 _handleUserCount = 0;
             }
 
-            if ((processFlags & (UInt64)ProcessInfoFlags.ProcessModulesInfo) != 0)
+            if ((pif & (UInt64)ProcessInfoFlags.PROCESS_PIF_MODULES_INFO) != 0)
             {
                 foreach (var mod in _modules)
-                    mod.Unload(moduleFlags);
-                
+                    mod.Unload(mif);
+
                 _moduleCount = 0;
                 _modules = [];
             }
 
-            if ((processFlags & (UInt64)ProcessInfoFlags.ProcessThreadsInfo) != 0)
+            if ((pif & (UInt64)ProcessInfoFlags.PROCESS_PIF_THREADS_INFO) != 0)
             {
                 foreach (var th in _threads)
-                    th.Unload(threadFlags);
+                    th.Unload(rif);
 
                 _threadCount = 0;
                 _threads = [];

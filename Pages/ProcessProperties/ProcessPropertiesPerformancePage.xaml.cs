@@ -1,4 +1,4 @@
-﻿using ProcessManager.Profiling.GraphFramework.Controls;
+﻿using ProcessManager.Profiling.Models.Process.Models;
 using ProcessManager.Pages.ProcessProperties.Models;
 using ProcessManager.Profiling.Models.Process;
 using ProcessManager.Profiling;
@@ -16,10 +16,14 @@ namespace ProcessManager.Pages.ProcessProperties
         //---------------------------------- PROPERTIES ----------------------------------
         //
 
-        public ulong ProcessInfoUpdateFlags { get; set; } = (ulong)(ProcessInfoFlags.ProcessCpuInfo | ProcessInfoFlags.ProcessMemoryInfo);
+        public ulong ProcessInfoUpdateFlags { get; set; } = (ulong)(ProcessInfoFlags.PROCESS_PIF_CPU_INFO | ProcessInfoFlags.PROCESS_PIF_MEMORY_INFO);
         public ulong ThreadInfoUpdateFlags { get; set; } = 0;
         public ulong HandleInfoUpdateFlags { get; set; } = 0;
         public ulong ModuleInfoUpdateFlags { get; set; } = 0;
+        public ulong IOInfoUpdateFlags { get; set; } = 0;
+        public ulong MemoryInfoUpdateFlags { get; set; } = (ulong)(ProcessMemoryInfoFlags.PROCESS_EIF_VIRTUAL_BYTES);
+        public ulong TimesInfoUpdateFlags { get; set; } = 0;
+        public ulong CpuInfoUpdateFlags { get; set; } = (ulong)(ProcessCpuInfoFlags.PROCESS_CIF_ALL);
 
         public int UpdateDelay { get; set; } = 1000;
         public CancellationTokenSource? UpdateCancellation { get; set; }
@@ -48,7 +52,7 @@ namespace ProcessManager.Pages.ProcessProperties
         }
         public void Page_Unloaded(object sender, System.Windows.RoutedEventArgs e)
         {
-            ProcessInfo?.Unload(ProcessInfoUpdateFlags, ModuleInfoUpdateFlags, HandleInfoUpdateFlags, ThreadInfoUpdateFlags);
+            ProcessInfo?.Unload(ProcessInfoUpdateFlags, ModuleInfoUpdateFlags, HandleInfoUpdateFlags, ThreadInfoUpdateFlags, TimesInfoUpdateFlags, MemoryInfoUpdateFlags, CpuInfoUpdateFlags, IOInfoUpdateFlags);
 
             UpdateCancellation?.Cancel();
             UpdateCancellation?.Dispose();
@@ -68,15 +72,16 @@ namespace ProcessManager.Pages.ProcessProperties
 
                 while (UpdateCancellation != null && !UpdateCancellation.IsCancellationRequested)
                 {
-                    IntPtr ptr = ProcessProfiler.GetProcessInfo(ProcessInfoUpdateFlags, ModuleInfoUpdateFlags, HandleInfoUpdateFlags, ThreadInfoUpdateFlags, ProcessInfo.PID);
+                    IntPtr ptr = ProcessProfiler.GetProcessInfo(ProcessInfoUpdateFlags, ModuleInfoUpdateFlags, HandleInfoUpdateFlags, ThreadInfoUpdateFlags, TimesInfoUpdateFlags, MemoryInfoUpdateFlags, CpuInfoUpdateFlags, IOInfoUpdateFlags, ProcessInfo.PID);
                     ProcessInfoStruct str = Profiler.ToStruct<ProcessInfoStruct>(ptr);
-                    ProcessInfo.Load(str, ProcessInfoUpdateFlags, ModuleInfoUpdateFlags, HandleInfoUpdateFlags, ThreadInfoUpdateFlags);
+                    ProcessInfo.Load(str, ProcessInfoUpdateFlags, ModuleInfoUpdateFlags, HandleInfoUpdateFlags, ThreadInfoUpdateFlags, TimesInfoUpdateFlags, MemoryInfoUpdateFlags, CpuInfoUpdateFlags, IOInfoUpdateFlags);
                     ProcessProfiler.FreeProcessInfo(ptr);
+
+                    Debug.WriteLine(str.cpuInfo.usage);
 
                     await Task.Delay(UpdateDelay);
                 }
             });
         }
-
     }
 }
