@@ -36,7 +36,7 @@ namespace ProcessManager.Profiling
         [DllImport(Profiler.DllPath, CallingConvention = CallingConvention.Cdecl)]
         public static extern IntPtr GetProcessPPID(uint pid);
         [DllImport(Profiler.DllPath, CallingConvention = CallingConvention.Cdecl)]
-        public static extern IntPtr GetProcessCurrentHandleCount(uint pid);
+        public static extern IntPtr GetProcessStatus(uint pid);
 
         //
         // ---------------------------------- UINT64 ----------------------------------

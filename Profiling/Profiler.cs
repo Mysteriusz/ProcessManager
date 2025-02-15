@@ -35,7 +35,7 @@ namespace ProcessManager.Profiling
             }
             catch { return "N/A"; }
         }
-        
+
         /// <summary>
         /// Converts pointer to Int32.
         /// </summary>
@@ -45,7 +45,7 @@ namespace ProcessManager.Profiling
         {
             try
             {
-                return Marshal.ReadInt32(ptr);
+                return Marshal.PtrToStructure<Int32>(ptr);
             }
             catch { return null; }
         }
@@ -53,13 +53,55 @@ namespace ProcessManager.Profiling
         /// <summary>
         /// Converts pointer to Int64.
         /// </summary>
-        /// <param name="ptr">Pointer to the int.</param>
+        /// <param name="ptr">Pointer to the char array.</param>
         /// <returns>If conversion was successfull returns the Int64; else returns null.</returns>
         public static Int64? ToInt64(IntPtr ptr)
         {
             try
             {
-                return Marshal.ReadInt64(ptr);
+                return Marshal.PtrToStructure<Int64>(ptr);
+            }
+            catch { return null; }
+        }
+
+        /// <summary>
+        /// Converts pointer to UInt32.
+        /// </summary>
+        /// <param name="ptr">Pointer to the char array.</param>
+        /// <returns>If conversion was successfull returns the Int32; else returns null.</returns>
+        public static UInt32? ToUInt32(IntPtr ptr)
+        {
+            try
+            {
+                return Marshal.PtrToStructure<UInt32>(ptr);
+            }
+            catch { return null; }
+        }
+
+        /// <summary>
+        /// Converts pointer to UInt64.
+        /// </summary>
+        /// <param name="ptr">Pointer to the int.</param>
+        /// <returns>If conversion was successfull returns the Int64; else returns null.</returns>
+        public static UInt64? ToUInt64(IntPtr ptr)
+        {
+            try
+            {
+                return Marshal.PtrToStructure<UInt64>(ptr);
+            }
+            catch { return null; }
+        }
+
+        /// <summary>
+        /// Converts pointer to Double.
+        /// </summary>
+        /// <param name="ptr">Pointer to the int.</param>
+        /// <returns>If conversion was successfull returns the Double; else returns null.</returns>
+        public static Double? ToDouble(IntPtr ptr)
+        {
+            try
+            {
+                return Marshal.PtrToStructure<Double>(ptr);
             }
             catch { return null; }
         }

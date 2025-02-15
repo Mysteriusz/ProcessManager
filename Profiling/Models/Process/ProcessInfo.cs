@@ -653,41 +653,6 @@ namespace ProcessManager.Profiling.Models.Process
             }
         }
 
-        // ------------------------ MISC ------------------------ 
-
-        private double _memUsage;
-        private double _ioUsage;
-        public double MemoryUsage
-        {
-            get
-            {
-                return _memUsage;
-            }
-            set
-            {
-                if (_memUsage != value)
-                {
-                    _memUsage = value;
-                    OnPropertyChanged(nameof(MemoryUsage));
-                }
-            }
-        }
-        public double DiskUsage
-        {
-            get
-            {
-                return _ioUsage;
-            }
-            set
-            {
-                if (_ioUsage != value)
-                {
-                    _ioUsage = value;
-                    OnPropertyChanged(nameof(DiskUsage));
-                }
-            }
-        }
-
         //
         // ---------------------------------- CONSTRUCTORS ----------------------------------
         //
@@ -736,6 +701,8 @@ namespace ProcessManager.Profiling.Models.Process
 
         public void Load(ProcessInfoStruct infoStruct, UInt64 processFlags = 0, UInt64 moduleFlags = 0, UInt64 handleFlags = 0, UInt64 threadFlags = 0)
         {
+            PID = infoStruct.pid;
+
             if ((processFlags & (UInt64)ProcessInfoFlags.ProcessName) != 0)
             {
                 Name = Profiler.ToString(infoStruct.name) ?? "N/A";
