@@ -69,9 +69,8 @@ namespace ProcessManager.Windows
         }
         private void PropertiesPageFrame_Loaded(object sender, RoutedEventArgs e)
         {
-            ProcessPropertiesGeneralPage generalPage = new ProcessPropertiesGeneralPage();
-            generalPage.DataContext = this.DataContext;
-            PropertiesPageFrame.Navigate(generalPage);
+            _generalPage.DataContext = this.DataContext;
+            PropertiesPageFrame.Navigate(_generalPage);
         }
     }
 }

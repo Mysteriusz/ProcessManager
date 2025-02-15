@@ -53,24 +53,45 @@ namespace ProcessManager.Profiling
         public static extern IntPtr IsCpuHyperThreading();
 
         //
+        // ---------------------------------- CPU_MODEL_INFO_STRUCT ----------------------------------
+        //
+
+        [DllImport(Profiler.DllPath)]
+        public static extern IntPtr GetCpuModelInfo(ulong mif);
+
+        //
         // ---------------------------------- CPU_SYSTEM_INFO_STRUCT ----------------------------------
         //
 
         [DllImport(Profiler.DllPath)]
-        public static extern IntPtr GetCpuSystemInfo();
+        public static extern IntPtr GetCpuSystemInfo(ulong sif);
 
         //
         // ---------------------------------- CPU_TIMES_INFO_STRUCT ----------------------------------
         //
 
         [DllImport(Profiler.DllPath)]
-        public static extern IntPtr GetCpuTimes();
+        public static extern IntPtr GetCpuTimes(ulong tif);
 
         //
         // ---------------------------------- CPU_CACHE_INFO_STRUCT ----------------------------------
         //
 
         [DllImport(Profiler.DllPath)]
-        public static extern IntPtr GetCpuAllLevelsCacheInfo(out uint size);
+        public static extern IntPtr GetCpuAllLevelsCacheInfo(ulong hif, out uint size);
+
+        //
+        // ---------------------------------- CPU_INFO_STRUCT ----------------------------------
+        //
+
+        [DllImport(Profiler.DllPath)]
+        public static extern IntPtr GetCpuInfo(ulong cif, ulong sif, ulong mif, ulong tif, ulong hif);
+
+        //
+        // ---------------------------------- VOID ----------------------------------
+        //
+
+        [DllImport(Profiler.DllPath, CallingConvention = CallingConvention.Cdecl)]
+        public static extern void FreeCpuInfo(IntPtr info);
     }
 }

@@ -167,6 +167,9 @@ namespace ProcessManager.Profiling.GraphFramework
         /// <param name="invertedCycle">Is cycle inverted</param>
         public void RenderGrid(int width, int height, int cellCountX = 20, int cellCountY = 10, bool invertedCycle = true)
         {
+            if (height == 0 || width == 0)
+                return;
+
             Width = width;
             Height = height;
 
@@ -322,6 +325,9 @@ namespace ProcessManager.Profiling.GraphFramework
         }
         private void ResizeDataMap(int newWidth, int newHeight)
         {
+            if (newWidth == 0 || newHeight == 0)
+                return;
+
             if (DataMap != null)
                 DataMap.Dispose();
 

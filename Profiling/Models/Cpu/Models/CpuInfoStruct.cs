@@ -32,11 +32,11 @@ namespace ProcessManager.Profiling.Models.Cpu.Models
         public bool virtualization;
         public bool hyperThreading;
 
-        public uint cacheCount;
-        public nint cacheInfo;
-
         public CpuSystemInfoStruct sysInfo;
         public CpuModelInfoStruct modelInfo;
         public CpuTimesInfoStruct timesInfo;
+        
+        public uint cacheCount;
+        public nint cacheInfo;
     }
 }

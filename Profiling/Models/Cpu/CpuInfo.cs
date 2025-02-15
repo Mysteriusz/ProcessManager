@@ -1,4 +1,4 @@
-﻿using ProcessManager.Profiling.Models.Sys;
+﻿using ProcessManager.Profiling.Models.Cpu.Models;
 using System.ComponentModel;
 
 namespace ProcessManager.Profiling.Models.Cpu
@@ -327,7 +327,7 @@ namespace ProcessManager.Profiling.Models.Cpu
         // ------------------------ CPU_CACHE_INFO_STRUCT ------------------------ 
 
         private UInt32 _cacheCount = 0;
-        private CpuCacheInfo[] _cacheInfos = [];
+        private CpuCacheInfo[] _caches = [];
 
         public UInt32 CacheCount
         {
@@ -341,15 +341,15 @@ namespace ProcessManager.Profiling.Models.Cpu
                 }
             }
         }
-        public CpuCacheInfo[] CacheInfos
+        public CpuCacheInfo[] Caches
         {
-            get => _cacheInfos;
+            get => _caches;
             set
             {
-                if (_cacheInfos != value)
+                if (_caches != value)
                 {
-                    _cacheInfos = value;
-                    OnPropertyChanged(nameof(CacheInfos));
+                    _caches = value;
+                    OnPropertyChanged(nameof(Caches));
                 }
             }
         }
@@ -364,11 +364,177 @@ namespace ProcessManager.Profiling.Models.Cpu
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-
         //
         // ---------------------------------- METHODS ----------------------------------
         //
 
+        public void Load(CpuInfoStruct infoStruct, ulong cif, ulong sif, ulong mif, ulong tif, ulong hif)
+        {
+            if ((cif & (UInt64)CpuInfoFlags.CPU_CIF_USAGE) != 0)
+            {
+                Usage = infoStruct.usage;
+            }
+            if ((cif & (UInt64)CpuInfoFlags.CPU_CIF_BASE_FREQ) != 0)
+            {
+                BaseFreq = infoStruct.baseFreq;
+            }
+            if ((cif & (UInt64)CpuInfoFlags.CPU_CIF_MAX_FREQ) != 0)
+            {
+                MaxFreq = infoStruct.maxFreq;
+            }
+            if ((cif & (UInt64)CpuInfoFlags.CPU_CIF_THREADS) != 0)
+            {
+                Threads = infoStruct.threads;
+            }
+            if ((cif & (UInt64)CpuInfoFlags.CPU_CIF_HANDLES) != 0)
+            {
+                Handles = infoStruct.handles;
+            }
+            if ((cif & (UInt64)CpuInfoFlags.CPU_CIF_VIRTUALIZATION) != 0)
+            {
+                Virtualization = infoStruct.virtualization;
+            }
+            if ((cif & (UInt64)CpuInfoFlags.CPU_CIF_HYPER_THREADING) != 0)
+            {
+                HyperThreading = infoStruct.hyperThreading;
+            }
+            if ((cif & (UInt64)CpuInfoFlags.CPU_CIF_SYS_INFO) != 0)
+            {
+                if ((sif & (UInt64)CpuSystemInfoFlags.CPU_SIF_SOCKETS) != 0)
+                    Sockets = infoStruct.sysInfo.sockets;
+                if ((sif & (UInt64)CpuSystemInfoFlags.CPU_SIF_CORES) != 0)
+                    Cores = infoStruct.sysInfo.cores;
+                if ((sif & (UInt64)CpuSystemInfoFlags.CPU_SIF_THREADS) != 0)
+                    LogicalProcessors = infoStruct.sysInfo.threads;
+                if ((sif & (UInt64)CpuSystemInfoFlags.CPU_SIF_NUMA_COUNT) != 0)
+                    NumaCount = infoStruct.sysInfo.numaCount;
+            }
+            if ((cif & (UInt64)CpuInfoFlags.CPU_CIF_MODEL_INFO) != 0)
+            {
+                if ((mif & (UInt64)CpuModelInfoFlags.CPU_MIF_NAME) != 0)
+                    Name = Profiler.ToString(infoStruct.modelInfo.name) ?? "N/A";
+                if ((mif & (UInt64)CpuModelInfoFlags.CPU_MIF_VENDOR) != 0)
+                    Vendor = Profiler.ToString(infoStruct.modelInfo.vendor) ?? "N/A";
+                if ((mif & (UInt64)CpuModelInfoFlags.CPU_MIF_ARCHITECTURE) != 0)
+                    Architecture = Profiler.ToString(infoStruct.modelInfo.architecture) ?? "N/A";
+                if ((mif & (UInt64)CpuModelInfoFlags.CPU_MIF_MODEL) != 0)
+                    Model = infoStruct.modelInfo.model;
+                if ((mif & (UInt64)CpuModelInfoFlags.CPU_MIF_FAMILY) != 0)
+                    Family = infoStruct.modelInfo.family;
+                if ((mif & (UInt64)CpuModelInfoFlags.CPU_MIF_STEPPING) != 0)
+                    Stepping = infoStruct.modelInfo.stepping;
+            }
+            if ((cif & (UInt64)CpuInfoFlags.CPU_CIF_TIMES_INFO) != 0)
+            {
+                if ((tif & (UInt64)CpuTimesInfoFlags.CPU_TIF_WORK_TIME) != 0)
+                    WorkTime = Profiler.ToDateTime(infoStruct.timesInfo.workTime) ?? new DateTime();
+                if ((tif & (UInt64)CpuTimesInfoFlags.CPU_TIF_KERNEL_TIME) != 0)
+                    KernelTime = Profiler.ToDateTime(infoStruct.timesInfo.kernelTime) ?? new DateTime();
+                if ((tif & (UInt64)CpuTimesInfoFlags.CPU_TIF_IDLE_TIME) != 0)
+                    IdleTime = Profiler.ToDateTime(infoStruct.timesInfo.idleTime) ?? new DateTime();
+                if ((tif & (UInt64)CpuTimesInfoFlags.CPU_TIF_DPC_TIME) != 0)
+                    DpcTime = Profiler.ToDateTime(infoStruct.timesInfo.dpcTime) ?? new DateTime();
+                if ((tif & (UInt64)CpuTimesInfoFlags.CPU_TIF_INTERRUPT_TIME) != 0)
+                    InterruptTime = Profiler.ToDateTime(infoStruct.timesInfo.interruptTime) ?? new DateTime();
+                if ((tif & (UInt64)CpuTimesInfoFlags.CPU_TIF_USER_TIME) != 0)
+                    UserTime = Profiler.ToDateTime(infoStruct.timesInfo.userTime) ?? new DateTime();
+            }
+            if ((cif & (UInt64)CpuInfoFlags.CPU_CIF_CACHE_INFO) != 0)
+            {
+                CacheCount = infoStruct.cacheCount;
+                Caches = ConvertToCache(Profiler.ToArray<CpuCacheInfoStruct>(infoStruct.cacheInfo, infoStruct.cacheCount), hif)!;
+            }
+        }
+        public void Unload(ulong cif, ulong sif, ulong mif, ulong tif, ulong hif)
+        {
+            if ((cif & (UInt64)CpuInfoFlags.CPU_CIF_USAGE) != 0)
+            {
+                Usage = 0;
+            }
+            if ((cif & (UInt64)CpuInfoFlags.CPU_CIF_BASE_FREQ) != 0)
+            {
+                BaseFreq = 0;
+            }
+            if ((cif & (UInt64)CpuInfoFlags.CPU_CIF_MAX_FREQ) != 0)
+            {
+                MaxFreq = 0;
+            }
+            if ((cif & (UInt64)CpuInfoFlags.CPU_CIF_THREADS) != 0)
+            {
+                Threads = 0;
+            }
+            if ((cif & (UInt64)CpuInfoFlags.CPU_CIF_HANDLES) != 0)
+            {
+                Handles = 0;
+            }
+            if ((cif & (UInt64)CpuInfoFlags.CPU_CIF_VIRTUALIZATION) != 0)
+            {
+                Virtualization = false;
+            }
+            if ((cif & (UInt64)CpuInfoFlags.CPU_CIF_HYPER_THREADING) != 0)
+            {
+                HyperThreading = false;
+            }
+            if ((cif & (UInt64)CpuInfoFlags.CPU_CIF_SYS_INFO) != 0)
+            {
+                if ((sif & (UInt64)CpuSystemInfoFlags.CPU_SIF_SOCKETS) != 0)
+                    Sockets = 0;
+                if ((sif & (UInt64)CpuSystemInfoFlags.CPU_SIF_CORES) != 0)
+                    Cores = 0;
+                if ((sif & (UInt64)CpuSystemInfoFlags.CPU_SIF_THREADS) != 0)
+                    LogicalProcessors = 0;
+                if ((sif & (UInt64)CpuSystemInfoFlags.CPU_SIF_NUMA_COUNT) != 0)
+                    NumaCount = 0;
+            }
+            if ((cif & (UInt64)CpuInfoFlags.CPU_CIF_MODEL_INFO) != 0)
+            {
+                if ((mif & (UInt64)CpuModelInfoFlags.CPU_MIF_NAME) != 0)
+                    Name = "N/A";
+                if ((mif & (UInt64)CpuModelInfoFlags.CPU_MIF_VENDOR) != 0)
+                    Vendor = "N/A";
+                if ((mif & (UInt64)CpuModelInfoFlags.CPU_MIF_ARCHITECTURE) != 0)
+                    Architecture = "N/A";
+                if ((mif & (UInt64)CpuModelInfoFlags.CPU_MIF_MODEL) != 0)
+                    Model = 0;
+                if ((mif & (UInt64)CpuModelInfoFlags.CPU_MIF_FAMILY) != 0)
+                    Family = 0;
+                if ((mif & (UInt64)CpuModelInfoFlags.CPU_MIF_STEPPING) != 0)
+                    Stepping = 0;
+            }
+            if ((cif & (UInt64)CpuInfoFlags.CPU_CIF_TIMES_INFO) != 0)
+            {
+                if ((tif & (UInt64)CpuTimesInfoFlags.CPU_TIF_WORK_TIME) != 0)
+                    WorkTime = new DateTime();
+                if ((tif & (UInt64)CpuTimesInfoFlags.CPU_TIF_KERNEL_TIME) != 0)
+                    KernelTime = new DateTime();
+                if ((tif & (UInt64)CpuTimesInfoFlags.CPU_TIF_IDLE_TIME) != 0)
+                    IdleTime = new DateTime();
+                if ((tif & (UInt64)CpuTimesInfoFlags.CPU_TIF_DPC_TIME) != 0)
+                    DpcTime = new DateTime();
+                if ((tif & (UInt64)CpuTimesInfoFlags.CPU_TIF_INTERRUPT_TIME) != 0)
+                    InterruptTime = new DateTime();
+                if ((tif & (UInt64)CpuTimesInfoFlags.CPU_TIF_USER_TIME) != 0)
+                    UserTime = new DateTime();
+            }
+            if ((cif & (UInt64)CpuInfoFlags.CPU_CIF_CACHE_INFO) != 0)
+            {
+                CacheCount = 0;
+                Caches = [];
+            }
+        }
 
+        public CpuCacheInfo[] ConvertToCache(CpuCacheInfoStruct[] cacheInfoStruct, ulong flags)
+        {
+            var caches = new CpuCacheInfo[cacheInfoStruct.Length];
+
+            for (int i = 0; i < cacheInfoStruct.Length; i++)
+            {
+                var cacheInfo = new CpuCacheInfo();
+                cacheInfo.Load(flags, cacheInfoStruct[i]);
+                caches[i] = cacheInfo;
+            }
+
+            return caches;
+        }
     }
 }
