@@ -5,6 +5,7 @@ using ProcessManager.Profiling;
 using System.Windows.Controls;
 using System.Diagnostics;
 using System.Windows;
+using System.Drawing;
 
 namespace ProcessManager.Pages
 {
@@ -49,6 +50,8 @@ namespace ProcessManager.Pages
                 Processes.Add(info);
                 Running.Add(info.PID);
             }
+
+            ProcessProfiler.FreeProcessInfoArray(ptr, size);
 
             ApplicationList.ItemsSource = Processes;
 
@@ -97,8 +100,10 @@ namespace ProcessManager.Pages
                                 }
                             }
                         });
+
+                        ProcessProfiler.FreeProcessInfoArray(ptr, size);
                     });
-                 
+
                     Task.WaitAll(Task.Delay(2000), qTask);
                 }
             });

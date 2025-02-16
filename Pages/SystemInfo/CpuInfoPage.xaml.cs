@@ -11,7 +11,7 @@ namespace ProcessManager.Pages.SystemInfo
     /// </summary>
     public partial class CpuInfoPage : Page
     {
-        public ulong CpuInfoConstFlags { get; set; } = (ulong)(CpuInfoFlags.CPU_CIF_SYS_INFO | CpuInfoFlags.CPU_CIF_MODEL_INFO | CpuInfoFlags.CPU_CIF_CACHE_INFO | CpuInfoFlags.CPU_CIF_BASE_FREQ | CpuInfoFlags.CPU_CIF_MAX_FREQ);
+        public ulong CpuInfoConstFlags { get; set; } = (ulong)(CpuInfoFlags.CPU_CIF_SYS_INFO | CpuInfoFlags.CPU_CIF_MODEL_INFO | CpuInfoFlags.CPU_CIF_CACHE_INFO | CpuInfoFlags.CPU_CIF_BASE_FREQ | CpuInfoFlags.CPU_CIF_MAX_FREQ | CpuInfoFlags.CPU_CIF_VIRTUALIZATION | CpuInfoFlags.CPU_CIF_HYPER_THREADING);
         public ulong SystemInfoConstFlags { get; set; } = (ulong)(CpuSystemInfoFlags.CPU_SIF_ALL);
         public ulong ModelInfoConstFlags { get; set; } = (ulong)(CpuModelInfoFlags.CPU_MIF_ALL);
         public ulong TimesInfoConstFlags { get; set; } = 0;
@@ -45,6 +45,7 @@ namespace ProcessManager.Pages.SystemInfo
             CpuInfoStruct info = Profiler.ToStruct<CpuInfoStruct>(ptr);
             CpuInfo.Load(info, CpuInfoConstFlags, SystemInfoConstFlags, ModelInfoConstFlags, TimesInfoConstFlags, CacheInfoConstFlags);
             CpuProfiler.FreeCpuInfo(ptr);
+
 
             UpdateTask().Start();
         }
@@ -88,7 +89,9 @@ namespace ProcessManager.Pages.SystemInfo
                     CpuInfo.Load(info, CpuInfoUpdateFlags, SystemInfoUpdateFlags, ModelInfoUpdateFlags, TimesInfoUpdateFlags, CacheInfoUpdateFlags);
                     CpuProfiler.FreeCpuInfo(ptr);
 
-                    await Task.Delay(UpdateDelay / 3);
+                    await Task.Delay(UpdateDelay);
+
+                    GC.Collect(0);
                 }
             });
         }

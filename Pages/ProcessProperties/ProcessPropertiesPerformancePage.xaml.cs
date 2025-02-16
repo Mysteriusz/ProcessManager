@@ -77,8 +77,6 @@ namespace ProcessManager.Pages.ProcessProperties
                     ProcessInfo.Load(str, ProcessInfoUpdateFlags, ModuleInfoUpdateFlags, HandleInfoUpdateFlags, ThreadInfoUpdateFlags, TimesInfoUpdateFlags, MemoryInfoUpdateFlags, CpuInfoUpdateFlags, IOInfoUpdateFlags);
                     ProcessProfiler.FreeProcessInfo(ptr);
 
-                    Debug.WriteLine(str.cpuInfo.usage);
-
                     await Task.Delay(UpdateDelay);
                 }
             });

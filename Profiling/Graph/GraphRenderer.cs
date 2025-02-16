@@ -1,6 +1,7 @@
 ﻿using System.Windows.Media.Imaging;
 using System.Drawing;
 using System.IO;
+using System.Diagnostics;
 
 namespace ProcessManager.Profiling.GraphFramework
 {
@@ -184,7 +185,9 @@ namespace ProcessManager.Profiling.GraphFramework
                     CellCountX = cellCountX;
                     CellCountY = cellCountY;
 
-                    SetCellSize();
+                    CellSizeX = (int)Math.Ceiling((double)Width / CellCountX);
+                    CellSizeY = (int)Math.Ceiling((double)Height / CellCountY);
+
                     SetCycleOffset();
 
                     for (int x = 0; x < cellCountX + 1; x++)
@@ -214,9 +217,12 @@ namespace ProcessManager.Profiling.GraphFramework
         /// <param name="data">Data value to render.</param>
         public void RenderData(int width, int height, double data)
         {
+            if (dataPoints.Count > (CellCountX + 1) * GridCycleLengthX)
+                dataPoints.RemoveAt(0);
+
             if (dataPoints.Count == 0)
                 dataPoints.Add(new PointF(width, 0));
-            
+
             if (DataMap == null || PreviousWidth != width || PreviousHeight != height)
                 ResizeDataMap(width, height);
 
@@ -289,11 +295,6 @@ namespace ProcessManager.Profiling.GraphFramework
             }
         }
 
-        private void SetCellSize()
-        {
-            CellSizeX = (int)Math.Ceiling((double)Width / CellCountX);
-            CellSizeY = (int)Math.Ceiling((double)Height / CellCountY);
-        }
         private void SetCycleOffset()
         {
             if (currentCycleX == GridCycleLengthX)
@@ -308,6 +309,7 @@ namespace ProcessManager.Profiling.GraphFramework
             {
                 int offsetX = (CellSizeX / GridCycleLengthX);
 
+
                 cycleOffsetX = offsetX * currentCycleX;
                 DataOffsetX += offsetX;
             }
@@ -321,7 +323,9 @@ namespace ProcessManager.Profiling.GraphFramework
             }
 
             CycleOffsetX = cycleOffsetX; 
-            CycleOffsetY = cycleOffsetY;    
+            CycleOffsetY = cycleOffsetY;
+
+
         }
         private void ResizeDataMap(int newWidth, int newHeight)
         {

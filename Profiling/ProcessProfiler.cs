@@ -112,5 +112,7 @@ namespace ProcessManager.Profiling
 
         [DllImport(Profiler.DllPath, CallingConvention = CallingConvention.Cdecl)]
         public static extern void FreeProcessInfo(IntPtr info);
+        [DllImport(Profiler.DllPath, CallingConvention = CallingConvention.Cdecl)]
+        public static extern void FreeProcessInfoArray(IntPtr info, uint size);
     }
 }

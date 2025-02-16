@@ -22,7 +22,137 @@
             <helpers:UlongToStringConverter x:Key="UlongToStringConverter"/>
             <helpers:UintToBytesConverter x:Key="UintToBytesConverter"/>
             <helpers:DateTimeToStringConverter x:Key="DateTimeToStringConverter"/>
+
+            <Style x:Key="CacheItemStyle" TargetType="ListViewItem">
+                <Style.Setters>
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="ListViewItem">
+                                <Grid Margin="2">
+                                    <Border Style="{StaticResource CustomBorderStyle}" Margin="10">
+                                        <StackPanel Orientation="Vertical">
+                                            <Label Style="{StaticResource CustomBorderLabelStyle}" >
+                                                <Label.Content>
+                                                    <TextBlock>
+                                                        <Run Text="L" />
+                                                        <Run Text="{Binding Level}" />
+                                                    </TextBlock>
+                                                </Label.Content>
+                                            </Label>
+                                            <Grid Margin="5" VerticalAlignment="Center">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                    <ColumnDefinition Width="*"/>
+                                                </Grid.ColumnDefinitions>
+                                                <Label Foreground="{StaticResource LightTextColor}" Content="Type: " Padding="0" Margin="0, 0, 0, 0"/>
+                                                <Label Foreground="{StaticResource LightTextColor}" HorizontalContentAlignment="Right" Content="{Binding Type}" Padding="0" Margin="4, 0, 0, 0" Grid.Column="1"/>
+                                            </Grid>
+                                            <Grid Margin="5" VerticalAlignment="Center">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                    <ColumnDefinition Width="*"/>
+                                                </Grid.ColumnDefinitions>
+                                                <Label Foreground="{StaticResource LightTextColor}" Content="MaxCores: " Padding="0" Margin="0, 0, 0, 0"/>
+                                                <Label Foreground="{StaticResource LightTextColor}" HorizontalContentAlignment="Right" Content="{Binding MaxCores}" Padding="0" Margin="4, 0, 0, 0" Grid.Column="1"/>
+                                            </Grid>
+                                            <Grid Margin="5" VerticalAlignment="Center">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                    <ColumnDefinition Width="*"/>
+                                                </Grid.ColumnDefinitions>
+                                                <Label Foreground="{StaticResource LightTextColor}" Content="MaxThreads: " Padding="0" Margin="0, 0, 0, 0"/>
+                                                <Label Foreground="{StaticResource LightTextColor}" HorizontalContentAlignment="Right" Content="{Binding MaxThreads}" Padding="0" Margin="4, 0, 0, 0" Grid.Column="1"/>
+                                            </Grid>
+                                            <Grid Margin="5" VerticalAlignment="Center">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                    <ColumnDefinition Width="*"/>
+                                                </Grid.ColumnDefinitions>
+                                                <Label Foreground="{StaticResource LightTextColor}" Content="Associative: " Padding="0" Margin="0, 0, 0, 0"/>
+                                                <Label Foreground="{StaticResource LightTextColor}" HorizontalContentAlignment="Right" Content="{Binding Associative}" Padding="0" Margin="4, 0, 0, 0" Grid.Column="1"/>
+                                            </Grid>
+                                            <Grid Margin="5" VerticalAlignment="Center">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                    <ColumnDefinition Width="*"/>
+                                                </Grid.ColumnDefinitions>
+                                                <Label Foreground="{StaticResource LightTextColor}" Content="SelfInitializing: " Padding="0" Margin="0, 0, 0, 0"/>
+                                                <Label Foreground="{StaticResource LightTextColor}" HorizontalContentAlignment="Right" Content="{Binding SelfInitializing}" Padding="0" Margin="4, 0, 0, 0" Grid.Column="1"/>
+                                            </Grid>
+                                            <Grid Margin="5" VerticalAlignment="Center">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                    <ColumnDefinition Width="*"/>
+                                                </Grid.ColumnDefinitions>
+                                                <Label Foreground="{StaticResource LightTextColor}" Content="Ways: " Padding="0" Margin="0, 0, 0, 0"/>
+                                                <Label Foreground="{StaticResource LightTextColor}" HorizontalContentAlignment="Right" Content="{Binding Ways}" Padding="0" Margin="4, 0, 0, 0" Grid.Column="1"/>
+                                            </Grid>
+                                            <Grid Margin="5" VerticalAlignment="Center">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                    <ColumnDefinition Width="*"/>
+                                                </Grid.ColumnDefinitions>
+                                                <Label Foreground="{StaticResource LightTextColor}" Content="LineCount: " Padding="0" Margin="0, 0, 0, 0"/>
+                                                <Label Foreground="{StaticResource LightTextColor}" HorizontalContentAlignment="Right" Content="{Binding LineCount}" Padding="0" Margin="4, 0, 0, 0" Grid.Column="1"/>
+                                            </Grid>
+                                            <Grid Margin="5" VerticalAlignment="Center">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                    <ColumnDefinition Width="*"/>
+                                                </Grid.ColumnDefinitions>
+                                                <Label Foreground="{StaticResource LightTextColor}" Content="LineSize: " Padding="0" Margin="0, 0, 0, 0"/>
+                                                <Label Foreground="{StaticResource LightTextColor}" HorizontalContentAlignment="Right" Content="{Binding LineSize}" Padding="0" Margin="4, 0, 0, 0" Grid.Column="1"/>
+                                            </Grid>
+                                            <Grid Margin="5" VerticalAlignment="Center">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                    <ColumnDefinition Width="*"/>
+                                                </Grid.ColumnDefinitions>
+                                                <Label Foreground="{StaticResource LightTextColor}" Content="SetCount: " Padding="0" Margin="0, 0, 0, 0"/>
+                                                <Label Foreground="{StaticResource LightTextColor}" HorizontalContentAlignment="Right" Content="{Binding SetCount}" Padding="0" Margin="4, 0, 0, 0" Grid.Column="1"/>
+                                            </Grid>
+                                            <Grid Margin="5" VerticalAlignment="Center">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                    <ColumnDefinition Width="*"/>
+                                                </Grid.ColumnDefinitions>
+                                                <Label Foreground="{StaticResource LightTextColor}" Content="ComplexIndexing: " Padding="0" Margin="0, 0, 0, 0"/>
+                                                <Label Foreground="{StaticResource LightTextColor}" HorizontalContentAlignment="Right" Content="{Binding ComplexIndexing}" Padding="0" Margin="4, 0, 0, 0" Grid.Column="1"/>
+                                            </Grid>
+                                            <Grid Margin="5" VerticalAlignment="Center">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                    <ColumnDefinition Width="*"/>
+                                                </Grid.ColumnDefinitions>
+                                                <Label Foreground="{StaticResource LightTextColor}" Content="Inclusive: " Padding="0" Margin="0, 0, 0, 0"/>
+                                                <Label Foreground="{StaticResource LightTextColor}" HorizontalContentAlignment="Right" Content="{Binding Inclusive}" Padding="0" Margin="4, 0, 0, 0" Grid.Column="1"/>
+                                            </Grid>
+                                            <Grid Margin="5" VerticalAlignment="Center">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                    <ColumnDefinition Width="*"/>
+                                                </Grid.ColumnDefinitions>
+                                                <Label Foreground="{StaticResource LightTextColor}" Content="Wbinvd: " Padding="0" Margin="0, 0, 0, 0"/>
+                                                <Label Foreground="{StaticResource LightTextColor}" HorizontalContentAlignment="Right" Content="{Binding Wbinvd}" Padding="0" Margin="4, 0, 0, 0" Grid.Column="1"/>
+                                            </Grid>
+                                            <Grid Margin="5" VerticalAlignment="Center">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                    <ColumnDefinition Width="*"/>
+                                                </Grid.ColumnDefinitions>
+                                                <Label Foreground="{StaticResource LightTextColor}" Content="Size: " Padding="0" Margin="0, 0, 0, 0"/>
+                                                <Label Foreground="{StaticResource LightTextColor}" HorizontalContentAlignment="Right" Content="{Binding Size, Converter={StaticResource UintToBytesConverter}}" Padding="0" Margin="4, 0, 0, 0" Grid.Column="1"/>
+                                            </Grid>
+                                        </StackPanel>
+                                    </Border>
+                                </Grid>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style.Setters>
+            </Style>
         </ResourceDictionary>
+
     </Page.Resources>
 
     <Border Style="{StaticResource CustomBorderStyle}" Grid.Row="0" Grid.Column="0" Margin="5">
@@ -39,7 +169,7 @@
                         <Setter Property="Template" Value="{StaticResource ListScrollBar}"/>
                     </Style>
                 </ScrollViewer.Resources>
-                
+
                 <StackPanel>
                     <Border Style="{StaticResource CustomBorderStyle}" Margin="10">
                         <Grid>
@@ -246,6 +376,8 @@
                                     <Label Foreground="{StaticResource LightTextColor}" Content="Caches:" Padding="0" Margin="0, 0, 0, 0"/>
                                     <Label Foreground="{StaticResource LightTextColor}" HorizontalContentAlignment="Right" Content="{Binding CacheCount}" Padding="0" Margin="4, 0, 0, 0" Grid.Column="1"/>
                                 </Grid>
+
+                                <ListView ItemsSource="{Binding Caches}" ItemContainerStyle="{StaticResource CacheItemStyle}" Background="{StaticResource DefaultColor}" BorderThickness="0" Margin="2" IsHitTestVisible="False"/>
                             </StackPanel>
                         </Grid>
                     </Border>
