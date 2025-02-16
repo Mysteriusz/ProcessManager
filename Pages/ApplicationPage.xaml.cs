@@ -5,7 +5,6 @@ using ProcessManager.Profiling;
 using System.Windows.Controls;
 using System.Diagnostics;
 using System.Windows;
-using System.Drawing;
 
 namespace ProcessManager.Pages
 {
@@ -39,6 +38,9 @@ namespace ProcessManager.Pages
 
         internal void InitializeApplicationList()
         {
+            IntPtr ptr1 = GpuProfiler.GetGpuVRamSize();
+            Debug.WriteLine(Profiler.ToUInt64(ptr1));
+
             IntPtr ptr = ProcessProfiler.GetAllProcessInfo(ProcessUpdateFlags, 0, 0, 0, 0, 0, 0, 0, out uint size);
             ProcessInfoStruct[] infos = Profiler.ToArray<ProcessInfoStruct>(ptr, size);
 
