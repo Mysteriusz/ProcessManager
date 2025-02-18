@@ -4,6 +4,7 @@ using ProcessManager.Pages;
 using System.Windows;
 using System.Diagnostics;
 using System.Windows.Input;
+using ProcessManager.Profiling.Models.Gpu;
 
 namespace ProcessManager
 {
@@ -16,8 +17,6 @@ namespace ProcessManager
         private ApplicationPage? _applicationPage;
 
         // Row 2
-        private CpuInfoPage? _cpuPage;
-        private CpuInfo? _infoContext;
 
         public MainWindow()
         {
@@ -29,15 +28,7 @@ namespace ProcessManager
             _applicationPage = new();
             MainPageFrame.Navigate(_applicationPage);
         }
-        private void SysInfoPageFrame_Loaded(object sender, RoutedEventArgs e)
-        {
-            _cpuPage = new CpuInfoPage();
-            _infoContext = new CpuInfo();
-
-            _cpuPage.DataContext = _infoContext;
-            SysInfoPageFrame.Navigate(_cpuPage);
-        }
-
+        
         private void Thumb_DragDelta(object sender, System.Windows.Controls.Primitives.DragDeltaEventArgs e)
         {
             var c1 = MainGrid.RowDefinitions[2];

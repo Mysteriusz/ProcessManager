@@ -385,7 +385,7 @@
             </ScrollViewer>
 
             <Border Style="{StaticResource CustomBorderStyle}" Grid.Column="1" Margin="10">
-                <graph:DataGraph Data="{Binding Usage}" MaxDataValue="100" MinDataValue="0" GraphDelay="1000" GridCycleLengthX="5" GridBackground="{StaticResource DefaultColor}" DataForeground="{StaticResource DataGraphColor}" GridForeground="{StaticResource DarkTextColor}" />
+                <graph:DataGraph Data="{Binding Usage}" MaxDataValue="100" MinDataValue="0" GraphDelay="1000" GridCycleLengthX="5" GridBackground="{StaticResource DefaultColor}" DataForeground="LightBlue" GridForeground="{StaticResource DarkTextColor}" />
             </Border>
         </Grid>
     </Border>

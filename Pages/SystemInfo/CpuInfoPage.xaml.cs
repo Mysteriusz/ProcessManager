@@ -2,7 +2,6 @@
 using ProcessManager.Profiling.Models.Cpu;
 using ProcessManager.Profiling;
 using System.Windows.Controls;
-using System.Diagnostics;
 
 namespace ProcessManager.Pages.SystemInfo
 {
@@ -57,8 +56,6 @@ namespace ProcessManager.Pages.SystemInfo
             UpdateCancellation?.Dispose();
 
             UpdateCancellation = null;
-            UpdateCancellation = null;
-            CpuInfo = null;
 
             GC.Collect();
         }
@@ -72,26 +69,41 @@ namespace ProcessManager.Pages.SystemInfo
 
                 while (UpdateCancellation != null && !UpdateCancellation.IsCancellationRequested)
                 {
-                    IntPtr usg1 = CpuProfiler.GetCpuUsage();
-                    await Task.Delay(UpdateDelay / 3);
-                    IntPtr usg2 = CpuProfiler.GetCpuUsage();
-                    await Task.Delay(UpdateDelay / 3);
-                    IntPtr usg3 = CpuProfiler.GetCpuUsage();
+                    try
+                    {
+                        IntPtr usg1 = CpuProfiler.GetCpuUsage();
+                        await Task.Delay(UpdateDelay / 3);
+                        IntPtr usg2 = CpuProfiler.GetCpuUsage();
+                        await Task.Delay(UpdateDelay / 3);
+                        IntPtr usg3 = CpuProfiler.GetCpuUsage();
 
-                    double d1 = Profiler.ToDouble(usg1) ?? 0;
-                    double d2 = Profiler.ToDouble(usg2) ?? 0;
-                    double d3 = Profiler.ToDouble(usg3) ?? 0;
+                        double d1 = Profiler.ToDouble(usg1) ?? 0;
+                        double d2 = Profiler.ToDouble(usg2) ?? 0;
+                        double d3 = Profiler.ToDouble(usg3) ?? 0;
 
-                    CpuInfo.Usage = (d1 + d2 + d3) / 3;
+                        if (CpuInfo != null)
+                            CpuInfo.Usage = (d1 + d2 + d3) / 3;
+                        else
+                            break;
 
-                    IntPtr ptr = CpuProfiler.GetCpuInfo(CpuInfoUpdateFlags, SystemInfoUpdateFlags, ModelInfoUpdateFlags, TimesInfoUpdateFlags, CacheInfoUpdateFlags);
-                    CpuInfoStruct info = Profiler.ToStruct<CpuInfoStruct>(ptr);
-                    CpuInfo.Load(info, CpuInfoUpdateFlags, SystemInfoUpdateFlags, ModelInfoUpdateFlags, TimesInfoUpdateFlags, CacheInfoUpdateFlags);
-                    CpuProfiler.FreeCpuInfo(ptr);
+                        IntPtr ptr = CpuProfiler.GetCpuInfo(CpuInfoUpdateFlags, SystemInfoUpdateFlags, ModelInfoUpdateFlags, TimesInfoUpdateFlags, CacheInfoUpdateFlags);
+                        CpuInfoStruct info = Profiler.ToStruct<CpuInfoStruct>(ptr);
 
-                    await Task.Delay(UpdateDelay);
+                        if (CpuInfo != null)
+                            CpuInfo.Load(info, CpuInfoUpdateFlags, SystemInfoUpdateFlags, ModelInfoUpdateFlags, TimesInfoUpdateFlags, CacheInfoUpdateFlags);
+                        else
+                            break;
+                        
+                        CpuProfiler.FreeCpuInfo(ptr);
 
-                    GC.Collect(0);
+                        await Task.Delay(UpdateDelay);
+
+                        GC.Collect(0);
+                    }
+                    catch
+                    {
+                        break;
+                    }
                 }
             });
         }

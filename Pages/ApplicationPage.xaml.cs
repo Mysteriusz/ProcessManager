@@ -3,9 +3,7 @@ using ProcessManager.Profiling.Models.Process;
 using System.Collections.ObjectModel;
 using ProcessManager.Profiling;
 using System.Windows.Controls;
-using System.Diagnostics;
 using System.Windows;
-using ProcessManager.Profiling.Models.Gpu.Models;
 
 namespace ProcessManager.Pages
 {

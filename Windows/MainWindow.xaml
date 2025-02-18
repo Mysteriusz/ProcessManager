@@ -54,7 +54,7 @@
             </Track.Thumb>
         </Track>
         
-        <Frame x:Name="SysInfoPageFrame" Grid.Row="4" Margin="5" NavigationUIVisibility="Hidden" Loaded="SysInfoPageFrame_Loaded"/>
+        <Frame Source="/Pages/SystemInfoPage.xaml" Grid.Row="4" Margin="5" NavigationUIVisibility="Hidden" />
         <Frame Source="/Pages/InfoBarPage.xaml" Grid.Row="6" Grid.Column="0" />
     </Grid>
 </Window>

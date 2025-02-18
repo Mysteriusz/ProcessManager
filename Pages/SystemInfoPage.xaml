@@ -1,0 +1,79 @@
+﻿<Page x:Class="ProcessManager.Pages.SystemInfoPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:ProcessManager.Pages"
+      xmlns:helpers="clr-namespace:ProcessManager.WPFHelpers"
+      xmlns:graph="clr-namespace:ProcessManager.Profiling.GraphFramework.Controls"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="SystemInfoPage">
+
+    <Page.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Dictionaries/ColorDictionary.xaml"/>
+                <ResourceDictionary Source="/Dictionaries/IconDictionary.xaml"/>
+                <ResourceDictionary Source="/Dictionaries/ControlDictionary.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+
+            <helpers:DoubleToGhzConverter x:Key="DoubleToGhzConverter"/>
+            <helpers:UlongToStringConverter x:Key="UlongToStringConverter"/>
+            <helpers:UintToBytesConverter x:Key="UintToBytesConverter"/>
+            <helpers:DateTimeToStringConverter x:Key="DateTimeToStringConverter"/>
+        </ResourceDictionary>
+    </Page.Resources>
+
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="1.5*"/>
+        </Grid.RowDefinitions>
+
+        <Border Style="{StaticResource CustomBorderStyle}" Grid.Row="1" >
+            <Grid>
+                <Label Style="{StaticResource CustomBorderLabelStyle}" Content="Processes"/>
+                <Frame x:Name="SystemInfoPageFrame" Grid.Row="1" NavigationUIVisibility="Hidden" Loaded="SystemInfoPageFrame_Loaded" />
+            </Grid>
+        </Border>
+        
+        <Grid Margin="5" Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <Grid.Resources>
+                <Style x:Key="PropertyButtonStyle" TargetType="Border">
+                    <Setter Property="Background" Value="{StaticResource DefaultColor}" />
+                    <Setter Property="BorderThickness" Value="1" />
+                    <Setter Property="BorderBrush" Value="{StaticResource DarkTextColor}" />
+                    <Setter Property="HorizontalAlignment" Value="Stretch"/>
+                    <Setter Property="VerticalAlignment" Value="Stretch"/>
+                    <Style.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Opacity" Value=".8" />
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </Grid.Resources>
+
+            <Border x:Name="SystemInfoPageCpuButton" Tag="CPU" Style="{StaticResource PropertyButtonStyle}" PreviewMouseDown="SystemInfoPageCpuButton_PreviewMouseDown">
+                <TextBlock Text="CPU" Foreground="{StaticResource DarkTextColor}" TextTrimming="CharacterEllipsis" HorizontalAlignment="Center" />
+            </Border>
+
+            <Border x:Name="SystemInfoPageGpuButton" Tag="GPU" Style="{StaticResource PropertyButtonStyle}" Grid.Column="1" PreviewMouseDown="SystemInfoPageCpuButton_PreviewMouseDown">
+                <TextBlock Text="GPU" Foreground="{StaticResource DarkTextColor}" TextTrimming="CharacterEllipsis" HorizontalAlignment="Center" />
+            </Border>
+        </Grid>
+    </Grid>
+</Page>

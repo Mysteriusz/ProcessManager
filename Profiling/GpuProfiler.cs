@@ -1,5 +1,4 @@
-﻿using ProcessManager.Profiling.Models.Gpu;
-using System.Runtime.InteropServices;
+﻿using System.Runtime.InteropServices;
 
 namespace ProcessManager.Profiling
 {
@@ -79,5 +78,12 @@ namespace ProcessManager.Profiling
         public static extern IntPtr GetGpuMaxResolutionInfo(ulong rif);
         [DllImport(Profiler.DllPath)]
         public static extern IntPtr GetGpuMinResolutionInfo(ulong rif);
+
+        //
+        // ---------------------------------- METHODS ----------------------------------
+        //
+
+        [DllImport(Profiler.DllPath)]
+        public static extern void FreeGpuInfo(IntPtr ptr);
     }
 }
