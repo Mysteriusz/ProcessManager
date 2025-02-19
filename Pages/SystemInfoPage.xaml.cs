@@ -1,9 +1,10 @@
-﻿using System.Windows.Controls;
-using System.Windows;
-using ProcessManager.Pages.SystemInfo;
-using ProcessManager.Profiling.Models.Cpu;
+﻿using ProcessManager.Profiling.Models.Cpu;
 using ProcessManager.Profiling.Models.Gpu;
+using ProcessManager.Pages.SystemInfo;
+using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows;
+using ProcessManager.Profiling.Models.Ram;
 
 namespace ProcessManager.Pages
 {
@@ -19,6 +20,12 @@ namespace ProcessManager.Pages
         private GpuInfoPage? _gpuPage = new GpuInfoPage();
         private GpuInfo? _gpuInfoContext = new();
 
+        private RamInfoPage? _ramPage = new RamInfoPage();
+        private RamInfo? _ramInfoContext = new();
+        
+        private int _switchDelay = 1000;
+        private bool _canSwitch = true;
+
         public SystemInfoPage()
         {
             InitializeComponent();
@@ -30,10 +37,15 @@ namespace ProcessManager.Pages
             SystemInfoPageFrame.Navigate(_cpuPage);
         }
 
-        private void SystemInfoPageCpuButton_PreviewMouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        private async void SystemInfoPageCpuButton_PreviewMouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             if (sender is Border border && e.ChangedButton == MouseButton.Left)
             {
+                if (!_canSwitch)
+                    return;
+
+                _canSwitch = false;
+
                 switch (border.Tag)
                 {
                     case "CPU":
@@ -44,8 +56,20 @@ namespace ProcessManager.Pages
                         _gpuPage.DataContext = _gpuInfoContext;
                         SystemInfoPageFrame.Navigate(_gpuPage);
                         break;
+                    case "RAM":
+                        _ramPage.DataContext = _ramInfoContext;
+                        SystemInfoPageFrame.Navigate(_ramPage);
+                        break;
                 }
+
+                await SwitchDelayTask();
             }
+        }
+
+        private async Task SwitchDelayTask()
+        {
+            await Task.Delay(_switchDelay);
+            _canSwitch = true;
         }
     }
 }

@@ -35,13 +35,9 @@
             <RowDefinition Height="1.5*"/>
         </Grid.RowDefinitions>
 
-        <Border Style="{StaticResource CustomBorderStyle}" Grid.Row="1" >
-            <Grid>
-                <Label Style="{StaticResource CustomBorderLabelStyle}" Content="Processes"/>
-                <Frame x:Name="SystemInfoPageFrame" Grid.Row="1" NavigationUIVisibility="Hidden" Loaded="SystemInfoPageFrame_Loaded" />
-            </Grid>
-        </Border>
-        
+        <Frame x:Name="SystemInfoPageFrame" Grid.Row="1" NavigationUIVisibility="Hidden" Loaded="SystemInfoPageFrame_Loaded" />
+
+
         <Grid Margin="5" Grid.Row="0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
@@ -73,6 +69,10 @@
 
             <Border x:Name="SystemInfoPageGpuButton" Tag="GPU" Style="{StaticResource PropertyButtonStyle}" Grid.Column="1" PreviewMouseDown="SystemInfoPageCpuButton_PreviewMouseDown">
                 <TextBlock Text="GPU" Foreground="{StaticResource DarkTextColor}" TextTrimming="CharacterEllipsis" HorizontalAlignment="Center" />
+            </Border>
+            
+            <Border x:Name="SystemInfopageRamButton" Tag="RAM" Style="{StaticResource PropertyButtonStyle}" Grid.Column="2" PreviewMouseDown="SystemInfoPageCpuButton_PreviewMouseDown">
+                <TextBlock Text="RAM" Foreground="{StaticResource DarkTextColor}" TextTrimming="CharacterEllipsis" HorizontalAlignment="Center" />
             </Border>
         </Grid>
     </Grid>

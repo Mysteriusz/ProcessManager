@@ -1,8 +1,10 @@
 ﻿using ProcessManager.Profiling.Models.Process.Models;
+using ProcessManager.Profiling.Models.Ram.Models;
 using ProcessManager.Profiling.Models.Process;
 using System.Collections.ObjectModel;
 using ProcessManager.Profiling;
 using System.Windows.Controls;
+using System.Diagnostics;
 using System.Windows;
 
 namespace ProcessManager.Pages
@@ -37,8 +39,13 @@ namespace ProcessManager.Pages
 
         internal void InitializeApplicationList()
         {
-            //IntPtr ptr1 = GpuProfiler.GetGpuInfo(0xfffffffff, 0xfffffffff, 0xfffffffff, 0xfffffffff, 0xfffffffff);
-            //Debug.WriteLine(Profiler.ToStruct<GpuInfoStruct>(ptr1).vRamSize);
+            IntPtr ptr1 = RamProfiler.GetAllRamBlockInfo(0, out uint s);
+            RamBlockInfoStruct[] rInfos = Profiler.ToArray<RamBlockInfoStruct>(ptr1, s);
+
+            for (int i =0; i < s; i++)
+            {
+                Debug.WriteLine(rInfos[i].size);
+            }
 
             IntPtr ptr = ProcessProfiler.GetAllProcessInfo(ProcessUpdateFlags, 0, 0, 0, 0, 0, 0, 0, out uint size);
             ProcessInfoStruct[] infos = Profiler.ToArray<ProcessInfoStruct>(ptr, size);

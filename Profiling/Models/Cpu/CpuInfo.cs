@@ -518,8 +518,8 @@ namespace ProcessManager.Profiling.Models.Cpu
             }
             if ((cif & (UInt64)CpuInfoFlags.CPU_CIF_CACHE_INFO) != 0)
             {
-                CacheCount = 0;
-                Caches = [];
+                foreach (var cache in Caches)
+                    cache.Unload(hif);
             }
         }
 
