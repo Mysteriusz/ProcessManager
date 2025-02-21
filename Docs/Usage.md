@@ -50,9 +50,11 @@
 #### Page of all process modules (updates when reopening the page).
 [![Alt Text](UsageResources/ProcessPropertiesModules.png)](UsageResources/ProcessPropertiesModules.png)
 
+---
+
 # CPU Profiling
 
-### Main CPU Page
+### Main CPU Page.
 [![Alt Text](UsageResources/CPU.png)](UsageResources/CPU.png)
 
 ### CPU General Information
@@ -71,5 +73,36 @@
 #### Informations about all CPU caches.
 [![Alt Text](UsageResources/CPUCache.png)](UsageResources/CPUCache.png)
 
+---
+
 # GPU Profiling
+
+### Main GPU Page
+[![Alt Text](UsageResources/GPU.png)](UsageResources/GPU.png)
+
+### GPU General Information
+#### Basic GPU data like: name, vendor, utilizations, etc.
+[![Alt Text](UsageResources/GPUGeneral.png)](UsageResources/GPUGeneral.png)
+
+### GPU Advanced Information
+#### Informations about more advanced GPU data.
+[![Alt Text](UsageResources/GPUAdvanced.png)](UsageResources/GPUAdvanced.png)
+
+---
+
 # RAM Profiling
+
+### Main RAM Page
+[![Alt Text](UsageResources/RAM.png)](UsageResources/RAM.png)
+
+### RAM General Information
+#### Basic RAM data like: name, vendor, utilizations, etc.
+[![Alt Text](UsageResources/RAMGeneral.png)](UsageResources/RAMGeneral.png)
+
+### RAM Advanced Information
+#### Informations about more advanced GPU data.
+[![Alt Text](UsageResources/RAMAdvanced.png)](UsageResources/RAMAdvanced.png)
+
+### RAM Block Information
+#### Informations about all RAM blocks.
+[![Alt Text](UsageResources/RAMBlock.png)](UsageResources/RAMBlock.png)
