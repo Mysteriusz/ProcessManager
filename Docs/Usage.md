@@ -24,26 +24,52 @@
 ![Open Process Properties](./UsageResources/OpenProcessProperties.gif)
 
 ## After opening process properties a window will popup and from there you have multiple page options.
+
 ### General Page
 #### General process information like: name, description, version etc.
 #### You can copy content of the text boxes by pressing small button to the right of it.
 [![Alt Text](UsageResources/ProcessPropertiesGeneral.png)](UsageResources/ProcessPropertiesGeneral.png)
+
 ### Statistics Page
 #### Live process statistics like priorities, ram usage, process CPU times, etc. 
 [![Alt Text](UsageResources/ProcessPropertiesStatistics.png)](UsageResources/ProcessPropertiesStatistics.png)
+
 ### Performance Page
 #### Live process CPU and RAM usage.
 [![Alt Text](UsageResources/ProcessPropertiesPerformance.png)](UsageResources/ProcessPropertiesPerformance.png)
+
 ### Threads Page
 #### Page of all process threads (updates when reopening the page).
 [![Alt Text](UsageResources/ProcessPropertiesThreads.png)](UsageResources/ProcessPropertiesThreads.png)
+
 ### Handles Page
 #### Page of all process handles (updates when reopening the page).
 [![Alt Text](UsageResources/ProcessPropertiesHandles.png)](UsageResources/ProcessPropertiesHandles.png)
+
 ### Modules Page
 #### Page of all process modules (updates when reopening the page).
 [![Alt Text](UsageResources/ProcessPropertiesModules.png)](UsageResources/ProcessPropertiesModules.png)
 
 # CPU Profiling
+
+### Main CPU Page
+[![Alt Text](UsageResources/CPU.png)](UsageResources/CPU.png)
+
+### CPU General Information
+#### Basic CPU data like: name, vendor, frequency, etc.
+[![Alt Text](UsageResources/CPUGenera.png)](UsageResources/CPUGenera.png)
+
+### CPU Times Information
+#### Informations about CPU times.
+[![Alt Text](UsageResources/CPUTimes.png)](UsageResources/CPUTimes.png)
+
+### CPU Advanced Information
+#### Informations about more advanced CPU data.
+[![Alt Text](UsageResources/CPUAdvanced.png)](UsageResources/CPUAdvanced.png)
+
+### CPU Cache Information
+#### Informations about all CPU caches.
+[![Alt Text](UsageResources/CPUCache.png)](UsageResources/CPUCache.png)
+
 # GPU Profiling
 # RAM Profiling
