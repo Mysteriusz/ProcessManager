@@ -100,7 +100,7 @@
 [![Alt Text](UsageResources/RAMGeneral.png)](UsageResources/RAMGeneral.png)
 
 ### RAM Advanced Information
-#### Informations about more advanced GPU data.
+#### Informations about more advanced RAM data.
 [![Alt Text](UsageResources/RAMAdvanced.png)](UsageResources/RAMAdvanced.png)
 
 ### RAM Block Information
