@@ -56,6 +56,7 @@
         <Style.Setters>
             <Setter Property="Background" Value="{StaticResource DefaultColor}"/>
             <EventSetter Event="MouseDoubleClick" Handler="ApplicationListRow_MouseDoubleClick"/>
+            <EventSetter Event="MouseRightButtonUp" Handler="ApplicationListRow_MouseRightButtonUp"/>
             <EventSetter Event="PreviewKeyUp" Handler="ApplicationListRow_PreviewKeyUp"/>
         </Style.Setters>
         <Style.Triggers>

@@ -1,6 +1,6 @@
 ﻿using ProcessManager.Profiling;
-using System.Diagnostics;
 using System.Windows;
+using System.Windows.Media;
 
 namespace ProcessManager
 {
@@ -12,6 +12,19 @@ namespace ProcessManager
         //
         // ---------------------------------- PROPERTIES ----------------------------------
         //
+
+        public static SolidColorBrush DefaultColor { get; } = new SolidColorBrush(Color.FromArgb(0xFF, 0x1A, 0x1A, 0x1A));
+        public static SolidColorBrush MouseOverColor { get; } = new SolidColorBrush(Color.FromArgb(0xFF, 0x33, 0x33, 0x33));
+        public static SolidColorBrush SelectColor { get; } = new SolidColorBrush(Color.FromArgb(0xFF, 0x47, 0x47, 0x47));
+        public static SolidColorBrush MouseOverSelectColor { get; } = new SolidColorBrush(Color.FromArgb(0xFF, 0x2A, 0x2A, 0x2A));
+        public static SolidColorBrush DarkTextColor { get; } = new SolidColorBrush(Color.FromArgb(0xFF, 0x66, 0x66, 0x66));
+        public static SolidColorBrush LightTextColor { get; } = new SolidColorBrush(Color.FromArgb(0xFF, 0xC7, 0xC7, 0xC7));
+        public static SolidColorBrush DataGraphColor { get; } = new SolidColorBrush(Colors.Yellow);
+
+        /// <summary>
+        /// Path to the ProcessManagerLib DLL
+        /// </summary>
+        public const string DllPath = "C:\\Users\\wixxx\\source\\repos\\ProcessManager\\x64\\Debug\\ProcessManagerLib.dll";
 
         /// <summary>
         /// Application name.

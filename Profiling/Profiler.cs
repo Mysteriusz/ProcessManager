@@ -9,13 +9,12 @@ namespace ProcessManager.Profiling
         // ---------------------------------- CONSTANTS ----------------------------------
         //
 
-        public const string DllPath = "C:\\Users\\wixxx\\source\\repos\\ProcessManager\\x64\\Debug\\ProcessManagerLib.dll";
 
         //
         // ---------------------------------- VOID ----------------------------------
         //
 
-        [DllImport(DllPath, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(AppDefinition.DllPath, CallingConvention = CallingConvention.Cdecl)]
         public static extern void EnableDebugPrivilages();
 
         //
