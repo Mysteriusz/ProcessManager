@@ -19,7 +19,6 @@ namespace ProcessManager.Profiling.Models.Process
         private string _parentName = "N/A";
         private string _user = "N/A";
         private string _imageName = "N/A";
-        private string _priority = "N/A";
         private string _version = "N/A";
         private string _integrityLevel = "N/A";
         private string _architectureType = "N/A";
@@ -28,6 +27,7 @@ namespace ProcessManager.Profiling.Models.Process
         private UInt64 _peb = 0;
         private UInt32 _pid = 0;
         private UInt32 _ppid = 0;
+        private UInt32 _priority = 0;
 
         public string Name
         {
@@ -74,18 +74,6 @@ namespace ProcessManager.Profiling.Models.Process
                 {
                     _imageName = value;
                     OnPropertyChanged(nameof(ImageName));
-                }
-            }
-        }
-        public string Priority
-        {
-            get => _priority;
-            set
-            {
-                if (_priority != value)
-                {
-                    _priority = value;
-                    OnPropertyChanged(nameof(Priority));
                 }
             }
         }
@@ -182,6 +170,18 @@ namespace ProcessManager.Profiling.Models.Process
                 {
                     _ppid = value;
                     OnPropertyChanged(nameof(PPID));
+                }
+            }
+        }
+        public UInt32 Priority
+        {
+            get => _priority;
+            set
+            {
+                if (_priority != value)
+                {
+                    _priority = value;
+                    OnPropertyChanged(nameof(Priority));
                 }
             }
         }
@@ -666,7 +666,7 @@ namespace ProcessManager.Profiling.Models.Process
             ParentName = Profiler.ToString(infoStruct.parentProcessName) ?? "";
             User = Profiler.ToString(infoStruct.user) ?? "";
             ImageName = Profiler.ToString(infoStruct.imageName) ?? "";
-            Priority = Profiler.ToString(infoStruct.priority) ?? "";
+            Priority = infoStruct.priority;
             Version = Profiler.ToString(infoStruct.fileVersion) ?? "";
             IntegrityLevel = Profiler.ToString(infoStruct.integrityLevel) ?? "";
             ArchitectureType = Profiler.ToString(infoStruct.architectureType) ?? "";
@@ -727,7 +727,7 @@ namespace ProcessManager.Profiling.Models.Process
 
             if ((pif & (UInt64)ProcessInfoFlags.PROCESS_PIF_PRIORITY) != 0)
             {
-                Priority = Profiler.ToString(infoStruct.priority) ?? "N/A";
+                Priority = infoStruct.priority;
             }
 
             if ((pif & (UInt64)ProcessInfoFlags.PROCESS_PIF_FILE_VERSION) != 0)
@@ -871,7 +871,7 @@ namespace ProcessManager.Profiling.Models.Process
 
             if ((pif & (UInt64)ProcessInfoFlags.PROCESS_PIF_PRIORITY) != 0)
             {
-                _priority = "";
+                _priority = 0;
             }
 
             if ((pif & (UInt64)ProcessInfoFlags.PROCESS_PIF_FILE_VERSION) != 0)

@@ -16,9 +16,6 @@ namespace ProcessManager.Pages
         // ---------------------------------- PROPERTIES ----------------------------------
         //
 
-        public ObservableCollection<ProcessInfo> Processes = new ObservableCollection<ProcessInfo>();
-        public HashSet<uint> Running = new HashSet<uint>();
-
         public ulong ProcessUpdateFlags { get; set; } = (ulong)(ProcessInfoFlags.PROCESS_PIF_NAME | ProcessInfoFlags.PROCESS_PIF_IMAGE_NAME | ProcessInfoFlags.PROCESS_PIF_USER | ProcessInfoFlags.PROCESS_PIF_DESCRIPTION | ProcessInfoFlags.PROCESS_PIF_PRIORITY);
 
         //
@@ -45,13 +42,13 @@ namespace ProcessManager.Pages
                 ProcessInfo info = new ProcessInfo();
                 info.Load(infos[i], ProcessUpdateFlags, 0, 0, 0, 0, 0, 0, 0);
 
-                Processes.Add(info);
-                Running.Add(info.PID);
+                RuntimeData.Processes.Add(info);
+                RuntimeData.Running.Add(info.PID);
             }
 
             ProcessProfiler.FreeProcessInfoArray(ptr, size);
 
-            ApplicationList.ItemsSource = Processes;
+            ApplicationList.ItemsSource = RuntimeData.Processes;
 
             ProcessMonitor().Start();
         }
@@ -68,7 +65,7 @@ namespace ProcessManager.Pages
                         ProcessInfoStruct[] infos = Profiler.ToArray<ProcessInfoStruct>(ptr, size);
 
                         HashSet<uint> runningPids = infos.Select(inf => inf.pid).ToHashSet();
-                        HashSet<uint> existingPids = Processes.Select(p => p.PID).ToHashSet();
+                        HashSet<uint> existingPids = RuntimeData.Processes.Select(p => p.PID).ToHashSet();
 
                         Application.Current.Dispatcher.Invoke(() =>
                         {
@@ -83,18 +80,18 @@ namespace ProcessManager.Pages
                                     ProcessInfo info = new ProcessInfo();
                                     info.Load(newInfo, ProcessUpdateFlags, 0, 0, 0, 0, 0, 0, 0);
 
-                                    Processes.Add(info);
-                                    Running.Add(info.PID);
+                                    RuntimeData.Processes.Add(info);
+                                    RuntimeData.Running.Add(info.PID);
                                 }
                             }
 
                             // Remove not running
-                            for (int i = Processes.Count - 1; i >= 0; i--)
+                            for (int i = RuntimeData.Processes.Count - 1; i >= 0; i--)
                             {
-                                if (!runningPids.Contains(Processes[i].PID))
+                                if (!runningPids.Contains(RuntimeData.Processes[i].PID))
                                 {
-                                    Running.Remove(Processes[i].PID);
-                                    Processes.RemoveAt(i);
+                                    RuntimeData.Running.Remove(RuntimeData.Processes[i].PID);
+                                    RuntimeData.Processes.RemoveAt(i);
                                 }
                             }
                         });

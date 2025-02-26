@@ -20,7 +20,6 @@
     <Border Style="{StaticResource CustomBorderStyle}" Grid.Row="1" >
         <Grid>
             <Label Style="{StaticResource CustomBorderLabelStyle}" Content="Processes"/>
-
             <DataGrid x:Name="ApplicationList" Style="{StaticResource ApplicationDataGrid}" Margin="10">
                 <DataGrid.Resources>
                     <Style TargetType="ScrollBar">

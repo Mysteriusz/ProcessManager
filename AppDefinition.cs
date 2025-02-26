@@ -1,6 +1,6 @@
 ﻿using ProcessManager.Profiling;
-using System.Windows;
 using System.Windows.Media;
+using System.Windows;
 
 namespace ProcessManager
 {
@@ -22,7 +22,19 @@ namespace ProcessManager
         public static SolidColorBrush DataGraphColor { get; } = new SolidColorBrush(Colors.Yellow);
 
         /// <summary>
-        /// Path to the ProcessManagerLib DLL
+        /// Possible process priorities.
+        /// </summary>
+        public static readonly Dictionary<uint, string> ProcessPriorities = new Dictionary<uint, string>{
+            { 0x00000040, "Idle"}, // IDLE_PRIORITY_CLASS
+            { 0x00004000, "Below Normal" }, // BELOW_NORMAL_PRIORITY_CLASS
+            { 0x00000020, "Normal" }, // NORMAL_PRIORITY_CLASS
+            { 0x00008000, "Above Normal" }, // ABOVE_NORMAL_PRIORITY_CLASS
+            { 0x00000080, "High" }, // HIGH_PRIORITY_CLASS
+            { 0x00000100, "Realtime" }, // REALTIME_PRIORITY_CLASS
+        };
+
+        /// <summary>
+        /// Path to the ProcessManagerLib DLL.
         /// </summary>
         public const string DllPath = "C:\\Users\\wixxx\\source\\repos\\ProcessManager\\x64\\Debug\\ProcessManagerLib.dll";
 

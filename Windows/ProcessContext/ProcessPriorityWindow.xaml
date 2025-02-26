@@ -1,0 +1,82 @@
+﻿<Window x:Class="ProcessManager.Windows.ProcessContext.ProcessPriorityWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ProcessManager.Windows.ProcessContext"
+        mc:Ignorable="d"
+        Title="ProcessPriorityWindow" Height="125" Width="300" Background="#1a1a1a" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Dictionaries/ColorDictionary.xaml"/>
+                <ResourceDictionary Source="/Dictionaries/IconDictionary.xaml"/>
+                <ResourceDictionary Source="/Dictionaries/DoubleDictionary.xaml"/>
+                <ResourceDictionary Source="/Dictionaries/ControlDictionary.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+
+            <ControlTemplate x:Key="PrioritiesComboBoxToggleTemplate" TargetType="ToggleButton">
+                <Border Background="{StaticResource DefaultColor}" BorderBrush="{StaticResource DarkTextColor}" BorderThickness="1" CornerRadius="2" />
+            </ControlTemplate>
+            
+            <Style x:Key="PrioritiesComboBoxStyle" TargetType="ComboBox">
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="ComboBox">
+                            <Grid>
+                                <ToggleButton Template="{StaticResource PrioritiesComboBoxToggleTemplate}" ClickMode="Press" IsChecked="{Binding Path=IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"/>
+
+                                <ContentControl Content="{TemplateBinding SelectionBoxItem}" Foreground="{StaticResource LightTextColor}" HorizontalAlignment="Left" Margin="5, 0, 0, 0" VerticalAlignment="Center" IsHitTestVisible="False"/>
+                                <Popup Placement="Bottom" IsOpen="{TemplateBinding IsDropDownOpen}" PopupAnimation="Slide">
+                                    <Grid Background="{StaticResource DataGraphColor}" Width="{TemplateBinding ActualWidth}">
+                                        <Border Background="{StaticResource DefaultColor}" BorderThickness="1" BorderBrush="{StaticResource DarkTextColor}">
+                                            <ScrollViewer SnapsToDevicePixels="True">
+                                                <StackPanel IsItemsHost="True" KeyboardNavigation.DirectionalNavigation="Contained" />
+                                            </ScrollViewer>
+                                        </Border>
+                                    </Grid>
+                                </Popup>
+                            </Grid>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
+            <Style x:Key="ConfirmButton" TargetType="Button">
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="Button">
+                            <Grid>
+                                <Border Background="{StaticResource DefaultColor}" BorderThickness="1" BorderBrush="{StaticResource DarkTextColor}" CornerRadius="2" />
+                                <Label Content="{TemplateBinding Content}" Padding="0" Foreground="{StaticResource LightTextColor}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Grid>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+
+                <Style.Triggers>
+                    <Trigger Property="IsMouseOver" Value="True">
+                        <Setter Property="Opacity" Value=".8"/>
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+        </ResourceDictionary>
+    </Window.Resources>
+    
+    <Border Style="{StaticResource CustomBorderStyle}" Grid.Row="1" Margin="10">
+        <Grid>
+            <Label Style="{StaticResource CustomBorderLabelStyle}" Content="Priority"/>
+
+            <ComboBox Name="PriorityBox" Style="{StaticResource PrioritiesComboBoxStyle}" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="30, 0, 0, 0" Height="20" Width="100">
+                <ComboBoxItem Content="Idle" Foreground="{StaticResource LightTextColor}" />
+                <ComboBoxItem Content="Below Normal" Foreground="{StaticResource LightTextColor}" />
+                <ComboBoxItem Content="Normal" Foreground="{StaticResource LightTextColor}" />
+                <ComboBoxItem Content="Above Normal" Foreground="{StaticResource LightTextColor}" />
+                <ComboBoxItem Content="High" Foreground="{StaticResource LightTextColor}" />
+                <ComboBoxItem Content="Realtime" Foreground="{StaticResource LightTextColor}" />
+            </ComboBox>
+
+            <Button Name="ConfirmButton" Style="{StaticResource ConfirmButton}" Content="Confirm" Click="ConfirmButton_Click" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0, 0, 30, 0" Height="20" Width="100" />
+        </Grid>
+    </Border>
+</Window>

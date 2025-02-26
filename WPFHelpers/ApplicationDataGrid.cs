@@ -3,17 +3,11 @@ using System.Windows.Controls.Primitives;
 using System.Windows.Controls;
 using ProcessManager.Windows;
 using System.Windows.Input;
-using System.Windows;
-using System.Windows.Media;
-using ProcessManager.Actions;
-using System.Security.Cryptography;
 
 namespace ProcessManager.WPFHelpers
 {
     public partial class ApplicationDataGrid 
     {
-        private ContextMenu? processContextMenu;
-        private ProcessInfo? currentProcessInfo;
 
         public ApplicationDataGrid()
         {
@@ -72,20 +66,12 @@ namespace ProcessManager.WPFHelpers
 
         internal void OpenProcessContextMenu(ProcessInfo info)
         {
-            if (processContextMenu == null)
-            {
-                processContextMenu = new();
+            RuntimeData.CreateProcessContextMenu();
 
-                processContextMenu.Style = ContextMenuStyle();
-                processContextMenu.ItemsPanel = ContextItemMenuStyle();
+            RuntimeData.SelectedProcess = info;
 
-                foreach (object b in CreateProcessContextMenu())
-                    processContextMenu.Items.Add(b);
-            }
-
-            currentProcessInfo = info;
-
-            processContextMenu.IsOpen = true;
+            if (RuntimeData.ProcessContextMenu != null)
+                RuntimeData.ProcessContextMenu.IsOpen = true;
         }
         internal void OpenProcessProperties(ProcessInfo info)
         {
@@ -93,66 +79,6 @@ namespace ProcessManager.WPFHelpers
             processPropertiesWindow.DataContext = info;
 
             processPropertiesWindow.Show();
-        }
-
-        // ---------------------------------- CONTEXT MENU ----------------------------------
-
-        private object[] CreateProcessContextMenu()
-        {
-            Separator separator = new Separator(); 
-            
-            MenuItem killProcessButton = new MenuItem() { Header = "Kill Process", Foreground = AppDefinition.LightTextColor };
-            killProcessButton.Click += (s, a) => ProcessActions.KillProcess(GetCurrentProcessPID());
-
-            MenuItem suspendProcessButton = new MenuItem() { Header = "Suspend Process", Foreground = AppDefinition.LightTextColor };
-            suspendProcessButton.Click += (s, a) => ProcessActions.SuspendProcess(GetCurrentProcessPID());
-
-            MenuItem resumeProcessButton = new MenuItem() { Header = "Resume Process", Foreground = AppDefinition.LightTextColor };
-            resumeProcessButton.Click += (s, a) => ProcessActions.ResumeProcess(GetCurrentProcessPID());
-
-            MenuItem setAffinityButton = new MenuItem() { Header = "Set Affinity" , Foreground = AppDefinition.LightTextColor }; 
-            MenuItem setPriorityButton = new MenuItem() { Header = "Set Priority" , Foreground = AppDefinition.LightTextColor };
-
-            return [killProcessButton, suspendProcessButton, resumeProcessButton, setAffinityButton, setPriorityButton];
-        }
-        private uint GetCurrentProcessPID()
-        {
-            return currentProcessInfo == null ? uint.MaxValue : currentProcessInfo.PID;
-        }
-
-        private Style ContextMenuStyle()
-        {
-            Style style = new Style(typeof(ContextMenu));
-
-            ControlTemplate template = new ControlTemplate(typeof(ContextMenu));
-
-            FrameworkElementFactory border = new FrameworkElementFactory(typeof(Border));
-            FrameworkElementFactory itemPres = new FrameworkElementFactory(typeof(ItemsPresenter));
-
-            border.SetValue(Border.CornerRadiusProperty, new CornerRadius(2));
-            border.SetValue(Border.BorderThicknessProperty, new Thickness(2));
-            border.SetValue(Border.BorderBrushProperty, AppDefinition.DarkTextColor);
-            border.SetValue(Border.BackgroundProperty, AppDefinition.DefaultColor);
-
-            itemPres.SetValue(ItemsPresenter.MarginProperty, new Thickness(2));
-
-            border.AppendChild(itemPres);
-
-            template.VisualTree = border;
-
-            style.Setters.Add(new Setter(Control.TemplateProperty, template));
-
-            return style;
-        }
-        private ItemsPanelTemplate ContextItemMenuStyle()
-        {
-            FrameworkElementFactory panelFactory = new(typeof(StackPanel));
-            panelFactory.SetValue(StackPanel.BackgroundProperty, AppDefinition.DefaultColor);
-
-            ItemsPanelTemplate template = new();
-            template.VisualTree = panelFactory;
-
-            return template;
         }
     }
 }

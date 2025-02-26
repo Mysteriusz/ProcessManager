@@ -35,16 +35,16 @@ namespace ProcessManager.Profiling.Models.Process.Models
         public IntPtr parentProcessName;
         public IntPtr user;
         public IntPtr imageName;
-        public IntPtr priority;
         public IntPtr fileVersion;
         public IntPtr integrityLevel;
         public IntPtr architectureType;
         public IntPtr cmd;
         public IntPtr description;
 
+        public UInt64 peb;
         public UInt32 pid;
         public UInt32 ppid;
-        public UInt64 peb;
+        public UInt32 priority;
 
         public ProcessTimesInfoStruct timesInfo;
         public ProcessMemoryInfoStruct memoryInfo;

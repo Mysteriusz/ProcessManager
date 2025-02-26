@@ -1,0 +1,46 @@
+﻿<Window x:Class="ProcessManager.Windows.ProcessContext.ProcessAffinityWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ProcessManager.Windows.ProcessContext"
+        xmlns:helpers="clr-namespace:ProcessManager.WPFHelpers"
+        mc:Ignorable="d"
+        Title="ProcessAffinityWindow" Height="450" Width="400" Background="#1a1a1a" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
+
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Dictionaries/ColorDictionary.xaml"/>
+                <ResourceDictionary Source="/Dictionaries/IconDictionary.xaml"/>
+                <ResourceDictionary Source="/Dictionaries/DoubleDictionary.xaml"/>
+                <ResourceDictionary Source="/Dictionaries/ControlDictionary.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+
+            <Control x:Key="CoreListPanel">
+
+            </Control>
+            
+            <Style x:Key="CoreAffinityCheckBox" TargetType="CheckBox">
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="CheckBox" >
+                            <StackPanel Orientation="Horizontal">
+                                <CheckBox VerticalAlignment="Center"/>
+                                <Label Foreground="{StaticResource LightTextColor}" Content="{TemplateBinding Content}" VerticalAlignment="Center" />
+                            </StackPanel>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+        </ResourceDictionary>
+    </Window.Resources>
+
+    <Border Style="{StaticResource CustomBorderStyle}" Grid.Row="1" Margin="10">
+        <Grid>
+            <Label Style="{StaticResource CustomBorderLabelStyle}" Content="Affinity"/>
+
+            <helpers:PanelList x:Name="CorePanelList" ItemSource="{Binding CoreList}" RowCount="16" ColumnCount="4" CellStyle="{StaticResource CoreAffinityCheckBox}" />
+        </Grid>
+    </Border>
+</Window>
