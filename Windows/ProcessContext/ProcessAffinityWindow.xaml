@@ -17,17 +17,13 @@
                 <ResourceDictionary Source="/Dictionaries/ControlDictionary.xaml"/>
             </ResourceDictionary.MergedDictionaries>
 
-            <Control x:Key="CoreListPanel">
-
-            </Control>
-            
             <Style x:Key="CoreAffinityCheckBox" TargetType="CheckBox">
                 <Setter Property="Template">
                     <Setter.Value>
                         <ControlTemplate TargetType="CheckBox" >
                             <StackPanel Orientation="Horizontal">
-                                <CheckBox VerticalAlignment="Center"/>
-                                <Label Foreground="{StaticResource LightTextColor}" Content="{TemplateBinding Content}" VerticalAlignment="Center" />
+                                <CheckBox VerticalAlignment="Center" IsChecked="{Binding Path=IsChecked, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"/>
+                                <Label Foreground="{StaticResource LightTextColor}" Content="{TemplateBinding Content}" Padding="0" VerticalAlignment="Center" />
                             </StackPanel>
                         </ControlTemplate>
                     </Setter.Value>
@@ -36,11 +32,19 @@
         </ResourceDictionary>
     </Window.Resources>
 
-    <Border Style="{StaticResource CustomBorderStyle}" Grid.Row="1" Margin="10">
-        <Grid>
-            <Label Style="{StaticResource CustomBorderLabelStyle}" Content="Affinity"/>
-
-            <helpers:PanelList x:Name="CorePanelList" ItemSource="{Binding CoreList}" RowCount="16" ColumnCount="4" CellStyle="{StaticResource CoreAffinityCheckBox}" />
-        </Grid>
-    </Border>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="13*"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        
+        <Border Style="{StaticResource CustomBorderStyle}" Grid.Row="0" Margin="10" >
+            <Grid>
+                <Label Style="{StaticResource CustomBorderLabelStyle}" Content="Affinity"/>
+                <helpers:PanelList x:Name="CorePanelList" ItemSource="{Binding CoreList}" RowCount="16" ColumnCount="4" CellStyle="{StaticResource CoreAffinityCheckBox}" />
+            </Grid>
+        </Border>
+        
+        <Button Name="ConfirmButton" Style="{StaticResource ConfirmButton}" Content="Confirm" Click="ConfirmButton_Click" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0, 0, 20, 0" Height="20" Width="100" Grid.Row="1" />
+    </Grid>
 </Window>

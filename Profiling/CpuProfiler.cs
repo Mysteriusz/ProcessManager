@@ -18,13 +18,12 @@ namespace ProcessManager.Profiling
         //
         // ---------------------------------- UINT32 ----------------------------------
         //
-
+        
         [DllImport(AppDefinition.DllPath)]
         public static extern IntPtr GetCpuModel();
         
         [DllImport(AppDefinition.DllPath)]
         public static extern IntPtr GetCpuFamily();
-        
         [DllImport(AppDefinition.DllPath)]
         public static extern IntPtr GetCpuStepping();
         [DllImport(AppDefinition.DllPath)]

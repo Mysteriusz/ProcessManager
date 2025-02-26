@@ -18,7 +18,7 @@
             <ControlTemplate x:Key="PrioritiesComboBoxToggleTemplate" TargetType="ToggleButton">
                 <Border Background="{StaticResource DefaultColor}" BorderBrush="{StaticResource DarkTextColor}" BorderThickness="1" CornerRadius="2" />
             </ControlTemplate>
-            
+
             <Style x:Key="PrioritiesComboBoxStyle" TargetType="ComboBox">
                 <Setter Property="Template">
                     <Setter.Value>
@@ -40,25 +40,6 @@
                         </ControlTemplate>
                     </Setter.Value>
                 </Setter>
-            </Style>
-
-            <Style x:Key="ConfirmButton" TargetType="Button">
-                <Setter Property="Template">
-                    <Setter.Value>
-                        <ControlTemplate TargetType="Button">
-                            <Grid>
-                                <Border Background="{StaticResource DefaultColor}" BorderThickness="1" BorderBrush="{StaticResource DarkTextColor}" CornerRadius="2" />
-                                <Label Content="{TemplateBinding Content}" Padding="0" Foreground="{StaticResource LightTextColor}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                            </Grid>
-                        </ControlTemplate>
-                    </Setter.Value>
-                </Setter>
-
-                <Style.Triggers>
-                    <Trigger Property="IsMouseOver" Value="True">
-                        <Setter Property="Opacity" Value=".8"/>
-                    </Trigger>
-                </Style.Triggers>
             </Style>
         </ResourceDictionary>
     </Window.Resources>

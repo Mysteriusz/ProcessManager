@@ -7,6 +7,7 @@ namespace ProcessManager.Profiling.Models.Process.Models
     {
         PROCESS_CIF_USAGE = 0x00000001,
         PROCESS_CIF_CYCLES = 0x00000002,
+        PROCESS_CIF_AFFINITY = 0x00000004,
         PROCESS_CIF_ALL = 0xffffffff
     }
 
@@ -15,5 +16,6 @@ namespace ProcessManager.Profiling.Models.Process.Models
     {
         public Double usage;
         public UInt64 cycles;
+        public UInt64 affinity;
     }
 }

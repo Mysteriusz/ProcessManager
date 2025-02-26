@@ -28,9 +28,7 @@ namespace ProcessManager.Windows.ProcessContext
         private void ConfirmButton_Click(object sender, RoutedEventArgs e)
         {
             ProcessActions.SetPriority(_info.PID, _selectedPriority);
-
             _info.Priority = _selectedPriority;
-
             this.Close();
         }
     }

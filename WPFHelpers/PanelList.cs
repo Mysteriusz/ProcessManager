@@ -3,6 +3,8 @@ using System.Windows.Controls;
 using System.Diagnostics;
 using System.Windows;
 using System.Windows.Media;
+using System.Runtime.Serialization;
+using System.Xml.Linq;
 
 namespace ProcessManager.WPFHelpers
 {
@@ -34,6 +36,9 @@ namespace ProcessManager.WPFHelpers
             set { SetValue(ItemSourceProperty, value); }
         }
 
+        public Dictionary<int, KeyValuePair<DependencyProperty, object>> Constraints { get; set; } = new Dictionary<int, KeyValuePair<DependencyProperty, object>>();
+        public List<UIElement> Elements = new List<UIElement>();
+
         public PanelList() { }
 
         public void GenerateOrder()
@@ -58,9 +63,13 @@ namespace ProcessManager.WPFHelpers
                     cell.SetValue(StyleProperty, CellStyle);
                     cell.SetValue(ContentProperty, ItemSource.ElementAt(cellIndex));
 
+                    foreach (var constraint in Constraints.Where(c => c.Key == cellIndex))
+                        cell.SetValue(constraint.Value.Key, constraint.Value.Value);
+
                     Grid.SetColumn(cell, c);
                     Grid.SetRow(cell, r);
                     grid.Children.Add(cell);
+                    Elements.Add(cell);
 
                     cellIndex++;
                 }

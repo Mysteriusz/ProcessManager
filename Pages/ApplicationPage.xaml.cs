@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using ProcessManager.Profiling;
 using System.Windows.Controls;
 using System.Windows;
+using System.Diagnostics;
 
 namespace ProcessManager.Pages
 {

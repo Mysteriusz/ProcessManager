@@ -122,6 +122,23 @@
         <Setter Property="RowStyle" Value="{StaticResource ApplicationDataGridRow}"/>
         <Setter Property="ColumnHeaderStyle" Value="{StaticResource ApplicationDataGridColumnHeader}"/>
     </Style>
+    <Style x:Key="ConfirmButton" TargetType="Button">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Grid>
+                        <Border Background="{StaticResource DefaultColor}" BorderThickness="1" BorderBrush="{StaticResource DarkTextColor}" CornerRadius="2" />
+                        <Label Content="{TemplateBinding Content}" Padding="0" Foreground="{StaticResource LightTextColor}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Opacity" Value=".8"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
 
     <ControlTemplate x:Key="ListScrollBar" TargetType="ScrollBar">
         <Track Margin="0, 0, 0, 0" IsDirectionReversed="True">

@@ -96,7 +96,7 @@ namespace ProcessManager
     
         private static void AffinityButtonClick()
         {
-            ProcessAffinityWindow affinityWindow = new ProcessAffinityWindow();
+            ProcessAffinityWindow affinityWindow = new ProcessAffinityWindow(SelectedProcess ?? throw new Exception());
             affinityWindow.Show();
         }   
         

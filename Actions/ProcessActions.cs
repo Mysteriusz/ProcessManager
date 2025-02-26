@@ -15,7 +15,7 @@ namespace ProcessManager.Actions
         [DllImport(AppDefinition.DllPath, CallingConvention = CallingConvention.Cdecl)]
         public static extern void InjectModule(string path, string modulePath);
         [DllImport(AppDefinition.DllPath, CallingConvention = CallingConvention.Cdecl)]
-        public static extern void SetAffinity(uint pid, uint affinity);
+        public static extern void SetAffinity(uint pid, ulong affinity);
         [DllImport(AppDefinition.DllPath, CallingConvention = CallingConvention.Cdecl)]
         public static extern void SetPriority(uint pid, uint priority);
     }

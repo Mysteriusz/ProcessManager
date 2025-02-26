@@ -25,6 +25,7 @@ namespace ProcessManager.Profiling.Models.Process
         private string _commandLine = "N/A";
         private string _description = "N/A";
         private UInt64 _peb = 0;
+        private UInt64 _affinity = 0;
         private UInt32 _pid = 0;
         private UInt32 _ppid = 0;
         private UInt32 _priority = 0;
@@ -146,6 +147,18 @@ namespace ProcessManager.Profiling.Models.Process
                 {
                     _peb = value;
                     OnPropertyChanged(nameof(PEB));
+                }
+            }
+        }
+        public UInt64 Affinity
+        {
+            get => _affinity;
+            set
+            {
+                if (_affinity != value)
+                {
+                    _affinity = value;
+                    OnPropertyChanged(nameof(Affinity));
                 }
             }
         }
@@ -785,6 +798,8 @@ namespace ProcessManager.Profiling.Models.Process
                     CycleCount = infoStruct.cpuInfo.cycles;
                 if ((cif & (UInt64)ProcessCpuInfoFlags.PROCESS_CIF_USAGE) != 0)
                     CpuUsage = infoStruct.cpuInfo.usage;
+                if ((cif & (UInt64)ProcessCpuInfoFlags.PROCESS_CIF_AFFINITY) != 0)
+                    Affinity = infoStruct.cpuInfo.affinity;
             }
 
             if ((pif & (UInt64)ProcessInfoFlags.PROCESS_PIF_MEMORY_INFO) != 0)
@@ -929,6 +944,8 @@ namespace ProcessManager.Profiling.Models.Process
                     _cycleCount = 0;
                 if ((cif & (UInt64)ProcessCpuInfoFlags.PROCESS_CIF_USAGE) != 0)
                     _cpuUsage = 0;
+                if ((cif & (UInt64)ProcessCpuInfoFlags.PROCESS_CIF_AFFINITY) != 0)
+                    _affinity = 0;
             }
 
             if ((pif & (UInt64)ProcessInfoFlags.PROCESS_PIF_MEMORY_INFO) != 0)
