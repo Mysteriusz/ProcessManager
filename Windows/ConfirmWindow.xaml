@@ -1,0 +1,26 @@
+﻿<Window x:Class="ProcessManager.Windows.ConfirmWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ProcessManager.Windows"
+        mc:Ignorable="d"
+        Title="ConfirmWindow" Height="125" Width="300" Background="#1a1a1a" Loaded="Window_Loaded" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Dictionaries/ColorDictionary.xaml"/>
+                <ResourceDictionary Source="/Dictionaries/IconDictionary.xaml"/>
+                <ResourceDictionary Source="/Dictionaries/DoubleDictionary.xaml"/>
+                <ResourceDictionary Source="/Dictionaries/ControlDictionary.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+
+    <Grid>
+        <Label Content="Are you sure?" Foreground="{StaticResource LightTextColor}" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="25, 0, 0, 40"/>
+
+        <Button Style="{StaticResource DefaultButton}" Content="No" Click="No_ButtonClick" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="20, 0, 0, 10" Height="20" Width="100" />
+        <Button Style="{StaticResource DefaultButton}" Content="Yes" Click="Yes_ButtonClick" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="0, 0, 20, 10" Height="20" Width="100" />
+    </Grid>
+</Window>

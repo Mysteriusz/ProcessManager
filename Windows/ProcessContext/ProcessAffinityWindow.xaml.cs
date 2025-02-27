@@ -2,9 +2,8 @@
 using System.Collections.ObjectModel;
 using ProcessManager.Profiling;
 using System.Windows.Controls;
-using System.Diagnostics;
-using System.Windows;
 using ProcessManager.Actions;
+using System.Windows;
 
 namespace ProcessManager.Windows.ProcessContext
 {
@@ -42,6 +41,13 @@ namespace ProcessManager.Windows.ProcessContext
 
         private void ConfirmButton_Click(object sender, RoutedEventArgs e)
         {
+            ConfirmWindow cw = new ConfirmWindow();
+
+            if (cw.ShowDialog() == false)
+            {
+                this.Close();
+                return;
+            }
             ulong newAffinity = 0;
 
             for (int i = CorePanelList.Elements.Count - 1; i >= 0; i--)

@@ -44,7 +44,7 @@
                 <helpers:PanelList x:Name="CorePanelList" ItemSource="{Binding CoreList}" RowCount="16" ColumnCount="4" CellStyle="{StaticResource CoreAffinityCheckBox}" />
             </Grid>
         </Border>
-        
-        <Button Name="ConfirmButton" Style="{StaticResource ConfirmButton}" Content="Confirm" Click="ConfirmButton_Click" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0, 0, 20, 0" Height="20" Width="100" Grid.Row="1" />
+
+        <Button Name="ConfirmButton" Style="{StaticResource DefaultButton}" Content="Confirm" Click="ConfirmButton_Click" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0, 0, 20, 0" Height="20" Width="100" Grid.Row="1" />
     </Grid>
 </Window>

@@ -122,7 +122,7 @@
         <Setter Property="RowStyle" Value="{StaticResource ApplicationDataGridRow}"/>
         <Setter Property="ColumnHeaderStyle" Value="{StaticResource ApplicationDataGridColumnHeader}"/>
     </Style>
-    <Style x:Key="ConfirmButton" TargetType="Button">
+    <Style x:Key="DefaultButton" TargetType="Button">
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="Button">

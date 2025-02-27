@@ -57,7 +57,7 @@
                 <ComboBoxItem Content="Realtime" Foreground="{StaticResource LightTextColor}" />
             </ComboBox>
 
-            <Button Name="ConfirmButton" Style="{StaticResource ConfirmButton}" Content="Confirm" Click="ConfirmButton_Click" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0, 0, 30, 0" Height="20" Width="100" />
+            <Button Name="ConfirmButton" Style="{StaticResource DefaultButton}" Content="Confirm" Click="ConfirmButton_Click" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0, 0, 30, 0" Height="20" Width="100" />
         </Grid>
     </Border>
 </Window>

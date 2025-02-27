@@ -27,6 +27,14 @@ namespace ProcessManager.Windows.ProcessContext
 
         private void ConfirmButton_Click(object sender, RoutedEventArgs e)
         {
+            ConfirmWindow cw = new ConfirmWindow();
+
+            if (cw.ShowDialog() == false)
+            {
+                this.Close();
+                return;
+            }
+            
             ProcessActions.SetPriority(_info.PID, _selectedPriority);
             _info.Priority = _selectedPriority;
             this.Close();
